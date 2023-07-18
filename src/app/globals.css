@@ -15,3 +15,11 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+.slider_container::-webkit-scrollbar {
+  display: none;
+}
+
+.slider_container {
+  scroll-behavior: smooth;
+}

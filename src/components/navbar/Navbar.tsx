@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { LegacyRef, forwardRef, useRef } from "react";
+import React, { useRef } from "react";
+import SearchIcon from '@/icons/search-interface-symbol.png'
+import Image from "next/image";
 
 const Navbar = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -17,10 +19,10 @@ const Navbar = () => {
               type="text"
               placeholder="search laptop"
               ref={searchRef}
-              className="p-2 w-full text-black outline-none rounded-md text-sm rounded-r-none border-r border-r-black"
+              className="p-2 w-full text-black outline-none rounded-md text-sm rounded-r-none"
             />
-            <span className="flex items-center justify-center bg-orange-500 text-white rounded-r-md">
-              search
+            <span className="flex items-center justify-center bg-orange-500 text-white rounded-r-md py-1 px-4 cursor-pointer">
+              <Image src={SearchIcon} alt="search" width={17} height={17} />
             </span>
           </div>
         </li>

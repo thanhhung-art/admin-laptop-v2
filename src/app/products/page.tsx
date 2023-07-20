@@ -1,9 +1,9 @@
-import React from 'react'
+import ProductsPage from "@/views/Products"
 
-const Products = () => {
+const Page = () => {
   return (
-    <div>Products</div>
+    <ProductsPage />
   )
 }
 
-export default Products
+export default Page;

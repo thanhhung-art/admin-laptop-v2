@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import React, { useRef } from "react";
-import SearchIcon from '@/icons/search-interface-symbol.png'
-import Image from "next/image";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ const Navbar = () => {
               className="p-2 w-full text-black outline-none rounded-md text-sm rounded-r-none"
             />
             <span className="flex items-center justify-center bg-orange-500 text-white rounded-r-md py-1 px-4 cursor-pointer">
-              <Image src={SearchIcon} alt="search" width={17} height={17} />
+              <SearchIcon />
             </span>
           </div>
         </li>
@@ -33,7 +33,7 @@ const Navbar = () => {
 
         <li>
           <div>
-            <Link href="/cart">cart</Link>
+            <Link href="/cart"><ShoppingCartIcon /></Link>
           </div>
         </li>
 

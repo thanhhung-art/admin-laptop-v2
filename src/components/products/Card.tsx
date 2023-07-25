@@ -2,7 +2,6 @@ import Laptop from "@/images/Lg_ultraPc.jpg";
 import Image from "next/image";
 import AddToCartIcon from "@/icons/AddToCartIcon";
 import Link from "next/link";
-import StarHalfIcon from "@/icons/StarHalfIcon";
 import StarIcon from "@/icons/StarIcon";
 
 const Card = ({ indexProduct }: { indexProduct: number }) => {
@@ -13,7 +12,7 @@ const Card = ({ indexProduct }: { indexProduct: number }) => {
           <div className="flex justify-center">
             <Image src={Laptop} alt="laptop" width={280} />
           </div>
-          <h4 className="max-w-[300px] text-center text-md font-semibold mt-4">
+          <h4 className="max-w-[300px] md:text-center text-sm md:text-md font-semibold mt-4">
             LG UltraPC 16U70R-K.AAS7U1 Thin and Lightweight Laptop,Gray
           </h4>
         </Link>

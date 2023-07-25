@@ -1,8 +1,9 @@
 "use client";
 import React, { createRef, useEffect, useRef } from "react";
-import TestImage from "@/icons/w692.png";
+import TestImage from "@/images/w692.png";
 import Image from "next/image";
-import Arrow from "@/icons/right-arrow.png";
+import ArrowNextIcon from "@/icons/ArrowNextIcon";
+import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
 
 const Slider = () => {
   const sliderPosition = useRef(1);
@@ -22,11 +23,11 @@ const Slider = () => {
     if (dots.current) {
       for (let i = 0; i < dots.current.length; i++) {
         if (i === index) {
-          dots.current[i].classList.add('bg-slate-300')
-          dots.current[i].classList.remove('bg-slate-600')
+          dots.current[i].classList.add("bg-slate-300");
+          dots.current[i].classList.remove("bg-slate-600");
         } else {
-          dots.current[i].classList.add('bg-slate-600')
-          dots.current[i].classList.remove('bg-slate-300')
+          dots.current[i].classList.add("bg-slate-600");
+          dots.current[i].classList.remove("bg-slate-300");
         }
       }
     }
@@ -40,14 +41,14 @@ const Slider = () => {
         prevBtn.current.style.display = "none";
       }
       sliderPosition.current = 1;
-      changeDotsColor(0)
+      changeDotsColor(0);
       return;
     }
     if (containerRef.current && prevBtn.current) {
       containerRef.current.scrollLeft += containerRef.current.clientWidth;
       prevBtn.current.style.display = "block";
     }
-    changeDotsColor(sliderPosition.current)
+    changeDotsColor(sliderPosition.current);
     sliderPosition.current++;
   };
 
@@ -55,7 +56,7 @@ const Slider = () => {
     // when go to head of slide
     if (sliderPosition.current === 1) {
       if (prevBtn.current) prevBtn.current.style.display = "none";
-      changeDotsColor(0)
+      changeDotsColor(0);
       return;
     }
 
@@ -65,20 +66,20 @@ const Slider = () => {
     }
 
     sliderPosition.current--;
-    changeDotsColor(sliderPosition.current - 1)
+    changeDotsColor(sliderPosition.current - 1);
   };
 
   const handleNext = () => {
-    handleScrollLeft()
-    clearInterval(autoScroll.current)
-    autoScroll.current = setInterval(handleScrollLeft, 5000)
-  }
+    handleScrollLeft();
+    clearInterval(autoScroll.current);
+    autoScroll.current = setInterval(handleScrollLeft, 5000);
+  };
 
   const handlePrev = () => {
-    handleScrollRight()
-    clearInterval(autoScroll.current)
-    autoScroll.current = setInterval(handleScrollLeft, 5000)
-  }
+    handleScrollRight();
+    clearInterval(autoScroll.current);
+    autoScroll.current = setInterval(handleScrollLeft, 5000);
+  };
 
   useEffect(() => {
     autoScroll.current = setInterval(handleScrollLeft, 5000);
@@ -89,19 +90,19 @@ const Slider = () => {
   });
 
   return (
-    <section className="relative max-w-7xl m-auto bg-white rounded-2xl shadow-md py-4">
+    <section className="relative max-w-7xl m-auto bg-white rounded-2xl shadow-md py-8">
       <div
         className="flex overflow-x-auto slider_container snap-x"
         ref={containerRef}
       >
         {/* arrow left */}
         <div
-          className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full rotate-180"
+          className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full"
           onClick={handlePrev}
           ref={prevBtn}
           style={{ display: "none" }}
         >
-          <Image src={Arrow} alt="arrow" width={25} height={25} />
+          <ArrowPrevIcon h={30} w={30} />
         </div>
 
         {[1, 2, 3, 4].map((e, i) => (
@@ -114,8 +115,7 @@ const Slider = () => {
           onClick={handleNext}
           ref={nextBtn}
         >
-          <span ></span>
-          <Image src={Arrow} alt="arrow" width={25} height={25} />
+          <ArrowNextIcon h={30} w={30} />
         </div>
 
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 pb-2">
@@ -132,20 +132,20 @@ const Slider = () => {
 function Child({ index }: { index: number }) {
   return (
     <div
-      className="flex gap-8 items-center flex-shrink-0 w-full snap-center"
+      className="flex flex-col gap-6 md:gap-8 items-center flex-shrink-0 w-full snap-center md:flex-row md:p-4 lg:p-0"
       id={`slider_child_${index}`}
     >
-      <div className="w-1/2 flex justify-center items-center py-8">
+      <div className="w-full md:w-1/2 flex justify-center items-center p-4">
         <Image src={TestImage} alt="test image" />
       </div>
 
-      <div className="w-1/2">
-        <h3 className="text-center text-xl pb-4 text-zinc-600">new</h3>
+      <div className="w-full md:w-1/2">
+        <h3 className="text-center text-xl text-zinc-600 pb-2 md:pb-4">new</h3>
         <h1 className="text-4xl text-center text font-semibold pb-2">
           ExpertBook B9 OLED
         </h1>
         <h2 className="text-center text-2xl pb-6">From $1200</h2>
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-[0.9rem]">
           <button className="py-2 px-6 rounded-3xl bg-blue-500 text-white transform active:scale-95">
             Buy
           </button>

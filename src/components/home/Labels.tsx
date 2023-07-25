@@ -1,34 +1,34 @@
 import React from "react";
-import Image from "next/image";
-import GamingIcon from "@/icons/games.png";
-import OfficeIcon from "@/icons/working-with-laptop.png";
-import GraphicsIcon from "@/icons/graphic-design.png";
-import StudyIcon from "@/icons/graduation-hat.png";
+import GamingIcon from "@/icons/GamingIcon";
+import StudyIcon from "@/icons/StudyIcon";
+import OfficeIcon from "@/icons/OfficeIcon";
+import GraphicsIcon from "@/icons/GraphicsIcon";
+
 
 const Labels = () => {
   return (
-    <section className="max-w-7xl m-auto py-16 flex justify-between">
-      <div className="h-44 w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
+    <section className="max-w-7xl m-auto pb-8 pt-0 mb-8 md:mb-16 md:pt-8 flex justify-between md:justify-center flex-wrap gap-2 lg:gap-4 lg:justify-between">
+      <div className="h-44 w-[calc(50%-0.25rem)] md:w-fit md:px-24 lg:w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
         <div className="p-4 rounded-full bg-gray-300">
-          <Image src={GamingIcon} alt="gaming" width={60} height={20} />
+          <GamingIcon w={60} h={60} />
         </div>
         <h3>Gamming</h3>
       </div>
-      <div className="h-44 w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
+      <div className="h-44 w-[calc(50%-0.25rem)] md:w-fit md:px-24 lg:w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
         <div className="p-4 rounded-full bg-gray-300">
-          <Image src={OfficeIcon} alt="Office" width={60} height={20} />
+          <OfficeIcon />
         </div>
         <h3>Office</h3>
       </div>
-      <div className="h-44 w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
+      <div className="h-44 w-[calc(50%-0.25rem)] md:w-fit md:px-24 lg:w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
         <div className="p-4 rounded-full bg-gray-300">
-          <Image src={GraphicsIcon} alt="Graphics" width={60} height={20} />
+          <GraphicsIcon />
         </div>
         <h3>Graphics</h3>
       </div>
-      <div className="h-44 w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
+      <div className="h-44 w-[calc(50%-0.25rem)] md:w-fit md:px-24 lg:w-64 bg-white rounded-md flex flex-col gap-2 items-center justify-center">
         <div className="p-4 rounded-full bg-gray-300">
-          <Image src={StudyIcon} alt="Study" width={60} height={20} />
+          <StudyIcon />
         </div>
         <h3>Study</h3>
       </div>

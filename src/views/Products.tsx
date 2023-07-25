@@ -4,9 +4,9 @@ import Brands from "@/components/products/Brands"
 import Filters from "@/components/products/Filters"
 import Products from "@/components/products/Products"
 
-const ProductPage = () => {
+const ProductsPage = () => {
   return (
-    <main className="bg-blue-500">
+    <main className="bg-sky-500">
       <Navbar />
       <Brands />
       <Filters />
@@ -16,4 +16,4 @@ const ProductPage = () => {
   )
 }
 
-export default ProductPage
+export default ProductsPage

@@ -5,6 +5,7 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/views/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -15,8 +16,12 @@ module.exports = {
       },
       padding: {
         'p-5': '1.2rem'
+      },
+      fontSize: {
+        'name-product': ['1rem', { 'lineHeight': '1.5' }],
       }
     },
+    
   },
   plugins: [],
 }

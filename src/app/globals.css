@@ -16,10 +16,21 @@
   }
 }
 
+body {
+  background-color: rgb(14 165 233);
+}
+
 .slider_container::-webkit-scrollbar {
   display: none;
 }
 
 .slider_container {
   scroll-behavior: smooth;
+}
+
+.scroll-snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+@media (max-width: 768px) {
 }

@@ -1,18 +1,25 @@
-import Labels from '@/components/home/Labels'
-import Slider from '@/components/home/Slider'
-import Navbar from '@/components/navbar/Navbar'
-import React from 'react'
+import Labels from "@/components/home/Labels";
+import Slider from "@/components/home/Slider";
+import Navbar from "@/components/navbar/Navbar";
+import React from "react";
+import ProductsLayout from "@/components/home/ProductsLayout";
+import Footer from "@/components/footer/Footer";
 
-const Home = () => {
+export default function Home() {
   return (
-    <main className='bg-sky-500'>
+    <main className="bg-sky-500">
       <Navbar />
-      <header className='py-16'>
-        <Slider />
+      <div className="px-4">
+        <header className="py-8 my-4 md:my-0 md:py-16">
+          <Slider />
+        </header>
         <Labels />
-      </header>
+        <ProductsLayout componentName="Flash Sale" />
+        <ProductsLayout componentName="Best Seller" />
+        <ProductsLayout componentName="Featured Products" />
+        <ProductsLayout componentName="Macbook" />
+      </div>
+      <Footer />
     </main>
-  )
+  );
 }
-
-export default Home

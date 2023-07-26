@@ -15,7 +15,7 @@ const CheckoutForm = () => {
           <h3>Username:</h3>
           <input
             type="text"
-            className="border border-gray-400 outline-none rounded p-2 h-8 w-full"
+            className="border border-gray-400 outline-none rounded w-full py-1 px-2 p-2 h-8"
             autoComplete="false"
           />
         </section>
@@ -23,7 +23,7 @@ const CheckoutForm = () => {
           <h3>Email (optional):</h3>
           <input
             type="email"
-            className="border border-gray-400 outline-none rounded p-2 h-8 w-full invalid:border-red-500"
+            className="border border-gray-400 outline-none rounded w-full py-1 px-2 p-2 h-8 invalid:border-red-500"
             autoComplete="false"
           />
         </section>
@@ -31,14 +31,14 @@ const CheckoutForm = () => {
           <h3>Address:</h3>
           <input
             type="text"
-            className="border border-gray-400 outline-none rounded p-2 h-8 w-full"
+            className="border border-gray-400 outline-none rounded w-full py-1 px-2 p-2 h-8"
           />
         </section>
         <section>
           <h3>Address 2 (optional):</h3>
           <input
             type="text"
-            className="border border-gray-400 outline-none rounded p-2 h-8 w-full"
+            className="border border-gray-400 outline-none rounded w-full py-1 px-2 p-2 h-8"
           />
         </section>
         <section>
@@ -63,25 +63,25 @@ const CheckoutForm = () => {
           <input id="cod" type="radio" name="payment" value="cod" />
           <label htmlFor="cod" className="ml-2 text-sm">COD</label>
         </section>
-        <section className="flex gap-4">
-          <div>
+        <section className="flex flex-col md:flex-row gap-4">
+          <div className="">
             <div>
               <h3 className="">Name on card</h3>
-              <input type="text" className="border border-gray-400 outline-none rounded"/>
+              <input type="text" className="border border-gray-400 outline-none rounded w-full py-1 px-2"/>
             </div>
             <div className="mt-2">
               <h3>Credit card number</h3>
-              <input type="text" className="border border-gray-400 outline-none rounded"/>
+              <input type="text" className="border border-gray-400 outline-none rounded w-full py-1 px-2"/>
             </div>
           </div>
           <div className="">
             <div>
               <h3>Expiration</h3>
-              <input type="text" className="border border-gray-400 outline-none rounded" />
+              <input type="text" className="border border-gray-400 outline-none rounded w-full py-1 px-2" />
             </div>
             <div className="mt-2">
               <h3>CVV</h3>
-              <input type="text" className="border border-gray-400 outline-none rounded" />
+              <input type="text" className="border border-gray-400 outline-none rounded w-full py-1 px-2" />
             </div>
           </div>
         </section>

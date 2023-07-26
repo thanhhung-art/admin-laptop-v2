@@ -9,7 +9,7 @@ const name =
 const ListProducts = () => {
   const containerRef = createRef<HTMLDivElement>()
   return (
-    <div className="shadow p-2 flex flex-col" ref={containerRef}>
+    <div className="shadow p-2 flex flex-col border-t-2 border-t-gray-600 pt-2 md:border-none" ref={containerRef} >
       <ul className={`overflow-auto max-h-[628px] flex-1`}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
           <li

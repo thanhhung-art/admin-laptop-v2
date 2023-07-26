@@ -1,6 +1,6 @@
+import StarIcon from "@/icons/StarIcon";
 import Laptop from "@/images/71+1lOl1Y1L._AC_SX466_.jpg";
 import Image from "next/image";
-import StarIcon from "@mui/icons-material/Star";
 
 const QuickView = () => {
   return (
@@ -19,11 +19,8 @@ const QuickView = () => {
           <h3>5.0</h3>
           <ul className="flex">
             {[1, 2, 3, 4, 5].map((i) => (
-              <li key={i}>
-                <StarIcon
-                  fontSize="small"
-                  sx={{ color: "rgb(240, 191, 76)" }}
-                />
+              <li key={i} className="ml-1">
+                <StarIcon w={16} h={16}/>
               </li>
             ))}
           </ul>

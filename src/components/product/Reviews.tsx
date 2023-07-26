@@ -1,7 +1,6 @@
 import ImageReview from "@/images/81nyJxacjEL._UC175,175_CACC,175,175_.jpg";
 import Image from "next/image";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import StarIcon from "@mui/icons-material/Star";
+import StarIcon from "@/icons/StarIcon";
 
 const Reviews = () => {
   return (
@@ -34,11 +33,8 @@ function Child({ message, image }: { message?: string; image?: boolean }) {
           <h3 className="font-semibold">John Doe</h3>
           <ul className="flex">
             {[1, 2, 3, 4, 5].map((e) => (
-              <li key={e}>
-                <StarIcon
-                  fontSize="small"
-                  sx={{ color: "rgb(240, 191, 76)" }}
-                />
+              <li key={e} className="ml-1">
+                <StarIcon w={16} h={16} />
               </li>
             ))}
           </ul>
@@ -55,7 +51,7 @@ function Child({ message, image }: { message?: string; image?: boolean }) {
         )}
 
         <div className="mt-2 md:mt-4 flex gap-8 items-center">
-          <ThumbUpIcon sx={{ fontSize: 16 }} className="cursor-pointer text-gray-600" />
+          <span>like</span>
           <button>reply</button>
         </div>
       </div>

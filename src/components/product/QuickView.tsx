@@ -4,12 +4,12 @@ import StarIcon from "@mui/icons-material/Star";
 
 const QuickView = () => {
   return (
-    <section className="max-w-7xl m-auto my-4 flex gap-4">
+    <section className="max-w-7xl m-auto my-4 mb-2 md:mb-4 flex flex-col md:flex-row gap-2 md:gap-4">
       <div className="p-4 bg-white rounded-md">
         <Image src={Laptop} alt="laptop" />
       </div>
       <div className="bg-white flex-1 flex flex-col gap-2 rounded-md p-4">
-        <h2 className="max-w-[700px] text-2xl">
+        <h2 className="max-w-[700px] text-lg md:text-2xl">
           Acer Aspire 3 A315-24P-R7VH Slim Laptop | 15.6 inch Full HD IPS
           Display | AMD Ryzen 3 7320U Quad-Core Processor | AMD Radeon Graphics
           | 8GB LPDDR5 | 128GB NVMe SSD | Wi-Fi 6 | Windows 11 Home in S Mode

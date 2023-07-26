@@ -5,7 +5,7 @@ import StarIcon from "@mui/icons-material/Star";
 
 const Reviews = () => {
   return (
-    <section className="bg-white rounded-md p-4 flex-1">
+    <section className="bg-white rounded-md p-4 pb-0 flex-1 order-2 md:order-none">
       <h2 className="text-xl">Reviews</h2>
       <ul className="mt-4">
         <Child
@@ -24,7 +24,7 @@ const Reviews = () => {
 
 function Child({ message, image }: { message?: string; image?: boolean }) {
   return (
-    <li className="flex gap-4 mb-8">
+    <li className="flex gap-2 md:gap-4 mb-4 md:mb-8">
       <div className="pt-2">
         <div className="h-8 w-8 rounded-full bg-gray-700"></div>
       </div>
@@ -54,7 +54,7 @@ function Child({ message, image }: { message?: string; image?: boolean }) {
           </div>
         )}
 
-        <div className="mt-4 flex gap-8 items-center">
+        <div className="mt-2 md:mt-4 flex gap-8 items-center">
           <ThumbUpIcon sx={{ fontSize: 16 }} className="cursor-pointer text-gray-600" />
           <button>reply</button>
         </div>

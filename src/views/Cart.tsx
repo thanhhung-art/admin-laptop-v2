@@ -7,7 +7,7 @@ const CartPage = () => {
   return (
     <>
       <Navbar />
-      <section className="max-w-7xl m-auto flex gap-4 bg-white rounded-md my-8">
+      <section className="max-w-7xl m-auto flex gap-4 bg-white rounded-md my-8 mx-4 md:mx-0">
         <ListProducts />
       </section>
       <Footer />

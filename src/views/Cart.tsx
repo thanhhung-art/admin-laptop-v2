@@ -1,5 +1,4 @@
 import ListProducts from "@/components/cart/ListProducts";
-import Note from "@/components/cart/Note";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 

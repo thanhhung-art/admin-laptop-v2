@@ -1,12 +1,38 @@
 "use client";
+import { Fetch } from "@/lib/axios";
+import { IUserLogin } from "@/types/user";
+import { isPasswordStrong } from "@/utils/checkPasswordStrong";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { redirect } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface IType {
   type: "login" | "register";
 }
 
+interface IAuthData {
+  username?: string;
+  email: string;
+  password: string;
+}
+
+interface IAuthData {
+  email: string;
+  username?: string;
+  password: string;
+  passwordAgain?: string;
+}
+
 const AuthForm = ({ type }: IType) => {
+  const queryClient = useQueryClient();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -18,32 +44,135 @@ const AuthForm = ({ type }: IType) => {
     password: "",
     passwordAgain: "",
   });
+  const [canSubmit, setCanSubmit] = useState(false);
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const authMutation = useMutation(
+    (data: IAuthData) => {
+      return Fetch.post(
+        type === "login" ? "/auth/login" : "/auth/register",
+        data
+      );
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: ['userLogin']})
+        router.push("/");
+      },
+      onError(res) {
+        console.log(res);
+      },
+    }
+  );
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (type === "login") {
+      if (emailRef.current && passwordRef.current)
+        authMutation.mutate({
+          email: emailRef.current?.value,
+          password: passwordRef.current?.value,
+        });
+      return;
+    }
+
+    if (emailRef.current && passwordRef.current && nameRef.current) {
+      authMutation.mutate({
+        username: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+    }
   };
+
+  const handlePasswordStrong = (e: ChangeEvent<HTMLInputElement>) => {
+    if (type === "login") {
+      if (emailRef.current?.value !== "" && passwordRef.current?.value !== "") {
+        return setCanSubmit(true);
+      }
+      return setCanSubmit(false);
+    }
+
+    if (
+      passwordRef.current?.value === "" ||
+      isPasswordStrong(e.target.value) === ""
+    ) {
+      return setErrors({ ...errors, password: "" });
+    }
+
+    if (isPasswordStrong(e.target.value))
+      return setErrors({
+        ...errors,
+        password: isPasswordStrong(e.target.value),
+      });
+  };
+
+  const handleIsPassworkMatches = (e: ChangeEvent<HTMLInputElement>) => {
+    if (
+      emailRef.current &&
+      passwordRef.current &&
+      nameRef.current &&
+      passwordAgainRef.current
+    ) {
+      if (e.target.value === "" || e.target.value === passwordRef.current.value)
+        return setErrors({ ...errors, passwordAgain: "" });
+
+      if (e.target.value !== passwordRef.current.value)
+        return setErrors({
+          ...errors,
+          passwordAgain: "password doesn't matches",
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (type === "login") {
+      if (emailRef.current?.value !== "" && passwordRef.current?.value !== "") {
+        return setCanSubmit(true);
+      } else return setCanSubmit(false);
+    }
+
+    if (
+      emailRef.current?.value !== "" &&
+      passwordRef.current?.value !== "" &&
+      nameRef.current?.value !== "" &&
+      passwordAgainRef.current?.value !== "" &&
+      !errors.passwordAgain
+    ) {
+      setCanSubmit(true);
+    } else setCanSubmit(false);
+  }, [
+    type,
+    emailRef.current?.value,
+    passwordRef.current?.value,
+    nameRef.current?.value,
+    passwordAgainRef.current?.value,
+    errors.passwordAgain,
+  ]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div>
-        <h2 className="text-center pb-8 text-3xl rounded-3xl">
+        <h2 className="text-center pb-8 text-3xl rounded-3xl text-white">
           {type === "login" ? "Login" : "Register"}
         </h2>
         <form
           onSubmit={handleSubmit}
-          className="border-2 flex flex-col gap-4 p-8 shadow-lg rounded-xl"
+          className="border flex flex-col gap-4 p-8 shadow-md rounded-xl bg-white"
         >
           <div className="flex flex-col">
             <input
               className="text-md p-2 outline-none border border-slate-300 rounded w-72"
               id="email"
+              name="email"
               type="email"
               placeholder="email"
               ref={emailRef}
             />
             {errors.email && (
               <label htmlFor="email" className="text-red-500 text-sm pl-2">
-                error will be here
+                {errors.email}
               </label>
             )}
           </div>
@@ -53,13 +182,14 @@ const AuthForm = ({ type }: IType) => {
               <input
                 className="text-md p-2 outline-none border border-slate-300 rounded w-72"
                 id="name"
+                name="name"
                 type="text"
                 placeholder="username"
                 ref={nameRef}
               />
               {errors.username && (
                 <label htmlFor="name" className="text-red-500 text-sm pl-2">
-                  error will be here
+                  {errors.username}
                 </label>
               )}
             </div>
@@ -69,13 +199,18 @@ const AuthForm = ({ type }: IType) => {
             <input
               className="text-md p-2 outline-none w-72 border border-slate-300"
               id="password"
+              name="password"
               type="password"
               placeholder="password"
               ref={passwordRef}
+              onChange={handlePasswordStrong}
             />
             {errors.password && (
-              <label htmlFor="password" className="text-red-500 text-sm pl-2">
-                error will be here
+              <label
+                htmlFor="password"
+                className="text-red-500 text-sm pl-2 max-w-[290px]"
+              >
+                {errors.password}
               </label>
             )}
           </div>
@@ -85,23 +220,31 @@ const AuthForm = ({ type }: IType) => {
               <input
                 className="text-md p-2 outline-none w-72 border border-slate-300"
                 id="passwordAgain"
+                name="passwordAgain"
                 type="password"
                 placeholder="password again"
                 ref={passwordAgainRef}
+                onChange={handleIsPassworkMatches}
               />
-              {errors.username && (
+              {errors.passwordAgain && (
                 <label
                   htmlFor="passwrodAgain"
                   className="text-red-500 text-sm pl-2"
                 >
-                  error will be here
+                  {errors.passwordAgain}
                 </label>
               )}
             </div>
           )}
 
           <div className="flex items-center gap-2">
-            <input type="checkbox" className="w-4 h-4" ref={saveMeRef} />
+            <input
+              id="checkbox"
+              name="checkbox"
+              type="checkbox"
+              className="w-4 h-4"
+              ref={saveMeRef}
+            />
             <label htmlFor="checkbox" className="text-sm text-gray-500">
               save me on this browser
             </label>
@@ -111,13 +254,18 @@ const AuthForm = ({ type }: IType) => {
             <div>
               <button
                 type="submit"
-                className="w-full px-4 py-2 rounded text-sm border shadow-md float-right bg-sky-600 text-white transform active:scale-95"
+                className={`w-full px-4 py-2 rounded text-sm border shadow-md float-right ${
+                  !canSubmit ? "bg-gray-400" : "bg-sky-600"
+                } text-white transform active:scale-95`}
+                disabled={!canSubmit}
               >
                 submit
               </button>
             </div>
 
-            {type === "login" && <p className="text-center text-sm text-gray-500">or</p>}
+            {type === "login" && (
+              <p className="text-center text-sm text-gray-500">or</p>
+            )}
 
             {type === "login" && (
               <div>

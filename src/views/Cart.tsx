@@ -1,8 +1,13 @@
+'use client'
 import ListProducts from "@/components/cart/ListProducts";
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
+import { CartContext } from "@/providers/cartProvider";
+import { useContext } from "react";
 
 const CartPage = () => {
+  const { state } = useContext(CartContext)
+  console.log(state);
   return (
     <>
       <Navbar />

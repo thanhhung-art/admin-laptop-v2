@@ -1,19 +1,46 @@
-import Laptop from "@/images/Lg_ultraPc.jpg";
+"use client";
 import Image from "next/image";
 import AddToCartIcon from "@/icons/AddToCartIcon";
 import Link from "next/link";
 import StarIcon from "@/icons/StarIcon";
+import { IProduct } from "@/types/product";
+import { useContext } from "react";
+import { CartContext } from "@/providers/cartProvider";
 
-const Card = ({ indexProduct }: { indexProduct: number }) => {
+const Card = ({ product }: { product: IProduct }) => {
+  const { state, dispatch } = useContext(CartContext);
+
+  const handleAddToCart = () => {
+    if (state.products.find((p) => p.id === product._id)) {
+      const index = state.products.findIndex((p) => p.id === product._id);
+      dispatch({
+        action: "INCREASE_QUANTITY",
+        payload: { id: product._id },
+      });
+      return;
+    }
+
+    dispatch({ action: "ADD_TO_CART", payload: { id: product._id, quantity: 1 } });
+  };
+
+  if (!product) return <div>loading</div>;
+
   return (
     <section className="bg-white rounded-md overflow-hidden">
-      <div className="px-4 py-8 transform hover:scale-105">
-        <Link href={`/product/${indexProduct}`}>
-          <div className="flex justify-center">
-            <Image src={Laptop} alt="laptop" width={280} />
+      <div className="px-4 py-7 transform hover:scale-105">
+        <Link href={`/product/${product._id}`}>
+          <div className="flex justify-center h-[184px]">
+            <Image
+              src={product.img}
+              alt="laptop"
+              width={280}
+              height={184}
+              priority
+              layout="responsive"
+            />
           </div>
           <h4 className="max-w-[300px] md:text-center text-sm md:text-md font-semibold mt-4">
-            LG UltraPC 16U70R-K.AAS7U1 Thin and Lightweight Laptop,Gray
+            {product.name.slice(0, 100)}
           </h4>
         </Link>
         <ul className="flex my-2">
@@ -24,8 +51,8 @@ const Card = ({ indexProduct }: { indexProduct: number }) => {
           ))}
         </ul>
         <div className="flex justify-between items-center">
-          <h3>$329.99</h3>
-          <span className="cursor-pointer">
+          <h3>${product.price}</h3>
+          <span className="cursor-pointer" onClick={handleAddToCart}>
             <AddToCartIcon w={25} h={25} />
           </span>
         </div>

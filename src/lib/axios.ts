@@ -1,3 +1,4 @@
+import { IProduct } from "@/types/product";
 import axios from "axios";
 
 export const Fetch = axios.create({
@@ -7,3 +8,13 @@ export const Fetch = axios.create({
   },
   withCredentials: true
 })
+
+export const getProducts = async () => {
+  const res = await Fetch('/products')
+  return res.data as unknown as { data: IProduct[], msg: string }
+}
+
+export const getProduct = async (id: string) => {
+  const res = await Fetch(`/products/${id}`)
+  return res.data as unknown as { data: IProduct, msg: string}
+}

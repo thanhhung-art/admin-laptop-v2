@@ -1,12 +1,14 @@
 "use client";
 import Link from "next/link";
-import React, { useRef } from "react";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import React, { useContext, useRef } from "react";
 import CartIcon from "@/icons/CartIcon";
 import SearchIcon from "@/icons/SearchIcon";
+import { CartContext } from "@/providers/cartProvider";
 
 const Navbar = () => {
   const searchRef = useRef<HTMLInputElement>(null);
+  const { state } = useContext(CartContext);
+
   return (
     <nav className="p-4 md:p-5 bg-sky-700 text-white w-full">
       <ul className="flex justify-between items-center gap-2 flex-wrap md:gap-8 lg:gap-16">
@@ -33,8 +35,13 @@ const Navbar = () => {
         </li>
 
         <li>
-          <div>
-            <Link href="/cart"><CartIcon w={20} h={20} /></Link>
+          <div className="relative">
+            <Link href="/cart">
+              <CartIcon w={20} h={20} />
+            </Link>
+            <span className="absolute -top-2 -right-2 bg-orange-500 h-4 w-4 text-[10px] p-1 rounded-full flex justify-center items-center">
+              {state.products && state.products.length}
+            </span>
           </div>
         </li>
 

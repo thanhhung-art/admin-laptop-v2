@@ -29,7 +29,7 @@ const ListProducts = () => {
       <ul className="p-4 flex flex-col gap-4">
         {products.map((product) => (
           <li key={product?._id} className="shadow-md p-2 rounded">
-            <Child name={product.name} image={product.img} quantity={product.quantity} price={product.price} />
+            <Child id={product._id} name={product.name} image={product.img} quantity={product.quantity} price={product.price} />
           </li>
         ))}
         <li className="flex justify-end gap-4 items-center">
@@ -44,14 +44,35 @@ const ListProducts = () => {
 };
 
 interface IChildProps {
+  id: string | undefined;
   name: string | undefined;
   image: string | undefined;
   quantity: number | undefined;
   price: number | undefined;
 }
 
-function Child({ name, image, quantity, price }: IChildProps) {
+function Child({ id, name, image, quantity, price }: IChildProps) {
   const { isMobile } = useMobile();
+  const { state, dispatch } = useContext(CartContext)
+  
+  const handleIncreaseQuantity = () => {
+    if (id) dispatch({ action: "INCREASE_QUANTITY", payload: { id } })
+    window.localStorage.setItem('cart', JSON.stringify(state.products))
+  }
+
+  const handleDecreaseQuantity = () => {
+    if (id) {
+      if (state.products.find((p) => p.id === id)?.quantity === 1) {
+        dispatch({ action: 'REMOVE_FROM_CART', payload: { id } })
+        window.localStorage.setItem('cart', JSON.stringify(state.products))
+        return
+      }
+
+      dispatch({ action: "DECREASE_QUANTITY", payload: { id } })
+      window.localStorage.setItem('cart', JSON.stringify(state.products))
+    }
+  }
+
   return (
     <div className="flex gap-4">
       <div className="min-w-[220px]">
@@ -63,10 +84,10 @@ function Child({ name, image, quantity, price }: IChildProps) {
         <h3 className="text-[12px] flex-1 md:mt-1">Price: ${price}</h3>
         <div className="flex justify-between items-center mt-2 md:mt-0">
           <div>
-            <button type="button" className="border border-blue-500 rounded px-4 md:px-8 active:scale-95">
+            <button onClick={handleIncreaseQuantity} className="border border-blue-500 rounded px-4 md:px-8 active:scale-95">
               <PlusIcon w={14} h={14} />
             </button>
-            <button type="button" className="border border-blue-500 rounded px-4 md:px-8 ml-2 active:scale-95">
+            <button onClick={handleDecreaseQuantity} className="border border-blue-500 rounded px-4 md:px-8 ml-2 active:scale-95">
               <MinusIcon w={14} h={14} />
             </button>
           </div>

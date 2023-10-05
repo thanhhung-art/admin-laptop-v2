@@ -1,9 +1,7 @@
-import React from 'react'
+import Profile from "@/views/Profile"
 
-const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
+const page = () => {
+  return <Profile />
 }
 
-export default Profile
+export default page

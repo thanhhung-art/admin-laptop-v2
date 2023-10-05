@@ -4,6 +4,7 @@ import React, { useContext, useRef } from "react";
 import CartIcon from "@/icons/CartIcon";
 import SearchIcon from "@/icons/SearchIcon";
 import { CartContext } from "@/providers/cartProvider";
+import UserIcon from "@/icons/UserIcon";
 
 const Navbar = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -48,7 +49,7 @@ const Navbar = () => {
         <li className="">
           <div>
             <Link href="/profile">
-              <div className="w-8 h-8 rounded-full bg-black"></div>
+              <UserIcon w={50} h={50} />
             </Link>
           </div>
         </li>

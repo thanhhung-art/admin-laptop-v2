@@ -1,6 +1,5 @@
 "use client";
-import { Fetch } from "@/lib/axios";
-import { IUserLogin } from "@/types/user";
+import { Fetch, getUser } from "@/lib/axios";
 import { isPasswordStrong } from "@/utils/checkPasswordStrong";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -11,7 +10,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { redirect } from 'next/navigation';
 import { useRouter } from "next/navigation";
 
 interface IType {
@@ -55,12 +53,21 @@ const AuthForm = ({ type }: IType) => {
       );
     },
     {
-      onSuccess() {
-        queryClient.invalidateQueries({ queryKey: ['userLogin']})
+      async onSuccess(e) {
+        await queryClient.prefetchQuery(['getUser'], () => getUser(e.data.data._id));
+        localStorage.setItem('user_id', e.data.data._id);
         router.push("/");
       },
-      onError(res) {
-        console.log(res);
+      onError(res: { response: { data: { message: string }}}) {
+        const msg = res.response.data.message;
+
+        if (msg === 'Email not found') {  
+          return setErrors({ ...errors, email: msg });
+        }
+        
+        if (msg === 'Invalid password') {
+          return setErrors({ ...errors, password: msg });
+        }
       },
     }
   );
@@ -169,6 +176,7 @@ const AuthForm = ({ type }: IType) => {
               type="email"
               placeholder="email"
               ref={emailRef}
+              onFocus={() => setErrors({ ...errors, email: "" })}
             />
             {errors.email && (
               <label htmlFor="email" className="text-red-500 text-sm pl-2">
@@ -204,6 +212,7 @@ const AuthForm = ({ type }: IType) => {
               placeholder="password"
               ref={passwordRef}
               onChange={handlePasswordStrong}
+              onFocus={() => setErrors({ ...errors, password: "" })}
             />
             {errors.password && (
               <label

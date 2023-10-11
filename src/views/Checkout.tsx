@@ -9,7 +9,7 @@ const Checkout = () => {
     <main className="md:flex md:justify-center md:items-center md:h-screen p-4 md:p-0">
       <div className="bg-white rounded-md p-4 max-w-7xl">
         <div className="relative">
-          <button className="absolute left-0 top-1/2 transform -translate-y-1/2">
+          <button title="Back" className="absolute left-0 top-1/2 transform -translate-y-1/2">
             <Link href="/cart">
               <ArrowBackIcon w={25} h={25} />
             </Link>

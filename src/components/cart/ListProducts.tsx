@@ -35,8 +35,8 @@ const ListProducts = () => {
   return (
     <div>
       <ul className="p-4 flex flex-col gap-4">
-        {products.map((product) => (
-          <li key={product?._id} className="shadow-md p-2 rounded">
+        {products.map((product, i) => (
+          <li key={product?._id || i} className="shadow-md p-2 rounded">
             <Child
               id={product._id}
               name={product.name}
@@ -103,12 +103,14 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
         <div className="flex justify-between items-center mt-2 md:mt-0">
           <div>
             <button
+              title="increase quantity"
               onClick={handleIncreaseQuantity}
               className="border border-blue-500 rounded px-4 md:px-8 active:scale-95"
             >
               <PlusIcon w={14} h={14} />
             </button>
             <button
+              title="decrease quantity"
               onClick={handleDecreaseQuantity}
               className="border border-blue-500 rounded px-4 md:px-8 ml-2 active:scale-95"
             >

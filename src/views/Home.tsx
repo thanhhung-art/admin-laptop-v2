@@ -9,9 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/lib/axios";
 
 export default function Home() {
-  const { data } = useQuery(['getUser'], () => getUser(localStorage.getItem('user_id') || ""), {
-    enabled: !!localStorage.getItem('user_id'),
-  })
 
   return (
     <main className="bg-sky-500">

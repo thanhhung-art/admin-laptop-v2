@@ -4,6 +4,10 @@ export interface IUser {
   username: string
   password: string
   isadmin: boolean
+  img?: string
+  phone?: string
+  address?: string
+  address2?: string
   updateAt: string
   createAt: string
 }

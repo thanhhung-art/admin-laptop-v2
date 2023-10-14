@@ -73,19 +73,16 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
 
   const handleIncreaseQuantity = () => {
     if (id) dispatch({ action: "INCREASE_QUANTITY", payload: { id } });
-    window.localStorage.setItem("cart", JSON.stringify(state.products));
   };
 
   const handleDecreaseQuantity = () => {
     if (id) {
       if (state.products.find((p) => p.id === id)?.quantity === 1) {
         dispatch({ action: "REMOVE_FROM_CART", payload: { id } });
-        window.localStorage.setItem("cart", JSON.stringify(state.products));
         return;
       }
 
       dispatch({ action: "DECREASE_QUANTITY", payload: { id } });
-      window.localStorage.setItem("cart", JSON.stringify(state.products));
     }
   };
 

@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useReducer, Dispatch, useEffect, useRef } from "react";
+import { createContext, useReducer, Dispatch } from "react";
 
 interface IProductInCart {
   id: string;
@@ -44,42 +44,52 @@ function reducer(
   state: InitialState,
   dispatch: { action: string; payload: IProductInCart }
 ) {
+  let products: IProductInCart[] = [];
+
   switch (dispatch.action) {
     case "ADD_TO_CART":
+      products = [...state.products, dispatch.payload];
+      localStorage.setItem('cart', JSON.stringify(products))
       return {
-        products: [...state.products, dispatch.payload],
+        products,
       };
 
     case "REMOVE_FROM_CART":
+      products = state.products.filter(
+        (product) => product.id !== dispatch.payload.id
+      ),
+      localStorage.setItem('cart', JSON.stringify(products))
       return {
-        products: state.products.filter(
-          (product) => product.id !== dispatch.payload.id
-        ),
+        products
       };
 
     case "CLEAR_CART":
+      localStorage.setItem('cart', JSON.stringify([]))
       return {
         products: [],
       };
 
     case "INCREASE_QUANTITY":
+      products = state.products.map((product) => {
+        if (product.id === dispatch.payload.id && product.quantity) {
+          return { ...product, quantity: product.quantity + 1 };
+        }
+        return product;
+      })
+      localStorage.setItem('cart', JSON.stringify(products))
       return {
-        products: state.products.map((product) => {
-          if (product.id === dispatch.payload.id && product.quantity) {
-            return { ...product, quantity: product.quantity + 1 };
-          }
-          return product;
-        }),
+        products
       };
 
     case "DECREASE_QUANTITY":
+      products = state.products.map((product) => {
+        if (product.id === dispatch.payload.id && product.quantity) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      })
       return {
-        products: state.products.map((product) => {
-          if (product.id === dispatch.payload.id && product.quantity) {
-            return { ...product, quantity: product.quantity - 1 };
-          }
-          return product;
-        }),
+        products
       };
 
     default:

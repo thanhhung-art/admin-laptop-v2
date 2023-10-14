@@ -6,24 +6,20 @@ import StarIcon from "@/icons/StarIcon";
 import { IProduct } from "@/types/product";
 import { useContext } from "react";
 import { CartContext } from "@/providers/cartProvider";
-import useLocalStorage from "@/hooks/useLocalStorage";
 
 const Card = ({ product }: { product: IProduct }) => {
   const { state, dispatch } = useContext(CartContext);
 
   const handleAddToCart = () => {
     if (state.products.find((p) => p.id === product._id)) {
-      const index = state.products.findIndex((p) => p.id === product._id);
       dispatch({
         action: "INCREASE_QUANTITY",
         payload: { id: product._id },
       });
-      window.localStorage.setItem('cart', JSON.stringify(state.products))
       return;
     }
 
     dispatch({ action: "ADD_TO_CART", payload: { id: product._id, quantity: 1 } });
-    window.localStorage.setItem('cart', JSON.stringify(state.products))
   };
 
   if (!product) return <div>loading</div>;

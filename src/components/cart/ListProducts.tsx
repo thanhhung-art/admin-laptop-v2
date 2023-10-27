@@ -15,7 +15,7 @@ const ListProducts = () => {
 
   const products = useMemo(() => {
     return state.products.map((product) => {
-      const temp = data?.data.find((p) => p._id === product.id);
+      const temp = data?.data.find((p) => p._id === product.productId);
       return { ...temp, quantity: product.quantity };
     });
   }, [state.products, data?.data]);
@@ -72,17 +72,17 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
   const { state, dispatch } = useContext(CartContext);
 
   const handleIncreaseQuantity = () => {
-    if (id) dispatch({ action: "INCREASE_QUANTITY", payload: { id } });
+    if (id) dispatch({ action: "INCREASE_QUANTITY", payload: { productId: id } });
   };
 
   const handleDecreaseQuantity = () => {
     if (id) {
-      if (state.products.find((p) => p.id === id)?.quantity === 1) {
-        dispatch({ action: "REMOVE_FROM_CART", payload: { id } });
+      if (state.products.find((p) => p.productId === id)?.quantity === 1) {
+        dispatch({ action: "REMOVE_FROM_CART", payload: { productId: id } });
         return;
       }
 
-      dispatch({ action: "DECREASE_QUANTITY", payload: { id } });
+      dispatch({ action: "DECREASE_QUANTITY", payload: { productId: id } });
     }
   };
 
@@ -95,28 +95,30 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
         <h3 className="text-sm">
           {isMobile ? name && name.slice(0, 130) + " ..." : name}
         </h3>
-        <p className="text-[12px] md:mt-1">product quantity: {quantity}</p>
-        <h3 className="text-[12px] flex-1 md:mt-1">Price: ${price}</h3>
+        <h3 className="text-[12px] flex-1 md:mt-1">${price}</h3>
         <div className="flex justify-between items-center mt-2 md:mt-0">
-          <div>
+          <div className="flex">
             <button
               title="increase quantity"
               onClick={handleIncreaseQuantity}
-              className="border border-blue-500 rounded px-4 md:px-8 active:scale-95"
+              className="border border-blue-500 rounded px-2 md:px-4 active:scale-95"
             >
               <PlusIcon w={14} h={14} />
             </button>
+            <div className="px-2">
+              <p className="text-sm">{quantity}</p>
+            </div>
             <button
               title="decrease quantity"
               onClick={handleDecreaseQuantity}
-              className="border border-blue-500 rounded px-4 md:px-8 ml-2 active:scale-95"
+              className="border border-blue-500 rounded px-2 md:px-4 active:scale-95"
             >
               <MinusIcon w={14} h={14} />
             </button>
           </div>
           <div>
             <h3 className="text-md font-semibold">
-              cost: ${price && quantity && Number((price * quantity).toFixed(2))}
+              ${price && quantity && Number((price * quantity).toFixed(2))}
             </h3>
           </div>
         </div>

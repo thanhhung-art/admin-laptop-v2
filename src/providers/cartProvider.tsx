@@ -1,10 +1,6 @@
 "use client";
+import { IProductInCart } from "@/types/product";
 import { createContext, useReducer, Dispatch } from "react";
-
-interface IProductInCart {
-  id: string;
-  quantity?: number;
-}
 
 interface InitialState {
   products: IProductInCart[];
@@ -16,7 +12,7 @@ const initialState: InitialState = {
 
 export const CartContext = createContext<{
   state: InitialState;
-  dispatch: Dispatch<{ action: string; payload: IProductInCart }>;
+  dispatch: Dispatch<{ action: string; payload?: IProductInCart }>;
 }>({
   state: initialState,
   dispatch: () => {},
@@ -28,9 +24,11 @@ export default function CartProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, initialState, () => {
-    if (window.localStorage.getItem('cart'))
-      initialState.products = JSON.parse(window.localStorage.getItem('cart') || '[]');
-    return initialState
+    if (window.localStorage.getItem("cart"))
+      initialState.products = JSON.parse(
+        window.localStorage.getItem("cart") || "[]"
+      );
+    return initialState;
   });
 
   return (
@@ -42,54 +40,66 @@ export default function CartProvider({
 
 function reducer(
   state: InitialState,
-  dispatch: { action: string; payload: IProductInCart }
+  dispatch: { action: string; payload?: IProductInCart }
 ) {
   let products: IProductInCart[] = [];
 
   switch (dispatch.action) {
     case "ADD_TO_CART":
-      products = [...state.products, dispatch.payload];
-      localStorage.setItem('cart', JSON.stringify(products))
+      if (dispatch.payload) products = [...state.products, dispatch.payload];
+      localStorage.setItem("cart", JSON.stringify(products));
       return {
         products,
       };
 
     case "REMOVE_FROM_CART":
-      products = state.products.filter(
-        (product) => product.id !== dispatch.payload.id
-      ),
-      localStorage.setItem('cart', JSON.stringify(products))
+      if (dispatch.payload) {
+      }
+      (products = state.products.filter(
+        (product) =>
+          dispatch.payload && product.productId !== dispatch.payload.productId
+      )),
+        localStorage.setItem("cart", JSON.stringify(products));
       return {
-        products
+        products,
       };
 
     case "CLEAR_CART":
-      localStorage.setItem('cart', JSON.stringify([]))
+      localStorage.setItem("cart", JSON.stringify([]));
       return {
         products: [],
       };
 
     case "INCREASE_QUANTITY":
-      products = state.products.map((product) => {
-        if (product.id === dispatch.payload.id && product.quantity) {
-          return { ...product, quantity: product.quantity + 1 };
-        }
-        return product;
-      })
-      localStorage.setItem('cart', JSON.stringify(products))
+      if (dispatch.payload)
+        products = state.products.map((product) => {
+          if (
+            dispatch.payload &&
+            product.productId === dispatch.payload.productId &&
+            product.quantity
+          ) {
+            return { ...product, quantity: product.quantity + 1 };
+          }
+          return product;
+        });
+      localStorage.setItem("cart", JSON.stringify(products));
       return {
-        products
+        products,
       };
 
     case "DECREASE_QUANTITY":
       products = state.products.map((product) => {
-        if (product.id === dispatch.payload.id && product.quantity) {
+        if (
+          dispatch.payload &&
+          product.productId === dispatch.payload.productId &&
+          product.quantity
+        ) {
           return { ...product, quantity: product.quantity - 1 };
         }
         return product;
-      })
+      });
       return {
-        products
+        products,
       };
 
     default:

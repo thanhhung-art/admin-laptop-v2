@@ -11,15 +11,15 @@ const Card = ({ product }: { product: IProduct }) => {
   const { state, dispatch } = useContext(CartContext);
 
   const handleAddToCart = () => {
-    if (state.products.find((p) => p.id === product._id)) {
+    if (state.products.find((p) => p.productId === product._id)) {
       dispatch({
         action: "INCREASE_QUANTITY",
-        payload: { id: product._id },
+        payload: { productId: product._id },
       });
       return;
     }
 
-    dispatch({ action: "ADD_TO_CART", payload: { id: product._id, quantity: 1 } });
+    dispatch({ action: "ADD_TO_CART", payload: { productId: product._id, quantity: 1 } });
   };
 
   if (!product) return <div>loading</div>;

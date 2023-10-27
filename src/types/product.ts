@@ -22,3 +22,11 @@ export interface IProduct {
     gpu: string;
   };
 }
+
+export interface IProductInCart {
+  productId: string;
+  quantity?: number;
+}
+export interface IProductInCheckout extends IProduct {
+  quantity: number
+}

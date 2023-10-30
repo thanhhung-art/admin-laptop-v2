@@ -5,7 +5,7 @@ import Link from "next/link";
 import StarIcon from "@/icons/StarIcon";
 import { IProduct } from "@/types/product";
 import { useContext } from "react";
-import { CartContext } from "@/providers/cartProvider";
+import { ACTIONS, CartContext } from "@/providers/cartProvider";
 
 const Card = ({ product }: { product: IProduct }) => {
   const { state, dispatch } = useContext(CartContext);
@@ -13,13 +13,13 @@ const Card = ({ product }: { product: IProduct }) => {
   const handleAddToCart = () => {
     if (state.products.find((p) => p.productId === product._id)) {
       dispatch({
-        action: "INCREASE_QUANTITY",
+        action: ACTIONS.INCREASE_QUANTITY,
         payload: { productId: product._id },
       });
       return;
     }
 
-    dispatch({ action: "ADD_TO_CART", payload: { productId: product._id } });
+    dispatch({ action: ACTIONS.ADD_TO_CART, payload: { productId: product._id } });
   };
 
   if (!product) return <div>loading</div>;

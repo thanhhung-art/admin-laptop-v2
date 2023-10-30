@@ -6,8 +6,16 @@ interface InitialState {
   products: IProductInCart[];
 }
 
+export enum ACTIONS {
+  ADD_TO_CART = 'ADD_TO_CART',
+  REMOVE_FROM_CART = 'REMOVE_FROM_CART',
+  CLEAR_CART = 'CLEAR_CART',
+  INCREASE_QUANTITY = 'INCREASE_QUANTITY',
+  DECREASE_QUANTITY = 'DECREASE_QUANTITY'
+}
+
 interface IDispatch {
-  action: string;
+  action: ACTIONS;
   payload?: { productId: string };
 }
 

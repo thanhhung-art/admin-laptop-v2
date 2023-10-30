@@ -1,6 +1,6 @@
 'use client'
 import StarIcon from "@/icons/StarIcon";
-import { CartContext } from "@/providers/cartProvider";
+import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import Image from "next/image";
 import { useContext } from "react";
 interface IProps {
@@ -14,7 +14,7 @@ const QuickView = ({ image, name, price, rating, _id }: IProps) => {
   const { state, dispatch } = useContext(CartContext);
 
   const handleAddToCart = () => {
-    dispatch({ action: 'ADD_TO_CART', payload: { productId: _id }})
+    dispatch({ action: ACTIONS.ADD_TO_CART, payload: { productId: _id }})
   }
 
   return (

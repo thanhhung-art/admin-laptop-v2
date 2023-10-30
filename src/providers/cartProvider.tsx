@@ -6,13 +6,18 @@ interface InitialState {
   products: IProductInCart[];
 }
 
+interface IDispatch {
+  action: string;
+  payload?: { productId: string };
+}
+
 const initialState: InitialState = {
   products: [],
 };
 
 export const CartContext = createContext<{
   state: InitialState;
-  dispatch: Dispatch<{ action: string; payload?: IProductInCart }>;
+  dispatch: Dispatch<IDispatch>;
 }>({
   state: initialState,
   dispatch: () => {},
@@ -38,15 +43,30 @@ export default function CartProvider({
   );
 }
 
-function reducer(
-  state: InitialState,
-  dispatch: { action: string; payload?: IProductInCart }
-) {
+function reducer(state: InitialState, dispatch: IDispatch) {
   let products: IProductInCart[] = [];
 
   switch (dispatch.action) {
     case "ADD_TO_CART":
-      if (dispatch.payload) products = [...state.products, dispatch.payload];
+      if (dispatch.payload) {
+        const index = state.products.findIndex(
+          (p) => p.productId === dispatch.payload?.productId
+        );
+        // if product exist in state
+        if (index > -1) {
+          const { productId, quantity } = state.products[index];
+          state.products[index] = {
+            productId,
+            quantity: quantity ? quantity + 1 : quantity,
+          };
+          products = [...state.products];
+        } else {
+          products = [
+            ...state.products,
+            { productId: dispatch.payload.productId, quantity: 1 },
+          ];
+        }
+      }
       localStorage.setItem("cart", JSON.stringify(products));
       return {
         products,

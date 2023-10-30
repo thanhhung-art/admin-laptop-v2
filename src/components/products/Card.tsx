@@ -19,7 +19,7 @@ const Card = ({ product }: { product: IProduct }) => {
       return;
     }
 
-    dispatch({ action: "ADD_TO_CART", payload: { productId: product._id, quantity: 1 } });
+    dispatch({ action: "ADD_TO_CART", payload: { productId: product._id } });
   };
 
   if (!product) return <div>loading</div>;
@@ -28,14 +28,14 @@ const Card = ({ product }: { product: IProduct }) => {
     <section className="bg-white rounded-md overflow-hidden">
       <div className="px-4 py-7 transform hover:scale-105">
         <Link href={`/product/${product._id}`}>
-          <div className="flex justify-center h-[184px]">
+          <div className="flex justify-center relative h-44 w-full">
             <Image
               src={product.img}
               alt="laptop"
-              width={280}
-              height={184}
+              fill
               priority
-              layout="responsive"
+              style={{ objectFit: 'contain' }}
+              sizes="(max-width: 768px) 200px 200px, (max-width: 1200px) 276px 276px 276px 276px"
             />
           </div>
           <h4 className="max-w-[300px] md:text-center text-sm md:text-md font-semibold mt-4">

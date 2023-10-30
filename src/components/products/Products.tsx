@@ -13,9 +13,9 @@ const Products = () => {
 
   return (
     <ul className="max-w-7xl m-auto grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 justify-between mt-4">
-      {data.data.map((e, i) => (
-        <li key={i}>
-          <Card product={e} />
+      {data.data.map((product, i) => (
+        <li key={product._id}>
+          <Card product={product} />
         </li>
       ))}
     </ul>

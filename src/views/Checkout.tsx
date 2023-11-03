@@ -1,34 +1,17 @@
 "use client";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import ArrowBackIcon from "@/icons/ArrowBackIcon";
 import ListProducts from "@/components/checkout/ListProducts";
-import { CartContext } from "@/providers/cartProvider";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/lib/axios";
-import { IProductInCheckout } from "@/types/product";
 import { useRouter } from "next/navigation";
+import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 
 const Checkout = () => {
-  const { state } = useContext(CartContext);
-  const { data } = useQuery(["getProducts"], getProducts);
   const [isPurchased, setIsPurchased] = useState(false);
   const router = useRouter();
 
-  const products = useMemo(() => {
-    if (data) {
-      const result: IProductInCheckout[] = [];
-      state.products.forEach((p) => {
-        const index = data.data.findIndex(
-          (product) => product._id === p.productId
-        );
-        if (p.quantity)
-          result.push({ ...data.data[index], quantity: p.quantity });
-      });
-      return result;
-    }
-  }, [data, state.products]);
+  const { products, isLoading } = useGetProductsInCart()
 
   const totalPrice = useMemo(() => {
     if (products)
@@ -48,7 +31,9 @@ const Checkout = () => {
             <h1 className="text-2xl md:text-4xl font-semibold text-center">
               Thank you for purchasing!
             </h1>
-            <p className="text-center text-gray-600">Our staff will contact you as soon as possible</p>
+            <p className="text-center text-gray-600">
+              Our staff will contact you as soon as possible
+            </p>
             <section className="flex justify-center mt-4 gap-4">
               <button
                 onClick={() => router.push("/")}
@@ -82,9 +67,15 @@ const Checkout = () => {
             </h1>
           </div>
           <div className="flex flex-col md:flex-row gap-4">
-            <CheckoutForm totalPrice={totalPrice} setIsPurchased={setIsPurchased} />
+            <CheckoutForm
+              totalPrice={totalPrice}
+              setIsPurchased={setIsPurchased}
+            />
             {products && (
-              <ListProducts products={products} totalPrice={totalPrice} />
+              <ListProducts
+                products={products}
+                totalPrice={totalPrice}
+              />
             )}
           </div>
         </div>

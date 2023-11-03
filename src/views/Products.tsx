@@ -8,7 +8,7 @@ import { getProductsInfinity } from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const ProductsPage = () => {
-  const { data, hasNextPage, fetchNextPage } = useInfiniteQuery(
+  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useInfiniteQuery(
     ["getProducts"],
     ({ pageParam = 0 }) => getProductsInfinity(pageParam),
     {
@@ -20,7 +20,6 @@ const ProductsPage = () => {
       },
     }
   );
-  console.log(data);
 
   return (
     <div className="bg-sky-500">
@@ -28,7 +27,7 @@ const ProductsPage = () => {
       <main className="px-4 md:p-0">
         <Brands />
         <Filters />
-        <Products />
+        <Products products={data} isLoading={isLoading} isError={isError} />
         <div className="flex justify-center my-4 md:mb-16">
           {hasNextPage && (
             <button

@@ -5,20 +5,11 @@ import PlusIcon from "@/icons/PlusIcon";
 import Link from "next/link";
 import MinusIcon from "@/icons/MinusIcon";
 import useMobile from "@/hooks/isMobile";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/lib/axios";
-import { CartContext } from "@/providers/cartProvider";
+import { ACTIONS, CartContext } from "@/providers/cartProvider";
+import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 
 const ListProducts = () => {
-  const { data } = useQuery(["getProducts"], getProducts);
-  const { state } = useContext(CartContext);
-
-  const products = useMemo(() => {
-    return state.products.map((product) => {
-      const temp = data?.data.find((p) => p._id === product.productId);
-      return { ...temp, quantity: product.quantity };
-    });
-  }, [state.products, data?.data]);
+  const { products, isLoading } = useGetProductsInCart()
 
   const totalAmount = useMemo(() => {
     return products.reduce((acc, product) => {
@@ -28,7 +19,7 @@ const ListProducts = () => {
     }, 0);
   }, [products]);
 
-  if (!data && !products) return <div>error</div>;
+  if (!products) return <div>error</div>;
 
   if (products.length === 0) return <div>nothing to show</div>;
 
@@ -72,17 +63,17 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
   const { state, dispatch } = useContext(CartContext);
 
   const handleIncreaseQuantity = () => {
-    if (id) dispatch({ action: "INCREASE_QUANTITY", payload: { productId: id } });
+    if (id) dispatch({ action: ACTIONS.INCREASE_QUANTITY, payload: { productId: id } });
   };
 
   const handleDecreaseQuantity = () => {
     if (id) {
       if (state.products.find((p) => p.productId === id)?.quantity === 1) {
-        dispatch({ action: "REMOVE_FROM_CART", payload: { productId: id } });
+        dispatch({ action: ACTIONS.REMOVE_FROM_CART, payload: { productId: id } });
         return;
       }
 
-      dispatch({ action: "DECREASE_QUANTITY", payload: { productId: id } });
+      dispatch({ action: ACTIONS.DECREASE_QUANTITY, payload: { productId: id } });
     }
   };
 

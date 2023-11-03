@@ -1,4 +1,4 @@
-import { IProduct } from "@/types/product";
+import { IProduct, IProductInCart } from "@/types/product";
 import { IUser } from "@/types/user";
 import axios from "axios";
 

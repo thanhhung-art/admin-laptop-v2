@@ -1,23 +1,26 @@
-"use client";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { InfiniteData } from "@tanstack/react-query";
 import Card from "./Card";
-import { getProducts, getProductsInfinity } from "@/lib/axios";
-import { Suspense } from "react";
 import { IProduct } from "@/types/product";
+interface IProps {
+  products:
+    | InfiniteData<{
+        data: { products: IProduct[]; nextPage: number; lastPage: number };
+        msg: string;
+      }>
+    | undefined;
+  isLoading: boolean
+  isError: boolean
+}
 
-const Products = () => {
-  const { data, isLoading } = useInfiniteQuery(
-    ["getProducts"],
-    ({ pageParam = 0 }) => getProductsInfinity(pageParam)
-  );
+const Products = ({ products, isError, isLoading }: IProps) => {
+  
+  if (isError || !products) return <div>error</div>;
 
-  if (isLoading) return <div>loading</div>;
-
-  if (!data) return <div>error</div>;
+  if (isLoading) return <div>loading</div>
 
   return (
     <ul className="max-w-7xl m-auto grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 justify-between mt-4">
-      {data.pages
+      {products.pages
         .reduce((acc, curr) => {
           return acc.concat(curr.data.products);
         }, [] as IProduct[])

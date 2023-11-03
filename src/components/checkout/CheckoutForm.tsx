@@ -1,6 +1,6 @@
 "use client";
 import { Fetch, getUser } from "@/lib/axios";
-import { CartContext } from "@/providers/cartProvider";
+import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { IOrder } from "@/types/order";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, createRef, useContext, useEffect, useState } from "react";
@@ -60,7 +60,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
   const email = createRef<HTMLInputElement>();
   const address = createRef<HTMLInputElement>();
   const address2 = createRef<HTMLInputElement>();
-  const stripeRef = createRef<HTMLInputElement>();
+  const creditCardRef = createRef<HTMLInputElement>();
   const name_on_card = createRef<HTMLInputElement>();
   const expiration = createRef<HTMLInputElement>();
   const credit_card_number = createRef<HTMLInputElement>();
@@ -116,7 +116,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
 
 
       setIsPurchased(true);
-      dispatch({ action: "CLEAR_CART" });
+      dispatch({ action: ACTIONS.CLEAR_CART });
     }
   };
 
@@ -125,7 +125,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
   };
 
   useEffect(() => {
-    if (stripeRef.current) stripeRef.current.checked = true;
+    if (creditCardRef.current) creditCardRef.current.checked = true;
   }, []);
 
   return (
@@ -220,7 +220,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             type="radio"
             name="payment"
             value="credit_card"
-            ref={stripeRef}
+            ref={creditCardRef}
             onChange={(e) => {
               setstripeChecked(e.target.value === "true" ? false : true);
             }}

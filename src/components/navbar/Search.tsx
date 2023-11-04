@@ -4,12 +4,14 @@ import SearchIcon from "@/icons/SearchIcon";
 import { getSearch } from "@/lib/axios";
 import { IProductInSearch } from "@/types/product";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Search = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceSearchRef = useRef<NodeJS.Timeout>();
   const [searchResults, setSearchResults] = useState<IProductInSearch[]>([]);
   const [openResults, setOpenResults] = useState(false);
+  const router = useRouter();
 
   const handleSearching = async () => {
     if (searchRef.current && searchRef.current.value) {
@@ -22,6 +24,9 @@ const Search = () => {
       }, 500);
     }
   };
+
+  const handleGotoProductPage = (pid: string) =>
+    router.push("/product/" + pid);
 
   return (
     <div className="w-full md:w-3/4 float-right flex relative">
@@ -46,6 +51,7 @@ const Search = () => {
             <li
               key={p._id}
               className="flex gap-2 items-center cursor-pointer hover:bg-slate-200"
+              onMouseDown={() => handleGotoProductPage(p._id)}
             >
               <div className="relative h-10 w-20 flex-shrink-0">
                 <Image

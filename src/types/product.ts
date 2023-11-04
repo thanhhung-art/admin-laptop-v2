@@ -30,3 +30,9 @@ export interface IProductInCart {
 export interface IProductInCheckout extends IProduct {
   quantity: number
 }
+
+export interface IProductInSearch {
+  _id: string
+  name: string
+  img: string
+}

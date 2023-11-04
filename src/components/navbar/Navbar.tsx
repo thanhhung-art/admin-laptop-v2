@@ -2,12 +2,11 @@
 import Link from "next/link";
 import React, { useContext, useRef } from "react";
 import CartIcon from "@/icons/CartIcon";
-import SearchIcon from "@/icons/SearchIcon";
 import { CartContext } from "@/providers/cartProvider";
 import UserIcon from "@/icons/UserIcon";
+import Search from "./Search";
 
 const Navbar = () => {
-  const searchRef = useRef<HTMLInputElement>(null);
   const { state } = useContext(CartContext);
 
   return (
@@ -18,17 +17,7 @@ const Navbar = () => {
         </li>
 
         <li className="flex-1 relative min-w-full order-last md:order-none md:min-w-fit">
-          <div className="w-full md:w-3/4 float-right flex">
-            <input
-              type="text"
-              placeholder="search laptop"
-              ref={searchRef}
-              className="p-2 w-full text-black outline-none rounded-md text-sm rounded-r-none"
-            />
-            <span className="flex items-center justify-center bg-orange-500 text-white rounded-r-md py-1 px-4 cursor-pointer">
-              <SearchIcon w={20} h={20} />
-            </span>
-          </div>
+          <Search />
         </li>
 
         <li className="">

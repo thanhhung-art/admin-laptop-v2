@@ -16,7 +16,7 @@ export const getProducts = async () => {
 };
 
 export const getProductsInfinity = async (param: number) => {
-  const res = await Fetch(`/products?page=${param}`);
+  const res = await Fetch(`/products?query=${param}`);
   return res.data as unknown as {
     data: { products: IProduct[]; nextPage: number; lastPage: number };
     msg: string;

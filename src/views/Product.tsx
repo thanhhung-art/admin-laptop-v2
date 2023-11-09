@@ -22,7 +22,6 @@ const ProductPage = ({ param }: { param: string }) => {
 
   return (
     <div>
-      <Navbar />
       <div className="px-4 md:px-0">
         <QuickView
           image={data.data.img}

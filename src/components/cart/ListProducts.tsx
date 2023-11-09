@@ -19,15 +19,17 @@ const ListProducts = () => {
     }, 0);
   }, [products]);
 
+  if (isLoading) return <div>loading...</div>
+
   if (!products) return <div>error</div>;
 
   if (products.length === 0) return <div>nothing to show</div>;
 
   return (
     <div>
-      <ul className="p-4 flex flex-col gap-4">
-        {products.map((product, i) => (
-          <li key={product?._id || i} className="shadow-md p-2 rounded">
+      <ul className="p-4 flex flex-col gap-4 h-full">
+        {products.map((product) => (
+          <li key={product._id} className="shadow-md p-2 rounded">
             <Child
               id={product._id}
               name={product.name}
@@ -37,7 +39,7 @@ const ListProducts = () => {
             />
           </li>
         ))}
-        <li className="flex justify-end gap-4 items-center">
+        <li className="flex justify-end gap-4 items-center mt-auto">
           <h2 className="font-semibold text-lg">Total: ${totalAmount}</h2>
           <Link href="/checkout">
             <button className="bg-blue-500 px-4 py-1 rounded text-white active:scale-95">
@@ -79,8 +81,8 @@ function Child({ id, name, image, quantity, price }: IChildProps) {
 
   return (
     <div className="flex gap-4">
-      <div className="min-w-[220px]">
-        {image && <Image src={image} alt="laptop" height={160} width={220} />}
+      <div className="min-w-[220px] w-56 h-40 relative">
+        {image && <Image src={image} alt="laptop" fill style={{ objectFit: 'contain' }} priority />}
       </div>
       <div className="flex flex-col w-full">
         <h3 className="text-sm">

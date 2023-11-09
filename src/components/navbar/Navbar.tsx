@@ -1,14 +1,13 @@
-"use client";
+'use server'
 import Link from "next/link";
-import React, { useContext, useRef } from "react";
-import CartIcon from "@/icons/CartIcon";
-import { CartContext } from "@/providers/cartProvider";
-import UserIcon from "@/icons/UserIcon";
 import Search from "./Search";
+import Cart from "./Cart";
+import { cookies } from "next/headers";
+import UserIcon from "@/icons/UserIcon";
 
 const Navbar = () => {
-  const { state } = useContext(CartContext);
-
+  const cookieStore = cookies();
+  
   return (
     <nav className="p-4 md:p-5 bg-sky-700 text-white w-full">
       <ul className="flex justify-between items-center gap-2 flex-wrap md:gap-8 lg:gap-16">
@@ -20,26 +19,27 @@ const Navbar = () => {
           <Search />
         </li>
 
-        <li className="">
+        <li>
           <Link href="/products">All Laptop</Link>
         </li>
 
         <li>
-          <div className="relative">
-            <Link href="/cart">
-              <CartIcon w={20} h={20} />
-            </Link>
-            <span className="absolute -top-2 -right-2 bg-orange-500 h-4 w-4 text-[10px] p-1 rounded-full flex justify-center items-center">
-              {state.products && state.products.length}
-            </span>
-          </div>
+          <Link href="/cart">
+            <Cart />
+          </Link>
         </li>
 
         <li className="">
           <div>
-            <Link href="/profile">
-              <UserIcon w={50} h={50} />
-            </Link>
+            {cookieStore.get("authtoken") ? (
+              <Link href="/profile">
+                <UserIcon w={50} h={50} />
+              </Link>
+            ) : (
+              <Link href="/login">
+                <p>sign in</p>
+              </Link>
+            )}
           </div>
         </li>
       </ul>

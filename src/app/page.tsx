@@ -1,5 +1,5 @@
 import { ReactQueryHydrate } from '@/components/ReactQueryHydrate';
-import { getProducts, getProductsInfinity } from '@/lib/axios';
+import { getProductsInfinity } from '@/lib/axios';
 import { queryClient } from '@/lib/reactQuery/queryClient';
 import Home from '@/views/Home'
 import { dehydrate } from '@tanstack/react-query';

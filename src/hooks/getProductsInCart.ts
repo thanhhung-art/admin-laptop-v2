@@ -1,7 +1,7 @@
 import { getProduct } from "@/lib/axios";
 import { CartContext } from "@/providers/cartProvider";
 import { IProductInCheckout } from "@/types/product";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export function useGetProductsInCart() {
   const { state } = useContext(CartContext);

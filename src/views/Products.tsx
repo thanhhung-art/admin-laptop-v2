@@ -23,7 +23,7 @@ const ProductsPage = () => {
 
   return (
     <div className="bg-sky-500">
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="px-4 md:p-0">
         <Brands />
         <Filters />

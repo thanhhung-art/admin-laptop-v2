@@ -1,6 +1,5 @@
 "use client";
 import Footer from "@/components/footer/Footer";
-import Navbar from "@/components/navbar/Navbar";
 import ProductDetails from "@/components/product/ProductDetails";
 import QuickView from "@/components/product/QuickView";
 import Reviews from "@/components/product/Reviews";

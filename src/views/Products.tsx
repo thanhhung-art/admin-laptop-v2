@@ -1,6 +1,5 @@
 "use client";
 import Footer from "@/components/footer/Footer";
-import Navbar from "@/components/navbar/Navbar";
 import Brands from "@/components/products/Brands";
 import Filters from "@/components/products/Filters";
 import Products from "@/components/products/Products";
@@ -23,7 +22,6 @@ const ProductsPage = () => {
 
   return (
     <div className="bg-sky-500">
-      {/* <Navbar /> */}
       <main className="px-4 md:p-0">
         <Brands />
         <Filters />

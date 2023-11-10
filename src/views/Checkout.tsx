@@ -11,7 +11,7 @@ const Checkout = () => {
   const [isPurchased, setIsPurchased] = useState(false);
   const router = useRouter();
 
-  const { products, isLoading } = useGetProductsInCart()
+  const { products } = useGetProductsInCart()
 
   const totalPrice = useMemo(() => {
     if (products)

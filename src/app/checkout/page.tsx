@@ -1,8 +1,12 @@
-import Checkout from '@/views/Checkout'
-import React from 'react'
+import Checkout from "@/views/Checkout";
+import React, { Suspense } from "react";
 
 function page() {
-  return <Checkout />
+  return (
+    <Suspense fallback={<div>loading</div>}>
+      <Checkout />
+    </Suspense>
+  );
 }
 
-export default page
+export default page;

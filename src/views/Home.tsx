@@ -1,7 +1,6 @@
 import Labels from "@/components/home/Labels";
 import Slider from "@/components/home/Slider";
 import Navbar from "@/components/navbar/Navbar";
-import React from "react";
 import ProductsLayout from "@/components/home/ProductsLayout";
 import Footer from "@/components/footer/Footer";
 

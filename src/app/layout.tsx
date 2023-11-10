@@ -3,10 +3,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import CartProvider from '@/providers/cartProvider'
-import { AES, enc } from 'crypto-js';
-import { cookies } from 'next/headers';
-import { queryClient } from '@/lib/reactQuery/queryClient'
-import { getUser } from '@/lib/axios'
 
 const inter = Inter({ subsets: ['latin'] })
 

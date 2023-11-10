@@ -1,35 +1,31 @@
+"use client";
 import { getProduct } from "@/lib/axios";
 import { CartContext } from "@/providers/cartProvider";
-import { IProductInCheckout } from "@/types/product";
-import { useContext, useEffect, useState } from "react";
+import { IProduct, IProductInCheckout } from "@/types/product";
+import { useQueries } from "@tanstack/react-query";
+import { useContext, useMemo } from "react";
 
 export function useGetProductsInCart() {
   const { state } = useContext(CartContext);
-  const [products, setProducts] = useState<IProductInCheckout[]>([])
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const promises = state.products.map((product) => {
-      return getProduct(product.productId);
+  const data = useQueries({
+    queries: state.products.map((product) => ({
+      queryKey: ["getProduct", product.productId],
+      queryFn: () => getProduct(product.productId),
+    })),
+  }).map((data) => data.data?.data);
+
+  const memoProducts: IProductInCheckout[] = useMemo(() => {
+    const temp: IProductInCheckout[] = state.products.map((product) => {
+      const productFound = data.find((p) => p?._id === product.productId);
+      return {
+        ...(productFound || ({ _id: product.productId } as IProduct)),
+        quantity: product.quantity ? product.quantity : 1,
+      };
     });
 
-    const getProducts = async () => {
-      setIsLoading(true)
-      const products = (await Promise.all(promises)).map((p) => p.data);
-      const temp = [] as IProductInCheckout[]
-      products.forEach((p) => {
-        const quantity = state.products.find(
-          (product) => product.productId === p._id
-        )?.quantity;
-        const newProduct = { ...p, quantity: quantity ? quantity : 1 };
-        temp.push(newProduct)
-      });
-      setProducts([...temp])
-      setIsLoading(false)
-    };
+    return temp;
+  }, [data, state.products]);
 
-    getProducts();
-  }, [state.products]);
-
-  return { products, isLoading };
+  return { products: memoProducts };
 }

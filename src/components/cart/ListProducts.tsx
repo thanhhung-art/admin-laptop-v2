@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useDeferredValue, useMemo } from "react";
 import Image from "next/image";
 import PlusIcon from "@/icons/PlusIcon";
 import Link from "next/link";
@@ -9,7 +9,9 @@ import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 
 const ListProducts = () => {
-  const { products, isLoading } = useGetProductsInCart()
+  const { products } = useGetProductsInCart()
+
+  const deferedProducts = useDeferredValue(products)
 
   const totalAmount = useMemo(() => {
     return products.reduce((acc, product) => {
@@ -19,8 +21,6 @@ const ListProducts = () => {
     }, 0);
   }, [products]);
 
-  if (isLoading) return <div>loading...</div>
-
   if (!products) return <div>error</div>;
 
   if (products.length === 0) return <div>nothing to show</div>;
@@ -28,7 +28,7 @@ const ListProducts = () => {
   return (
     <div>
       <ul className="p-4 flex flex-col gap-4 h-full">
-        {products.map((product) => (
+        {deferedProducts.map((product) => (
           <li key={product._id} className="shadow-md p-2 rounded">
             <Child
               id={product._id}

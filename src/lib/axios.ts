@@ -28,6 +28,18 @@ export const getProduct = async (id: string) => {
   return res.data as unknown as { data: IProduct; msg: string };
 };
 
+export const editProfile = async (data: {
+  userId: string;
+  email?: string;
+  phone?: string;
+  username?: string;
+  address?: string;
+  address2?: string;
+}) => {
+  const res = await Fetch.put('/users/' + data.userId)
+  return res.data as unknown as { data: IUser, msg: string };
+};
+
 export const getUser = async (id: string) => {
   const res = await Fetch(`/users/${id}`);
   return res.data as unknown as { data: IUser; msg: string };

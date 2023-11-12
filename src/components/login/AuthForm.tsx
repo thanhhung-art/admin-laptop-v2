@@ -17,12 +17,6 @@ interface IType {
 }
 
 interface IAuthData {
-  username?: string;
-  email: string;
-  password: string;
-}
-
-interface IAuthData {
   email: string;
   username?: string;
   password: string;

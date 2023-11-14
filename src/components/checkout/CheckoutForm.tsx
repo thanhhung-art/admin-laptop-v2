@@ -1,15 +1,16 @@
 "use client";
-import { Fetch, getUser } from "@/lib/axios";
+import { Fetch } from "@/lib/axios";
 import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { IOrder } from "@/types/order";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, createRef, useContext, useEffect, useState } from "react";
 import { AES } from "crypto-js";
+import { IUser } from "@/types/user";
 interface IProps {
   totalPrice: number;
   setIsPurchased: Dispatch<SetStateAction<boolean>>;
+  userInfo: IUser | undefined
 }
-
 interface IError {
   response: {
     data: {
@@ -20,15 +21,7 @@ interface IError {
 
 const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET;
 
-const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
-  const { data } = useQuery(
-    ["getUser"],
-    () => getUser(localStorage.getItem("user_id") || ""),
-    {
-      enabled: !!localStorage.getItem("user_id"),
-    }
-  );
-
+const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
   const { state, dispatch } = useContext(CartContext);
 
   const [error, setErrors] = useState({
@@ -42,7 +35,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
 
   const createOrder = useMutation(
     async (data: IOrder) => {
-      return Fetch.post("/order", data);
+      return Fetch.post("/orders", data);
     },
     {
       onError: (e: IError) => {
@@ -101,7 +94,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
       note.current
     ) {
       createOrder.mutate({
-        userId: data?.data ? data?.data._id : "",
+        userId: userInfo ? userInfo._id : "",
         username: username.current?.value,
         email: email.current.value || "",
         phone: phone.current.value,
@@ -140,7 +133,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
             autoComplete="false"
-            defaultValue={data?.data ? data?.data.username : ""}
+            defaultValue={userInfo?.username || ""}
             onFocus={() => handleRemoveError("username")}
           />
           <div className="h-2">
@@ -158,6 +151,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             className="border border-gray-400 outline-none rounded w-full p-2"
             autoComplete="false"
             onFocus={() => handleRemoveError("phone")}
+            defaultValue={userInfo?.phone || ""}
           />
           <div className="h-2">
             {error.phone && (
@@ -173,7 +167,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             type="email"
             className="border border-gray-400 outline-none rounded w-full p-2 invalid:border-red-500"
             autoComplete="false"
-            defaultValue={data?.data ? data?.data.email : ""}
+            defaultValue={userInfo?.email || ""}
           />
           <div className="h-2">
             {error.email && (
@@ -189,6 +183,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
             onFocus={() => handleRemoveError("address")}
+            defaultValue={userInfo?.address || ""}
           />
           <div className="h-2">
             {error.address && (
@@ -203,6 +198,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
             ref={address2}
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
+            defaultValue={userInfo?.address2 || ""}
           />
         </section>
         <section>

@@ -1,7 +1,7 @@
 import Checkout from "@/views/Checkout";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
-import * as jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 import { queryClient } from "@/lib/reactQuery/queryClient";
 import { dehydrate } from "@tanstack/react-query";
 import { getUser } from "@/lib/axios";
@@ -11,16 +11,24 @@ const jwt_secret = process.env.JWT_SECRET;
 
 async function page() {
   const cookieStore = cookies();
+  let userId = "";
   const authtoken = cookieStore.get("authtoken")?.value || "";
-  const decoded = jwt.verify(authtoken, jwt_secret || "") as { _id: string, isadmin: boolean }
+  if (authtoken) {
+    const decoded = jwt.verify(authtoken, jwt_secret || "") as {
+      _id: string;
+      isadmin: boolean;
+    };
+    userId = decoded._id;
+  }
   const queryClientLocal = queryClient();
-  decoded._id && await queryClientLocal.prefetchQuery(["getUser"], () => getUser(decoded._id));
+  userId &&
+    (await queryClientLocal.prefetchQuery(["getUser"], () => getUser(userId)));
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (
     <ReactQueryHydrate state={dehydratedState}>
       <Suspense fallback={<div>loading</div>}>
-        <Checkout userId={decoded._id} />
+        <Checkout userId={userId} />
       </Suspense>
     </ReactQueryHydrate>
   );

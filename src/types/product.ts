@@ -10,6 +10,8 @@ export interface IProduct {
   color: string;
   brand: string;
   weight: string;
+  createdAt: Date;
+  updatedAt: Date;
 
   configure: {
     ram: string;

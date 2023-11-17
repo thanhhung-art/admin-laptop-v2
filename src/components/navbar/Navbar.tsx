@@ -1,13 +1,13 @@
-'use server'
 import Link from "next/link";
 import Search from "./Search";
 import Cart from "./Cart";
 import { cookies } from "next/headers";
 import UserIcon from "@/icons/UserIcon";
+import { Suspense } from "react";
 
 const Navbar = () => {
   const cookieStore = cookies();
-  
+
   return (
     <nav className="p-4 md:p-5 bg-sky-700 text-white w-full">
       <ul className="flex justify-between items-center gap-2 flex-wrap md:gap-8 lg:gap-16">

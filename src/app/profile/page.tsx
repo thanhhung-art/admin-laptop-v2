@@ -13,17 +13,21 @@ const jwt_secret = process.env.JWT_SECRET;
 
 const page = async () => {
   const cookieStore = cookies();
+  let userId = "";
   const authtoken = cookieStore.get("authtoken")?.value || "";
-  const decoded = jwt.verify(authtoken, jwt_secret || "") as { _id: string, isadmin: boolean }
+  if (authtoken) {
+    const decoded = jwt.verify(authtoken, jwt_secret || "") as { _id: string, isadmin: boolean }
+    userId = decoded._id;
+  }
   const queryClientLocal = queryClient();
-  decoded._id && await queryClientLocal.prefetchQuery(["getUser"], () => getUser(decoded._id));
+  userId && await queryClientLocal.prefetchQuery(["getUser"], () => getUser(userId));
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (
     <ReactQueryHydrate state={dehydratedState}>
       <Navbar />
       <Suspense fallback={<div>loading</div>}>
-        <Profile id={decoded._id} />
+        <Profile id={userId} />
       </Suspense>
     </ReactQueryHydrate>
   );

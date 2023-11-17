@@ -1,22 +1,28 @@
 "use client";
 import { IProductInCart } from "@/types/product";
-import { createContext, useReducer, Dispatch } from "react";
+import {
+  createContext,
+  useReducer,
+  Dispatch,
+  useLayoutEffect,
+} from "react";
 
 interface InitialState {
   products: IProductInCart[];
 }
 
 export enum ACTIONS {
-  ADD_TO_CART = 'ADD_TO_CART',
-  REMOVE_FROM_CART = 'REMOVE_FROM_CART',
-  CLEAR_CART = 'CLEAR_CART',
-  INCREASE_QUANTITY = 'INCREASE_QUANTITY',
-  DECREASE_QUANTITY = 'DECREASE_QUANTITY'
+  INIT_CART = "INIT_CART",
+  ADD_TO_CART = "ADD_TO_CART",
+  REMOVE_FROM_CART = "REMOVE_FROM_CART",
+  CLEAR_CART = "CLEAR_CART",
+  INCREASE_QUANTITY = "INCREASE_QUANTITY",
+  DECREASE_QUANTITY = "DECREASE_QUANTITY",
 }
 
 interface IDispatch {
   action: ACTIONS;
-  payload?: { productId: string };
+  payload?: { productId: string; initProducts?: IProductInCart[] };
 }
 
 const initialState: InitialState = {
@@ -36,13 +42,22 @@ export default function CartProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = useReducer(reducer, initialState, () => {
-    if (window.localStorage.getItem("cart"))
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useLayoutEffect(() => {
+    if (typeof window === "object") {
       initialState.products = JSON.parse(
         window.localStorage.getItem("cart") || "[]"
       );
-    return initialState;
-  });
+      dispatch({
+        action: ACTIONS.INIT_CART,
+        payload: {
+          productId: "",
+          initProducts: JSON.parse(window.localStorage.getItem("cart") || "[]"),
+        },
+      });
+    }
+  }, []);
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>
@@ -55,6 +70,11 @@ function reducer(state: InitialState, dispatch: IDispatch) {
   let products: IProductInCart[] = [];
 
   switch (dispatch.action) {
+    case "INIT_CART":
+      if (dispatch.payload && dispatch.payload.initProducts) {
+        products = dispatch.payload.initProducts;
+      }
+      return { products };
     case "ADD_TO_CART":
       if (dispatch.payload) {
         const index = state.products.findIndex(

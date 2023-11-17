@@ -6,7 +6,7 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <CartPage />;
+      <CartPage />
       <Footer />
     </>
   );

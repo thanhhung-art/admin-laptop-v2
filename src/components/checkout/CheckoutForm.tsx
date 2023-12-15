@@ -2,14 +2,20 @@
 import { Fetch } from "@/lib/axios";
 import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { IOrder } from "@/types/order";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, createRef, useContext, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import {
+  Dispatch,
+  SetStateAction,
+  createRef,
+  useContext,
+  useState,
+} from "react";
 import { AES } from "crypto-js";
 import { IUser } from "@/types/user";
 interface IProps {
   totalPrice: number;
   setIsPurchased: Dispatch<SetStateAction<boolean>>;
-  userInfo: IUser | undefined
+  userInfo: IUser | undefined;
 }
 interface IError {
   response: {
@@ -19,7 +25,7 @@ interface IError {
   };
 }
 
-const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET;
+const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET || '';
 
 const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
   const { state, dispatch } = useContext(CartContext);
@@ -62,8 +68,9 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
   const [stripeChecked, setstripeChecked] = useState(true);
 
   const handlePayment = () => {
-    return stripeChecked
-      ? name_on_card.current &&
+    if (stripeChecked) {
+      if (
+        name_on_card.current &&
         name_on_card.current.value !== "" &&
         credit_card_number.current &&
         credit_card_number.current.value !== "" &&
@@ -71,12 +78,15 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
         expiration.current.value !== "" &&
         cvv.current &&
         cvv.current.value !== ""
-        ? `credit card | ${AES.encrypt(
-            `${name_on_card.current.value} / ${credit_card_number.current.value} / ${expiration.current.value} / ${cvv.current.value}`,
-            pass_secret as string
-          ).toString()}`
-        : ""
-      : "COD";
+      ) {
+
+        return `credit_card ${AES.encrypt(
+          `${name_on_card.current.value} / ${credit_card_number.current.value} / ${expiration.current.value} / ${cvv.current.value}`,
+          pass_secret
+        )}`;
+      }
+    }
+    return "cod";
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -106,7 +116,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
         note: note.current.value || "",
         totalPrice,
       });
-
+      
 
       setIsPurchased(true);
       dispatch({ action: ACTIONS.CLEAR_CART });
@@ -117,16 +127,12 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
     setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  useEffect(() => {
-    if (creditCardRef.current) creditCardRef.current.checked = true;
-  }, []);
-
   return (
     <div className="flex-1">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <h2 className="text-lg font-semibold">Billing address</h2>
         <section>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">Customer name:</label>
           <input
             id="username"
             ref={username}
@@ -217,6 +223,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             name="payment"
             value="credit_card"
             ref={creditCardRef}
+            checked
             onChange={(e) => {
               setstripeChecked(e.target.value === "true" ? false : true);
             }}

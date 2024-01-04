@@ -1,7 +1,7 @@
 import { IProductInCart } from "./product"
 
 export interface IOrder {
-  _id: string
+  _id?: string
   userId: string
   username: string
   phone: string
@@ -13,6 +13,14 @@ export interface IOrder {
   status: string
   note: string
   totalPrice: number
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
+
+export interface IProductInOrder {
+  _id: string
+  name: string
+  img: string
+  price: number
+}
+

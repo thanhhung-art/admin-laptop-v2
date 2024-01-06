@@ -7,7 +7,7 @@ import { dehydrate } from "@tanstack/react-query";
 
 export default async function Product({ params }: { params: { id: string } }) {
   const queryClientLocal = queryClient();
-  await queryClientLocal.prefetchQuery(["getProduct"], () =>
+  await queryClientLocal.prefetchQuery(["getProduct", params.id], () =>
     getProduct(params.id)
   );
   const dehydratedState = dehydrate(queryClientLocal, {

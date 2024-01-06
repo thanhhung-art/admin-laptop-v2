@@ -1,14 +1,13 @@
 import { getProduct } from "@/lib/axios";
-import { IProductInCart, IProductInOrder } from "@/types/product";
+import { IProductInCart } from "@/types/product";
 import { useQueries } from "@tanstack/react-query";
 import Image from "next/image";
 
 interface Iprops {
   products: IProductInCart[];
-  deliveryAddress: string | undefined;
 }
 
-const ProductInfo = ({ products, deliveryAddress }: Iprops) => {
+const ProductInfo = ({ products }: Iprops) => {
   const data = useQueries({
     queries: products.map((p) => ({
       queryKey: ["getProduct", p.productId],

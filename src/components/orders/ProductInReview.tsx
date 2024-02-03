@@ -7,15 +7,7 @@ import { IProductInCart } from "@/types/product";
 import { IReview } from "@/types/reviews";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import {
-  ChangeEvent,
-  FormEvent,
-  RefObject,
-  createRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
 
 interface IProps {
   product: IProductInCart;
@@ -29,7 +21,6 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
   const imagesFiles = useRef<string[]>([]);
   const fileFilterd = useRef<File[]>([]);
   const reviewRef = createRef<HTMLTextAreaElement>();
-  const btnSubmitRef = createRef<HTMLButtonElement>();
 
   const { data, isLoading } = useQuery(["getProduct", product.productId], () =>
     getProduct(product.productId)
@@ -64,9 +55,7 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async (userReview: string) => {
     const urlPromises: Promise<string>[] = fileFilterd.current.map((image) => {
       return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -93,8 +82,8 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
       rating: userRating,
     };
 
-    if (reviewRef.current?.value) {
-      formData.review = reviewRef.current.value;
+    if (userReview) {
+      formData.review = userReview;
     }
 
     if (imagesFiles.current.length > 0) {
@@ -104,22 +93,20 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
     addReviewMutation.mutate(formData);
   };
 
-  console.log(usernameRef);
-
   useEffect(() => {
-    if (sendData && btnSubmitRef) {
-      btnSubmitRef.current?.click();
+    if (sendData && reviewRef.current) {
+      handleSubmit(reviewRef.current.value);
       imagesFiles.current = [];
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sendData]);
+  }, [sendData, reviewRef.current]);
 
   if (isLoading) {
     return <div>loading</div>;
   }
 
   return (
-    <form className="" onSubmit={handleSubmit}>
+    <div>
       <div className="flex gap-4">
         <div className="relative w-24 h-14 flex-shrink-0">
           {data && <Image src={data?.data.img} fill alt="product image" />}
@@ -175,8 +162,7 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
           ref={reviewRef}
         ></textarea>
       </div>
-      <button ref={btnSubmitRef} hidden type="submit"></button>
-    </form>
+    </div>
   );
 };
 

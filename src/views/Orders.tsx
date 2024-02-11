@@ -1,24 +1,73 @@
 "use client";
 
 import ProductInfo from "@/components/orders/ProductInfo";
+import ProductInReview from "@/components/orders/ProductInReview";
 import { getOrdersByPhone } from "@/lib/axios";
 import { IOrder } from "@/types/order";
+import { IProductInCart } from "@/types/product";
 import { useQuery } from "@tanstack/react-query";
-import { createRef } from "react";
+import { createRef, useEffect, useState } from "react";
 
 const OrdersPage = () => {
   const phoneRef = createRef<HTMLInputElement>();
+  const modalRef = createRef<HTMLDivElement>();
+  const usernameRef = createRef<HTMLInputElement>();
+  const [username, setUsername] = useState("");
+  const [currProducts, setCurrProducts] = useState<IProductInCart[]>([]);
+  const [sendData, setSendData] = useState(false);
+  const dialogRef = createRef<HTMLDialogElement>();
+  const openModalRef = createRef<HTMLButtonElement>();
 
   const { data, isLoading, isFetched, refetch } = useQuery(
     ["getOrdersByPhone"],
     () => getOrdersByPhone(phoneRef.current ? phoneRef.current.value : null),
     {
-       enabled:
+      enabled:
         typeof phoneRef.current?.value === "string" &&
         phoneRef.current.value.length === 10 &&
         phoneRef.current.value.trim() !== "",
     }
   );
+
+  const handleOpenReview = (products: IProductInCart[]) => {
+    setCurrProducts(products);
+    dialogRef.current?.showModal();
+  };
+
+  const handleSendData = () => {
+    setUsername(usernameRef.current?.value || "");
+    setSendData(true);
+    setTimeout(() => {
+      setSendData(false);
+    }, 100);
+  };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("customer_phone") && phoneRef.current) {
+      const phone: string = sessionStorage.getItem("customer_phone") as string;
+      phoneRef.current.value = phone;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const handleCloseModal = (e: MouseEvent) => {
+      if (
+        dialogRef.current &&
+        modalRef.current &&
+        !modalRef.current.contains(e.target as Node)
+      ) {
+        if (dialogRef.current.open && openModalRef.current !== e.target)
+          dialogRef.current.close();
+      }
+    };
+
+    document.addEventListener("click", handleCloseModal);
+
+    return () => {
+      document.removeEventListener("click", handleCloseModal);
+    };
+  });
 
   return (
     <div className="max-w-7xl m-auto my-8">
@@ -86,10 +135,7 @@ const OrdersPage = () => {
                         Order placed {hours}: {minutes} - {dateReformated}
                       </p>
                     </div>
-                    <ProductInfo
-                      products={order.products}
-                      deliveryAddress={order.address || order.address2}
-                    />
+                    <ProductInfo products={order.products} />
                     <div className="flex justify-between items-center">
                       <h6 className="font-semibold">
                         Status{" "}
@@ -97,7 +143,11 @@ const OrdersPage = () => {
                           {order.status}
                         </span>
                       </h6>
-                      <button className="bg-blue-500 py-1 px-2 rounded text-white hover:bg-blue-600 active:bg-blue-700">
+                      <button
+                        onClick={() => handleOpenReview(order.products)}
+                        className="bg-blue-500 py-1 px-2 rounded text-white hover:bg-blue-600 active:bg-blue-700"
+                        ref={openModalRef}
+                      >
                         Write review
                       </button>
                     </div>
@@ -107,6 +157,37 @@ const OrdersPage = () => {
           </section>
         </section>
       )}
+      <dialog ref={dialogRef} className="rounded-lg">
+        <section className="flex justify-center items-center">
+          <div className="max-w-3xl bg-white rounded-lg p-8" ref={modalRef}>
+            <div className="mb-4">
+              <input
+                className="outline-none ml-2 border border-blue-400 rounded px-4 py-2 w-96"
+                type="text"
+                placeholder="enter your name"
+                ref={usernameRef}
+              />
+            </div>
+            {currProducts.map((product) => (
+              <div key={product.productId}>
+                <ProductInReview
+                  product={product}
+                  usernameRef={username}
+                  sendData={sendData}
+                />
+              </div>
+            ))}
+            <div>
+              <button
+                className="float-right px-2 py-1 bg-blue-500 rounded text-white mt-2"
+                onClick={handleSendData}
+              >
+                send
+              </button>
+            </div>
+          </div>
+        </section>
+      </dialog>
     </div>
   );
 };

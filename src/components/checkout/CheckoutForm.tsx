@@ -25,10 +25,22 @@ interface IError {
   };
 }
 
-const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET || '';
+const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET || "";
 
 const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
   const { state, dispatch } = useContext(CartContext);
+  const username = createRef<HTMLInputElement>();
+  const phone = createRef<HTMLInputElement>();
+  const email = createRef<HTMLInputElement>();
+  const address = createRef<HTMLInputElement>();
+  const address2 = createRef<HTMLInputElement>();
+  const creditCardRef = createRef<HTMLInputElement>();
+  const name_on_card = createRef<HTMLInputElement>();
+  const expiration = createRef<HTMLInputElement>();
+  const credit_card_number = createRef<HTMLInputElement>();
+  const note = createRef<HTMLInputElement>();
+  const cvv = createRef<HTMLInputElement>();
+  const [creditCardChecked, setCreditCardChecked] = useState(true);
 
   const [error, setErrors] = useState({
     username: "",
@@ -54,21 +66,14 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
     }
   );
 
-  const username = createRef<HTMLInputElement>();
-  const phone = createRef<HTMLInputElement>();
-  const email = createRef<HTMLInputElement>();
-  const address = createRef<HTMLInputElement>();
-  const address2 = createRef<HTMLInputElement>();
-  const creditCardRef = createRef<HTMLInputElement>();
-  const name_on_card = createRef<HTMLInputElement>();
-  const expiration = createRef<HTMLInputElement>();
-  const credit_card_number = createRef<HTMLInputElement>();
-  const note = createRef<HTMLInputElement>();
-  const cvv = createRef<HTMLInputElement>();
-  const [stripeChecked, setstripeChecked] = useState(true);
+  const productSold = useMutation(
+    async (data: { pid: string; sold: number }) => {
+      return Fetch.put(`/products/${data.pid}`, { sold: data.sold });
+    }
+  );
 
   const handlePayment = () => {
-    if (stripeChecked) {
+    if (creditCardChecked) {
       if (
         name_on_card.current &&
         name_on_card.current.value !== "" &&
@@ -79,7 +84,6 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
         cvv.current &&
         cvv.current.value !== ""
       ) {
-
         return `credit_card ${AES.encrypt(
           `${name_on_card.current.value} / ${credit_card_number.current.value} / ${expiration.current.value} / ${cvv.current.value}`,
           pass_secret
@@ -116,7 +120,13 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
         note: note.current.value || "",
         totalPrice,
       });
-      
+
+      state.products.forEach((product) => {
+        productSold.mutate({
+          pid: product.productId,
+          sold: product.quantity || 0,
+        });
+      });
 
       setIsPurchased(true);
       dispatch({ action: ACTIONS.CLEAR_CART });
@@ -135,6 +145,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
           <label htmlFor="username">Customer name:</label>
           <input
             id="username"
+            required
             ref={username}
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
@@ -152,6 +163,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
           <label htmlFor="phone">phone:</label>
           <input
             id="phone"
+            required
             ref={phone}
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
@@ -185,6 +197,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
           <label htmlFor="address">Address:</label>
           <input
             id="address"
+            required
             ref={address}
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
@@ -223,9 +236,9 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             name="payment"
             value="credit_card"
             ref={creditCardRef}
-            checked
+            checked={creditCardChecked}
             onChange={(e) => {
-              setstripeChecked(e.target.value === "true" ? false : true);
+              setCreditCardChecked(e.target.value === "true" ? false : true);
             }}
           />
           <label htmlFor="credit_card" className="ml-2 text-sm">
@@ -237,8 +250,9 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             type="radio"
             name="payment"
             value="cod"
+            checked={!creditCardChecked}
             onChange={(e) => {
-              setstripeChecked(e.target.value === "true" ? true : false);
+              setCreditCardChecked(e.target.value === "true" ? true : false);
             }}
           />
           <label htmlFor="cod" className="ml-2 text-sm">
@@ -248,7 +262,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
         <section className="md:min-w-[770px]">
           <div
             className={`${
-              stripeChecked ? "flex" : "hidden"
+              creditCardChecked ? "flex" : "hidden"
             } flex-col md:flex-row gap-4`}
           >
             <div>

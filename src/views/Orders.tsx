@@ -5,6 +5,7 @@ import ProductInReview from "@/components/orders/ProductInReview";
 import { getOrdersByPhone } from "@/lib/axios";
 import { IOrder } from "@/types/order";
 import { IProductInCart } from "@/types/product";
+import { GetOrdersByPhone } from "@/utils/keys";
 import { useQuery } from "@tanstack/react-query";
 import { createRef, useEffect, useState } from "react";
 
@@ -19,7 +20,7 @@ const OrdersPage = () => {
   const openModalRef = createRef<HTMLButtonElement>();
 
   const { data, isLoading, isFetched, refetch } = useQuery(
-    ["getOrdersByPhone"],
+    [GetOrdersByPhone],
     () => getOrdersByPhone(phoneRef.current ? phoneRef.current.value : null),
     {
       enabled:

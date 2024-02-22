@@ -1,9 +1,6 @@
 "use client";
 import React, { createRef, useContext, useMemo, useRef } from "react";
 import Image from "next/image";
-import { CartContext } from "@/providers/cartProvider";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/lib/axios";
 import { IProductInCheckout } from "@/types/product";
 
 interface IProps {

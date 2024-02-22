@@ -1,4 +1,6 @@
-import { IProduct, IProductInCart, IProductInSearch } from "@/types/product";
+import { IOrder } from "@/types/order";
+import { IProduct, IProductInSearch } from "@/types/product";
+import { IReviewFull } from "@/types/reviews";
 import { IUser } from "@/types/user";
 import axios from "axios";
 
@@ -28,6 +30,11 @@ export const getProduct = async (id: string) => {
   return res.data as unknown as { data: IProduct; msg: string };
 };
 
+export const getMostSoldProducts = async () => {
+  const res = await Fetch(`/products?query=top_sell_products`)
+  return res.data as unknown as { data: IProduct[], msg: string };
+}
+
 export const editProfile = async (data: {
   userId: string;
   email?: string;
@@ -52,3 +59,19 @@ export const getSearch = async (keyword: string | undefined) => {
     msg: string;
   };
 };
+
+export const getOrders = async () => {
+  const res = await Fetch(`/orders`);
+  return res.data as unknown as { data: IOrder[]; msg: string };
+}
+
+export const getOrdersByPhone = async (phone: string | null) => {
+  const res = await Fetch(`/orders?phone=${phone}`)
+  return res.data as unknown as { data: IOrder[]; msg: string };
+} 
+
+
+export const getReviews = async (pid: string) => {
+  const res = await Fetch(`/reviews/${pid}`)
+  return res.data as unknown as { data: IReviewFull[], msg: string };
+}

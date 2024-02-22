@@ -5,6 +5,7 @@ import { Fetch, getProduct } from "@/lib/axios";
 import { uploadImage } from "@/lib/cloundinary/uploadImage";
 import { IProductInCart } from "@/types/product";
 import { IReview } from "@/types/reviews";
+import { GetProduct } from "@/utils/keys";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
@@ -22,7 +23,7 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
   const fileFilterd = useRef<File[]>([]);
   const reviewRef = createRef<HTMLTextAreaElement>();
 
-  const { data, isLoading } = useQuery(["getProduct", product.productId], () =>
+  const { data, isLoading } = useQuery([GetProduct, product.productId], () =>
     getProduct(product.productId)
   );
 

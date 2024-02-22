@@ -53,6 +53,10 @@ body {
   animation: wave 1s infinite;
 }
 
+.modal {
+  background-color: rgba(65, 64, 64, 0.5);
+}
+
 @keyframes wave {
   0% {
     left: -100%;

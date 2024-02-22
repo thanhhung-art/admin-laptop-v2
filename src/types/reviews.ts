@@ -5,3 +5,9 @@ export interface IReview {
   review?: string
   images?: string[]
 }
+
+export interface IReviewFull extends IReview {
+  _id: string
+  createdAt: string
+  updatedAt: string
+}

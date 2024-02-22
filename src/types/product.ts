@@ -23,6 +23,8 @@ export interface IProduct {
     os: string;
     gpu: string;
   };
+  quantity?: number
+  sold?: number
 }
 
 export interface IProductInCart {
@@ -30,6 +32,10 @@ export interface IProductInCart {
   quantity?: number;
 }
 export interface IProductInCheckout extends IProduct {
+  quantity: number
+}
+
+export interface IProductInOrder extends IProduct {
   quantity: number
 }
 

@@ -5,17 +5,17 @@ import ArrowNextIcon from "@/icons/ArrowNextIcon";
 import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
 import { useQuery } from "@tanstack/react-query";
 import { getMostSoldProducts } from "@/lib/axios";
+import { GetMostSoldProducts } from "@/utils/keys";
 
 const Slider = () => {
   const sliderPosition = useRef(1);
   const containerRef = createRef<HTMLDivElement>();
   const nextBtn = createRef<HTMLDivElement>();
   const prevBtn = createRef<HTMLDivElement>();
-  const dots = useRef<NodeListOf<Element>>();
   const autoScroll = useRef<NodeJS.Timer>();
 
   const { data, isLoading } = useQuery(
-    ["getMostSoldProducts"],
+    [GetMostSoldProducts],
     getMostSoldProducts
   );
   //console.log(data);

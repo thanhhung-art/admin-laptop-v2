@@ -1,12 +1,13 @@
-import AuthForm from '@/components/login/AuthForm'
-import React from 'react'
+import { queryClient } from '@/lib/reactQuery/queryClient'
+import Register from '@/views/Register'
+const page = async () => {
+  const queryClientLocal = queryClient()
 
-const Register = () => {
   return (
-    <section>
-      <AuthForm type='register'/>
-    </section>
+    <>
+      <Register />
+    </>
   )
 }
 
-export default Register
+export default page

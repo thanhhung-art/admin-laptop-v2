@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/lib/axios";
+import { GetUser } from "@/utils/keys";
 
 interface IProps {
   userId: string
@@ -16,7 +17,7 @@ interface IProps {
 const Checkout = ({ userId }: IProps) => {
   const [isPurchased, setIsPurchased] = useState(false);
   const router = useRouter();
-  const { data } = useQuery(['getUser', userId], () => getUser(userId), { enabled: !!userId })
+  const { data } = useQuery([GetUser, userId], () => getUser(userId), { enabled: !!userId })
   const { products } = useGetProductsInCart()
 
   const totalPrice = useMemo(() => {

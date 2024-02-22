@@ -1,5 +1,6 @@
 import { getProduct } from "@/lib/axios";
 import { IProductInCart } from "@/types/product";
+import { GetProduct } from "@/utils/keys";
 import { useQueries } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -10,7 +11,7 @@ interface Iprops {
 const ProductInfo = ({ products }: Iprops) => {
   const data = useQueries({
     queries: products.map((p) => ({
-      queryKey: ["getProduct", p.productId],
+      queryKey: [GetProduct, p.productId],
       queryFn: async () => {
         const product = await getProduct(p.productId);
         return { ...product, quantity: p.quantity || 0 };

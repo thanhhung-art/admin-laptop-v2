@@ -2,6 +2,7 @@
 import { getProduct } from "@/lib/axios";
 import { CartContext } from "@/providers/cartProvider";
 import { IProduct, IProductInCheckout } from "@/types/product";
+import { GetProduct } from "@/utils/keys";
 import { useQueries } from "@tanstack/react-query";
 import { useContext, useMemo } from "react";
 
@@ -10,7 +11,7 @@ export function useGetProductsInCart() {
 
   const data = useQueries({
     queries: state.products.map((product) => ({
-      queryKey: ["getProduct", product.productId],
+      queryKey: [GetProduct, product.productId],
       queryFn: () => getProduct(product.productId),
     })),
   }).map((data) => data.data?.data);

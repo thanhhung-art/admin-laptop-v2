@@ -1,0 +1,7 @@
+export const GetMostSoldProducts = "getMostSoldProducts"
+export const GetUser = "getUser"
+export const GetOrders = "getOrders"
+export const GetProduct = "getProduct"
+export const GetProductsInfinity = "getProductsInfinity"
+export const GetReviews = "getReviews"
+export const GetOrdersByPhone = "getOrdersByPhone"

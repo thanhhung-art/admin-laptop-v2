@@ -3,12 +3,13 @@ import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import { getOrders } from "@/lib/axios";
 import { queryClient } from "@/lib/reactQuery/queryClient";
+import { GetOrders } from "@/utils/keys";
 import OrdersPage from "@/views/Orders";
 import { dehydrate } from "@tanstack/react-query";
 
 const page = async () => {
   const queryClientLocal = queryClient();
-  await queryClientLocal.prefetchQuery(["getOrders"], getOrders);
+  await queryClientLocal.prefetchQuery([GetOrders], getOrders);
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (

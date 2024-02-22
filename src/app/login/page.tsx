@@ -1,12 +1,10 @@
 import AuthForm from '@/components/login/AuthForm';
-import React from 'react'
+import Login from '@/views/Login';
 
-const Login = () => {
+const page = () => {
   return (
-    <section>
-      <AuthForm type='login' />
-    </section>
+    <Login />
   )
 }
 
-export default Login;
+export default page;

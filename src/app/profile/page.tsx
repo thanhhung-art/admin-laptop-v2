@@ -1,4 +1,3 @@
-'use server'
 import { ReactQueryHydrate } from "@/components/ReactQueryHydrate";
 import Navbar from "@/components/navbar/Navbar";
 import { getUser } from "@/lib/axios";

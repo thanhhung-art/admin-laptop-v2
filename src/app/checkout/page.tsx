@@ -6,6 +6,7 @@ import { queryClient } from "@/lib/reactQuery/queryClient";
 import { dehydrate } from "@tanstack/react-query";
 import { getUser } from "@/lib/axios";
 import { ReactQueryHydrate } from "@/components/ReactQueryHydrate";
+import { GetUser } from "@/utils/keys";
 
 const jwt_secret = process.env.JWT_SECRET;
 
@@ -22,7 +23,7 @@ async function page() {
   }
   const queryClientLocal = queryClient();
   userId &&
-    (await queryClientLocal.prefetchQuery(["getUser"], () => getUser(userId)));
+    (await queryClientLocal.prefetchQuery([GetUser], () => getUser(userId)));
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (

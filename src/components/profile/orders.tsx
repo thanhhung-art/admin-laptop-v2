@@ -12,8 +12,7 @@ const UserOrders = ({ orders }: IProps) => {
   }
 
   return (
-    <section className="bg-white rounded-lg p-4">
-      <h2 className="text-xl">Orders</h2>
+    <section className="">
       {orders.map((order) => (
         <Fragment key={order._id}>
           <Suspense>

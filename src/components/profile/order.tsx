@@ -36,7 +36,7 @@ const Order = ({ order }: IProps) => {
           {p === undefined ? (
             <div>loading</div>
           ) : (
-            <div className="shadow-lg p-4">
+            <div className="shadow-lg p-4 bg-white rounded-md">
               <div className="flex justify-end">
                 <span className="text-[13px] text-slate-500">{formatTime(order.createdAt)}</span>
               </div>

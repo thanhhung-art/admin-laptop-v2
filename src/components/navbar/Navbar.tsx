@@ -3,7 +3,6 @@ import Search from "./Search";
 import Cart from "./Cart";
 import { cookies } from "next/headers";
 import UserIcon from "@/icons/UserIcon";
-import { Suspense } from "react";
 
 const Navbar = () => {
   const cookieStore = cookies();
@@ -36,8 +35,8 @@ const Navbar = () => {
                 <UserIcon w={50} h={50} />
               </Link>
             ) : (
-              <Link href="/login">
-                <p>sign in</p>
+              <Link href='/orders'>
+                <p>orders</p>
               </Link>
             )}
           </div>

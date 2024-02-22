@@ -4,11 +4,12 @@ import Brands from "@/components/products/Brands";
 import Filters from "@/components/products/Filters";
 import Products from "@/components/products/Products";
 import { getProductsInfinity } from "@/lib/axios";
+import { GetProductsInfinity } from "@/utils/keys";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const ProductsPage = () => {
   const { data, isLoading, isError, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    ["getProducts"],
+    [GetProductsInfinity],
     ({ pageParam = 0 }) => getProductsInfinity(pageParam),
     {
       staleTime: 1000 * 60 * 5,

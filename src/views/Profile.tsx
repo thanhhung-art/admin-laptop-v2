@@ -4,6 +4,7 @@ import EyeSlashIcon from "@/icons/EyeSlashIcon";
 import EysIcon from "@/icons/EysIcon";
 import { Fetch, getUser } from "@/lib/axios";
 import { IOrder } from "@/types/order";
+import { GetUser } from "@/utils/keys";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { AES, enc } from "crypto-js";
@@ -24,7 +25,7 @@ interface IProps {
 const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET || "";
 
 const Profile = ({ id }: IProps) => {
-  const { data, isLoading, isError } = useQuery(["getUser"], () => getUser(id));
+  const { data, isLoading, isError } = useQuery([GetUser], () => getUser(id));
   const getOrders = useQuery<AxiosResponse<{ data: IOrder[], msg: string }>>(
     ["getUserOrders", id],
     () => {

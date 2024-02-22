@@ -4,10 +4,11 @@ import ProductDetails from "@/components/product/ProductDetails";
 import QuickView from "@/components/product/QuickView";
 import Reviews from "@/components/product/Reviews";
 import { getProduct } from "@/lib/axios";
+import { GetProduct } from "@/utils/keys";
 import { useQuery } from "@tanstack/react-query";
 
 const ProductPage = ({ param }: { param: string }) => {
-  const { data, isLoading } = useQuery(["getProduct", param], () =>
+  const { data, isLoading } = useQuery([GetProduct, param], () =>
     getProduct(param)
   );
 
@@ -30,7 +31,7 @@ const ProductPage = ({ param }: { param: string }) => {
           _id={data.data._id}
         />
         <div className="flex flex-col md:flex-row gap-2 md:gap-4 max-w-7xl m-auto mb-8">
-          <Reviews />
+          <Reviews productId={param} />
           <ProductDetails
             brand={data.data.brand}
             color={data.data.color}

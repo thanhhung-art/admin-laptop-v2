@@ -1,5 +1,5 @@
 "use client";
-import React, { createRef, useEffect, useRef } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import ArrowNextIcon from "@/icons/ArrowNextIcon";
 import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
@@ -13,12 +13,13 @@ const Slider = () => {
   const nextBtn = createRef<HTMLDivElement>();
   const prevBtn = createRef<HTMLDivElement>();
   const autoScroll = useRef<NodeJS.Timer>();
+  const [showPrevBtn, setShowPrevBtn] = useState(false);
+  const [showNextBtn, setShowNextBtn] = useState(true);
 
   const { data, isLoading } = useQuery(
     [GetMostSoldProducts],
     getMostSoldProducts
   );
-  //console.log(data);
 
   const changeDotsColor = (index: number) => {
     const dots = document.querySelectorAll(".dots");
@@ -33,37 +34,46 @@ const Slider = () => {
     });
   };
 
-  const handleScrollLeft = () => {
+  const handleScrollRight = () => {
     if (data && containerRef.current) {
       // if slide go to end
       if (sliderPosition.current === data.data.length) {
         if (containerRef.current && prevBtn.current) {
           sliderPosition.current = 1;
-          containerRef.current.scrollTo(0, 0)
+          containerRef.current.scrollTo(0, 0);
+          setShowNextBtn(true)
+          setShowPrevBtn(false)
         }
-      // if slide go to head
+        // if slide go to head
       } else if (sliderPosition.current - 1 === 0) {
         sliderPosition.current = 2;
-        containerRef.current.scrollLeft += containerRef.current.clientWidth
+        containerRef.current.scrollLeft += containerRef.current.clientWidth;
+        setShowPrevBtn(true)
       } else {
         sliderPosition.current++;
-        containerRef.current.scrollLeft += containerRef.current.clientWidth
+        containerRef.current.scrollLeft += containerRef.current.clientWidth;
+        if (sliderPosition.current === data.data.length) {
+          setShowNextBtn(false)
+        }
       }
     }
     changeDotsColor(sliderPosition.current - 1);
   };
 
-  const handleScrollRight = () => {
+  const handleScrollLeft = () => {
+    if (sliderPosition.current === 2) {
+      setShowPrevBtn(false)
+    }
+
     // when go to head of slide
     if (sliderPosition.current === 1) {
-      if (prevBtn.current) prevBtn.current.style.display = "none";
+      setShowNextBtn(true)
       changeDotsColor(0);
       return;
     }
 
     if (containerRef.current && prevBtn.current) {
       containerRef.current.scrollLeft -= containerRef.current.clientWidth;
-      prevBtn.current.style.display = "block";
     }
 
     sliderPosition.current--;
@@ -71,19 +81,19 @@ const Slider = () => {
   };
 
   const handleNext = () => {
-    handleScrollLeft();
+    handleScrollRight();
     clearInterval(autoScroll.current);
-    autoScroll.current = setInterval(handleScrollLeft, 5000);
+    autoScroll.current = setInterval(handleScrollRight, 5000);
   };
 
   const handlePrev = () => {
-    handleScrollRight();
+    handleScrollLeft();
     clearInterval(autoScroll.current);
-    autoScroll.current = setInterval(handleScrollLeft, 5000);
+    autoScroll.current = setInterval(handleScrollRight, 5000);
   };
 
   useEffect(() => {
-    autoScroll.current = setInterval(handleScrollLeft, 5000);
+    autoScroll.current = setInterval(handleScrollRight, 5000);
 
     return () => {
       clearInterval(autoScroll.current);
@@ -99,13 +109,15 @@ const Slider = () => {
         ref={containerRef}
       >
         {/* arrow left */}
-        <div
-          className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full hidden"
-          onClick={handlePrev}
-          ref={prevBtn}
-        >
-          <ArrowPrevIcon h={30} w={30} />
-        </div>
+        {showPrevBtn && (
+          <div
+            className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full z-50"
+            onClick={handlePrev}
+            ref={prevBtn}
+          >
+            <ArrowPrevIcon h={30} w={30} />
+          </div>
+        )}
 
         {data &&
           data.data.map((p, i) => (
@@ -120,13 +132,15 @@ const Slider = () => {
           ))}
 
         {/* arrow right */}
-        <div
-          className="absolute right-0 transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full"
-          onClick={handleNext}
-          ref={nextBtn}
-        >
-          <ArrowNextIcon h={30} w={30} />
-        </div>
+        {showNextBtn && (
+          <div
+            className="absolute right-0 transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full"
+            onClick={handleNext}
+            ref={nextBtn}
+          >
+            <ArrowNextIcon h={30} w={30} />
+          </div>
+        )}
 
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 pb-2">
           {data &&

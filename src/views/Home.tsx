@@ -1,8 +1,9 @@
 import Slider from "@/components/home/Slider";
 import Navbar from "@/components/navbar/Navbar";
-import ProductsLayout from "@/components/home/ProductsLayout";
+import ProductsByFilter from "@/components/home/ProductsByFilter";
 import Footer from "@/components/footer/Footer";
 import ShortCuts from "@/components/home/Shorcuts";
+import { GetTopRatingProducts, GetTopSellProducts } from "@/utils/keys";
 
 export default function Home() {
 
@@ -13,10 +14,15 @@ export default function Home() {
         <header className="py-8 my-4 md:my-0 md:py-16">
           <Slider />
         </header>
-        {/* <Labels /> */}
         <ShortCuts />
-        <ProductsLayout componentName="Top sale items" />
-        <ProductsLayout componentName="Top rating products" />
+        <ProductsByFilter
+          componentName="Top sale items"
+          queryKey={GetTopSellProducts}
+        />
+        <ProductsByFilter
+          componentName="Top rating products"
+          queryKey={GetTopRatingProducts}
+        />
       </div>
       <Footer />
     </main>

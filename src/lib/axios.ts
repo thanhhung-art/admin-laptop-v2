@@ -12,8 +12,10 @@ export const Fetch = axios.create({
   withCredentials: true,
 });
 
-export const getProducts = async () => {
-  const res = await Fetch("/products");
+export const getProducts = async (
+  query?: "top_rating_products" | "top_sell_products" | "featured"
+) => {
+  const res = await Fetch(`/products?${query && "query=" + query}`);
   return res.data as unknown as { data: IProduct[]; msg: string };
 };
 
@@ -30,11 +32,6 @@ export const getProduct = async (id: string) => {
   return res.data as unknown as { data: IProduct; msg: string };
 };
 
-export const getMostSoldProducts = async () => {
-  const res = await Fetch(`/products?query=top_sell_products`)
-  return res.data as unknown as { data: IProduct[], msg: string };
-}
-
 export const editProfile = async (data: {
   userId: string;
   email?: string;
@@ -43,8 +40,8 @@ export const editProfile = async (data: {
   address?: string;
   address2?: string;
 }) => {
-  const res = await Fetch.put('/users/' + data.userId)
-  return res.data as unknown as { data: IUser, msg: string };
+  const res = await Fetch.put("/users/" + data.userId);
+  return res.data as unknown as { data: IUser; msg: string };
 };
 
 export const getUser = async (id: string) => {
@@ -63,15 +60,14 @@ export const getSearch = async (keyword: string | undefined) => {
 export const getOrders = async () => {
   const res = await Fetch(`/orders`);
   return res.data as unknown as { data: IOrder[]; msg: string };
-}
+};
 
 export const getOrdersByPhone = async (phone: string | null) => {
-  const res = await Fetch(`/orders?phone=${phone}`)
+  const res = await Fetch(`/orders?query=${phone}`);
   return res.data as unknown as { data: IOrder[]; msg: string };
-} 
-
+};
 
 export const getReviews = async (pid: string) => {
-  const res = await Fetch(`/reviews/${pid}`)
-  return res.data as unknown as { data: IReviewFull[], msg: string };
-}
+  const res = await Fetch(`/reviews/${pid}`);
+  return res.data as unknown as { data: IReviewFull[]; msg: string };
+};

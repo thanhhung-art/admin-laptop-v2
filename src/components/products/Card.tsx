@@ -38,7 +38,7 @@ const Card = ({ product }: { product: IProduct }) => {
               sizes="(max-width: 768px) 200px 200px, (max-width: 1200px) 276px 276px 276px 276px"
             />
           </div>
-          <h4 className="max-w-[300px] md:text-center text-sm md:text-md font-semibold mt-4">
+          <h4 className="max-w-[300px] md:text-center text-sm md:text-md font-semibold mt-4" title={product.name}>
             {product.name.slice(0, 100)}
           </h4>
         </Link>

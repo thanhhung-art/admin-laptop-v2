@@ -4,8 +4,8 @@ import Image from "next/image";
 import ArrowNextIcon from "@/icons/ArrowNextIcon";
 import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
 import { useQuery } from "@tanstack/react-query";
-import { getMostSoldProducts } from "@/lib/axios";
-import { GetMostSoldProducts } from "@/utils/keys";
+import { getProducts } from "@/lib/axios";
+import { GetFeaturedProducts } from "@/utils/keys";
 
 const Slider = () => {
   const sliderPosition = useRef(1);
@@ -16,9 +16,8 @@ const Slider = () => {
   const [showPrevBtn, setShowPrevBtn] = useState(false);
   const [showNextBtn, setShowNextBtn] = useState(true);
 
-  const { data, isLoading } = useQuery(
-    [GetMostSoldProducts],
-    getMostSoldProducts
+  const { data, isLoading } = useQuery([GetFeaturedProducts], () =>
+    getProducts("featured")
   );
 
   const changeDotsColor = (index: number) => {
@@ -41,19 +40,19 @@ const Slider = () => {
         if (containerRef.current && prevBtn.current) {
           sliderPosition.current = 1;
           containerRef.current.scrollTo(0, 0);
-          setShowNextBtn(true)
-          setShowPrevBtn(false)
+          setShowNextBtn(true);
+          setShowPrevBtn(false);
         }
         // if slide go to head
       } else if (sliderPosition.current - 1 === 0) {
         sliderPosition.current = 2;
         containerRef.current.scrollLeft += containerRef.current.clientWidth;
-        setShowPrevBtn(true)
+        setShowPrevBtn(true);
       } else {
         sliderPosition.current++;
         containerRef.current.scrollLeft += containerRef.current.clientWidth;
         if (sliderPosition.current === data.data.length) {
-          setShowNextBtn(false)
+          setShowNextBtn(false);
         }
       }
     }
@@ -62,12 +61,12 @@ const Slider = () => {
 
   const handleScrollLeft = () => {
     if (sliderPosition.current === 2) {
-      setShowPrevBtn(false)
+      setShowPrevBtn(false);
     }
 
     // when go to head of slide
     if (sliderPosition.current === 1) {
-      setShowNextBtn(true)
+      setShowNextBtn(true);
       changeDotsColor(0);
       return;
     }
@@ -180,7 +179,13 @@ function Child({
     >
       <div className="w-full md:w-1/2 flex justify-center items-center p-4">
         <div className="relative h-[370px] w-[570px]">
-          <Image src={srcImg} alt="test image" fill />
+          <Image
+            src={srcImg}
+            alt="test image"
+            fill
+            priority
+            sizes="(max-width: 768px) width: 100%, (max-width: 1200px) width: 100%^"
+          />
         </div>
       </div>
 

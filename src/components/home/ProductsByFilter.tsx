@@ -104,7 +104,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
         {data &&
           data.data.map((p) => (
             <div key={p._id} className="">
-              <Card product={p} imageWidth={274} imageHeight={180} width={306.98} height={435.98} />
+              <Card product={p} width={'308px'} letterQuantity={180} />
             </div>
           ))}
       </div>

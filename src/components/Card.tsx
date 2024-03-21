@@ -7,7 +7,7 @@ import { useContext } from "react";
 
 interface IProps {
   product: IProduct;
-  width: string;
+  width: number;
   letterQuantity: number;
 }
 const Card = ({ product, width, letterQuantity }: IProps) => {
@@ -29,7 +29,7 @@ const Card = ({ product, width, letterQuantity }: IProps) => {
   };
 
   return (
-    <div className={`max-w-2xl mx-auto w-[${width}]`}>
+    <div className={`max-w-2xl mx-auto w-[${width}px]`}>
       <div className="bg-white shadow-md rounded-lg max-w-sm  dark:border-gray-700">
         <Link href={`/product/${product._id}`}>
           <div className={`relative h-52`}>

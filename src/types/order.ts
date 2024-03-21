@@ -14,7 +14,8 @@ export interface IOrder {
   note: string
   totalPrice: number
   createdAt?: string
-  updatedAt?: string
+  updatedAt?: string;
+  reviewed: boolean;
 }
 
 export interface IProductInOrder {

@@ -5,6 +5,7 @@ import { Fetch, getProduct } from "@/lib/axios";
 import { uploadImage } from "@/lib/cloundinary/uploadImage";
 import { IProductInCart } from "@/types/product";
 import { IReview } from "@/types/reviews";
+import { compareArrays } from "@/utils/compareArrays";
 import { GetProduct } from "@/utils/keys";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -13,12 +14,45 @@ import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
 interface IProps {
   product: IProductInCart;
   sendData: boolean;
-  usernameRef: string;
+  username: string;
+  orderId: string;
+  customerPhone: string;
+  isReviewed: boolean;
+  rating?: number;
+  review?: string;
+  images?: string[];
+  reviewId: string;
 }
 
-const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
-  const [userRating, setUserRating] = useState(5);
-  const [selectedImage, setSelectedImage] = useState<string[]>([]);
+interface IFormDataCreateReview extends IReview {
+  orderId: string;
+  productName: string;
+  customerPhone: string;
+}
+
+interface IFormDataUpdateReview {
+  review?: string;
+  rating?: number;
+  images?: string[];
+  checked: boolean;
+}
+
+const ReviewForm = ({
+  product,
+  sendData,
+  username,
+  orderId,
+  customerPhone,
+  isReviewed,
+  review,
+  rating,
+  images,
+  reviewId,
+}: IProps) => {
+  const [userRating, setUserRating] = useState(() => rating || 5);
+  const [selectedImage, setSelectedImage] = useState<string[]>(
+    () => images || []
+  );
   const imagesFiles = useRef<string[]>([]);
   const fileFilterd = useRef<File[]>([]);
   const reviewRef = createRef<HTMLTextAreaElement>();
@@ -30,6 +64,12 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
   const addReviewMutation = useMutation({
     mutationFn: (formData: IReview) => {
       return Fetch.post("/reviews", formData);
+    },
+  });
+
+  const editReviewMutation = useMutation({
+    mutationFn: (formData: IFormDataUpdateReview) => {
+      return Fetch.put("/reviews/" + reviewId, formData);
     },
   });
 
@@ -73,14 +113,41 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
       });
     });
 
-    await Promise.all(urlPromises).then((urls) => {
-      imagesFiles.current = urls;
-    });
+    if (fileFilterd.current.length > 0) {
+      await Promise.all(urlPromises).then((urls) => {
+        imagesFiles.current = urls;
+      });
+    }
 
-    const formData: IReview = {
-      username: usernameRef || "",
+    // edit review existed
+    if (isReviewed) {
+      const formData: IFormDataUpdateReview = { checked: false };
+      if (reviewRef.current && reviewRef.current.value !== review)
+        formData.review = reviewRef.current.value;
+
+      if (userRating !== rating) formData.rating = userRating;
+
+      if (!images && selectedImage.length > 0)
+        formData.images = imagesFiles.current;
+      else if (
+        images &&
+        images.length > 0 &&
+        selectedImage.length > 0 &&
+        !compareArrays(images, selectedImage)
+      )
+        formData.images = imagesFiles.current;
+
+      return editReviewMutation.mutate(formData);
+    }
+
+    // add new review
+    const formData: IFormDataCreateReview = {
+      username: username || "",
       productId: product.productId,
       rating: userRating,
+      orderId,
+      productName: data?.data.name || "",
+      customerPhone,
     };
 
     if (userReview) {
@@ -161,10 +228,11 @@ const ProductInReview = ({ product, sendData, usernameRef }: IProps) => {
           placeholder="review..."
           className="border border-gray-400 w-full p-2 h-20 outline-none"
           ref={reviewRef}
+          defaultValue={review || ""}
         ></textarea>
       </div>
     </div>
   );
 };
 
-export default ProductInReview;
+export default ReviewForm;

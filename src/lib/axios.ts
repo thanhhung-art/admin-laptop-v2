@@ -1,6 +1,6 @@
 import { IOrder } from "@/types/order";
 import { IProduct, IProductInSearch } from "@/types/product";
-import { IReviewFull } from "@/types/reviews";
+import { IReview, IReviewFull } from "@/types/reviews";
 import { IUser } from "@/types/user";
 import axios from "axios";
 
@@ -69,5 +69,10 @@ export const getOrdersByPhone = async (phone: string | null) => {
 
 export const getReviews = async (pid: string) => {
   const res = await Fetch(`/reviews/${pid}`);
+  return res.data as unknown as { data: IReviewFull[]; msg: string };
+};
+
+export const getReviewsInOrder = async (orderId: string) => {
+  const res = await Fetch(`/reviews/order/${orderId}`);
   return res.data as unknown as { data: IReviewFull[]; msg: string };
 };

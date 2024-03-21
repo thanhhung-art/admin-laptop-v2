@@ -8,7 +8,7 @@ interface Iprops {
   products: IProductInCart[];
 }
 
-const ProductInfo = ({ products }: Iprops) => {
+const Products = ({ products }: Iprops) => {
   const data = useQueries({
     queries: products.map((p) => ({
       queryKey: [GetProduct, p.productId],
@@ -60,4 +60,4 @@ const ProductInfo = ({ products }: Iprops) => {
   );
 };
 
-export default ProductInfo;
+export default Products;

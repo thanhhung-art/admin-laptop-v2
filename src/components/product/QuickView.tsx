@@ -3,6 +3,7 @@ import StarIcon from "@/icons/StarIcon";
 import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import Image from "next/image";
 import { useContext } from "react";
+import Rating from "../Rating";
 interface IProps {
   image: string;
   name: string;
@@ -10,8 +11,8 @@ interface IProps {
   rating: number;
   _id: string;
 }
-const QuickView = ({ image, name, price, rating, _id }: IProps) => {
-  const { state, dispatch } = useContext(CartContext);
+const QuickView = ({ image, name, price, rating = 0, _id }: IProps) => {
+  const { dispatch } = useContext(CartContext);
 
   const handleAddToCart = () => {
     dispatch({ action: ACTIONS.ADD_TO_CART, payload: { productId: _id }})
@@ -28,14 +29,8 @@ const QuickView = ({ image, name, price, rating, _id }: IProps) => {
         <h2 className="max-w-[700px] text-lg md:max-w-full md:text-2xl">{name}</h2>
 
         <div className="flex gap-2 items-center">
-          <h3>5.0</h3>
-          <ul className="flex">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <li key={i} className="ml-1">
-                <StarIcon w={16} h={16} />
-              </li>
-            ))}
-          </ul>
+          <h3 className="text-[20px]">{rating}</h3>
+          <Rating value={rating} readonly />
         </div>
 
         <h2 className="text-xl flex-1">

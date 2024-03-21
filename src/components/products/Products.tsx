@@ -25,7 +25,7 @@ const Products = ({ products, isError, isLoading }: IProps) => {
         }, [] as IProduct[])
         .map((product) => (
           <li key={product._id}>
-            <Card product={product} width={363.98} letterQuantity={180} />
+            <Card product={product} letterQuantity={180} />
           </li>
         ))}
     </ul>

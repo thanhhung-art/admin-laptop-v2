@@ -1,5 +1,5 @@
 "use client";
-import React, { createRef } from "react";
+import { createRef, useMemo } from "react";
 import ArrowNextIcon from "@/icons/ArrowNextIcon";
 import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
 import useMobile from "@/hooks/isMobile";
@@ -27,11 +27,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
   );
 
   const handleSrollLeft = () => {
-    if (
-      containerRef.current &&
-      nextBtn.current &&
-      prevBtn.current
-    ) {
+    if (containerRef.current && nextBtn.current && prevBtn.current) {
       if (isMobile || isTable) {
         if (isMobile) {
           containerRef.current.scrollLeft +=
@@ -57,11 +53,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
   };
 
   const handleSrollRight = () => {
-    if (
-      containerRef.current &&
-      nextBtn.current &&
-      prevBtn.current
-    ) {
+    if (containerRef.current && nextBtn.current && prevBtn.current) {
       if (isMobile || isTable) {
         if (isMobile) {
           containerRef.current.scrollLeft -=
@@ -83,6 +75,16 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
     }
   };
 
+  const products = useMemo(() => {
+    if (!data) return <></>;
+
+    return data.data.map((p) => (
+      <div key={p._id} className="">
+        <Card product={p} letterQuantity={180} />
+      </div>
+    ));
+  }, [data]);
+
   if (isLoading) return <div>loading</div>;
 
   return (
@@ -101,12 +103,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
         ref={containerRef}
         className="flex slider_container overflow-x-auto gap-5 md:gap-4"
       >
-        {data &&
-          data.data.map((p) => (
-            <div key={p._id} className="">
-              <Card product={p} width={308} letterQuantity={180} />
-            </div>
-          ))}
+        {products}
       </div>
       <span
         ref={nextBtn}

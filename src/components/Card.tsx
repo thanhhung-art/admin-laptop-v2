@@ -4,13 +4,13 @@ import { IProduct } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
+import Rating from "./Rating";
 
 interface IProps {
   product: IProduct;
-  width: number;
   letterQuantity: number;
 }
-const Card = ({ product, width, letterQuantity }: IProps) => {
+const Card = ({ product, letterQuantity }: IProps) => {
   const { state, dispatch } = useContext(CartContext);
 
   const handleAddToCart = () => {
@@ -29,7 +29,7 @@ const Card = ({ product, width, letterQuantity }: IProps) => {
   };
 
   return (
-    <div className={`max-w-2xl mx-auto w-[${width}px]`}>
+    <div className={`max-w-2xl mx-auto w-[308px]`}>
       <div className="bg-white shadow-md rounded-lg max-w-sm  dark:border-gray-700">
         <Link href={`/product/${product._id}`}>
           <div className={`relative h-52`}>
@@ -52,11 +52,7 @@ const Card = ({ product, width, letterQuantity }: IProps) => {
             </h3>
           </Link>
           <div className="flex items-center mt-2.5 mb-5">
-            {[1, 2, 3, 4, 5].map((e) => (
-              <div key={e} className="mr-1">
-                <StarIcon />
-              </div>
-            ))}
+            <Rating value={4} readonly />
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
               5.0
             </span>

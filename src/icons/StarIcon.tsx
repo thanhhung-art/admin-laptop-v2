@@ -19,7 +19,7 @@ const StarIcon = ({ w = 15, h = 15 }: IProps) => {
         id="Page-1"
         stroke="none"
         strokeWidth="1"
-        fill="none"
+        fill=""
         fillRule="evenodd"
       >
         <g

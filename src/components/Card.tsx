@@ -38,7 +38,7 @@ const Card = ({ product, letterQuantity }: IProps) => {
               src={product.img}
               alt="product image"
               fill
-              sizes=""
+              sizes="(max-width: 768px) 100%, (max-width: 1200px) 100%"
             />
           </div>
         </Link>

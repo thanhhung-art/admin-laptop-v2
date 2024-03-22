@@ -1,28 +1,46 @@
 import { InfiniteData } from "@tanstack/react-query";
 import { IProduct } from "@/types/product";
 import Card from "../Card";
+import { useMemo } from "react";
 interface IProps {
-  products:
+  pages:
     | InfiniteData<{
         data: { products: IProduct[]; nextPage: number; lastPage: number };
         msg: string;
       }>
     | undefined;
   isLoading: boolean;
-  isError: boolean;
+  filter: string;
+  currentPrice: "up" | "down" | "none";
 }
 
-const Products = ({ products, isError, isLoading }: IProps) => {
-  if (isError || !products) return <div>error</div>;
+const Products = ({ pages, isLoading, filter, currentPrice }: IProps) => {
+  const products = useMemo(() => {
+    if (!pages) return [];
+
+    return pages.pages.reduce((acc, curr) => {
+      return acc.concat(curr.data.products);
+    }, [] as IProduct[]);
+  }, [pages]);
 
   if (isLoading) return <div>loading</div>;
 
   return (
     <ul className="max-w-7xl m-auto grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 justify-between mt-4">
-      {products.pages
-        .reduce((acc, curr) => {
-          return acc.concat(curr.data.products);
-        }, [] as IProduct[])
+      {products
+        .filter((product) => {
+          if (filter === "all") return product;
+          if (typeof filter === "string")
+            return (
+              product.brand === filter.toLowerCase() ||
+              product.categories.includes(filter.toLowerCase())
+            );
+        })
+        .sort((a, b) => {
+          if (currentPrice === "up") return a.price - b.price
+          if (currentPrice === "down") return b.price - a.price
+          return 0;
+        })
         .map((product) => (
           <li key={product._id}>
             <Card product={product} letterQuantity={180} />

@@ -1,14 +1,22 @@
 "use client";
 import Footer from "@/components/footer/Footer";
-import Brands from "@/components/products/Brands";
 import Filters from "@/components/products/Filters";
 import Products from "@/components/products/Products";
 import { getProductsInfinity } from "@/lib/axios";
 import { GetProductsInfinity } from "@/utils/keys";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const ProductsPage = () => {
-  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useInfiniteQuery(
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const filter = searchParams.get("filter") || "";
+  const [currentPrice, setCurrentPrice] = useState<"up" | "down" | "none">(
+    "none"
+  );
+  const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
     [GetProductsInfinity],
     ({ pageParam = 0 }) => getProductsInfinity(pageParam),
     {
@@ -21,12 +29,27 @@ const ProductsPage = () => {
     }
   );
 
+  const handleSetFilter = (value: string) => {
+    router.replace(`?filter=${value}`, { scroll: false });
+  };
+
+  const handleSetPriceUpDown = (value: "up" | "down" | "none") => {
+    setCurrentPrice(value);
+  };
+
   return (
     <div className="bg-sky-500">
       <main className="px-4 md:p-0">
-        <Brands />
-        <Filters />
-        <Products products={data} isLoading={isLoading} isError={isError} />
+        <Filters
+          handleSetFilter={handleSetFilter}
+          handleSetPriceUpDown={handleSetPriceUpDown}
+        />
+        <Products
+          pages={data}
+          isLoading={isLoading}
+          filter={filter}
+          currentPrice={currentPrice}
+        />
         <div className="flex justify-center my-4 md:mb-16">
           {hasNextPage && (
             <button

@@ -8,7 +8,10 @@ import { dehydrate } from "@tanstack/react-query";
 
 const Page = async () => {
   const queryClientLocal = queryClient();
-  await queryClientLocal.prefetchInfiniteQuery([GetProductsInfinity], ({ pageParam = 0}) => getProductsInfinity(pageParam));
+  await queryClientLocal.prefetchInfiniteQuery(
+    [GetProductsInfinity],
+    ({ pageParam = 0 }) => getProductsInfinity(pageParam)
+  );
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (

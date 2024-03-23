@@ -1,4 +1,3 @@
-import StarIcon from "@/icons/StarIcon";
 import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { IProduct } from "@/types/product";
 import Image from "next/image";
@@ -52,9 +51,9 @@ const Card = ({ product, letterQuantity }: IProps) => {
             </h3>
           </Link>
           <div className="flex items-center mt-2.5 mb-5">
-            <Rating value={4} readonly />
+            <Rating value={product.rating} readonly />
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">
-              5.0
+              {product.rating}
             </span>
           </div>
           <div className="flex items-center justify-between">

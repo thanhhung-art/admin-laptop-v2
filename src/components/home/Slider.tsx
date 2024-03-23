@@ -6,6 +6,7 @@ import ArrowPrevIcon from "@/icons/ArrowPrevIcon";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/lib/axios";
 import { GetFeaturedProducts } from "@/utils/keys";
+import Rating from "../Rating";
 
 const Slider = () => {
   const sliderPosition = useRef(1);
@@ -190,11 +191,15 @@ function Child({
       </div>
 
       <div className="w-full md:w-1/2">
-        <h3 className="text-center text-xl text-zinc-600 pb-2 md:pb-4">new</h3>
         <h1 className="text-2xl text-center text font-semibold pb-2">
           {productName}
         </h1>
-        <h2 className="text-center text-2xl pb-6">${productPrice}</h2>
+        <div className="flex justify-center mb-2">
+          <Rating value={rating} readonly />
+        </div>
+        <h2 className="text-center text-2xl pb-6">
+          $<b>{productPrice}</b>
+        </h2>
         <div className="flex justify-center mb-[0.9rem]">
           <button className="py-2 px-6 rounded-3xl bg-blue-500 text-white transform active:scale-95">
             Buy

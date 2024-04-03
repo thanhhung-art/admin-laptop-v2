@@ -11,10 +11,10 @@ interface IProps {
   };
 
   brand: string;
-  color: string;
+  colors: { color: string, quantity: number}[];
 }
 
-const ProductDetails = ({ configure, brand, color }: IProps) => {
+const ProductDetails = ({ configure, brand, colors }: IProps) => {
 
   if (!configure) {
     return <p>loading</p>
@@ -27,7 +27,6 @@ const ProductDetails = ({ configure, brand, color }: IProps) => {
           {Object.entries(configure)
             .concat([
               ["Brand", brand],
-              ["Color", color],
             ])
             .sort()
             .map(([key, value]) => {

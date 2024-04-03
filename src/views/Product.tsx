@@ -7,7 +7,13 @@ import { getProduct } from "@/lib/axios";
 import { GetProduct } from "@/utils/keys";
 import { useQuery } from "@tanstack/react-query";
 
-const ProductPage = ({ param }: { param: string }) => {
+const ProductPage = ({
+  param,
+  colorParam,
+}: {
+  param: string;
+  colorParam: string | undefined;
+}) => {
   const { data, isLoading } = useQuery([GetProduct, param], () =>
     getProduct(param)
   );
@@ -29,12 +35,14 @@ const ProductPage = ({ param }: { param: string }) => {
           price={data.data.price}
           rating={data.data.rating}
           _id={data.data._id}
+          colors={data.data.colors}
+          colorParam={colorParam}
         />
         <div className="flex flex-col md:flex-row gap-2 md:gap-4 max-w-7xl m-auto mb-8">
           <Reviews productId={param} />
           <ProductDetails
             brand={data.data.brand}
-            color={data.data.color}
+            colors={data.data.colors}
             configure={data.data.configure}
           />
         </div>

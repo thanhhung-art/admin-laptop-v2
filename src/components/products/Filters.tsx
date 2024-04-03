@@ -51,7 +51,13 @@ const Filters = ({
   handleSetFilter,
   handleSetPriceUpDown,
 }: {
-  handleSetFilter: (value: string) => void;
+  handleSetFilter: ({
+    brandOption,
+    filterOption,
+  }: {
+    brandOption?: string;
+    filterOption?: string;
+  }) => void;
   handleSetPriceUpDown: (value: "up" | "down" | "none") => void;
 }) => {
   return (
@@ -59,7 +65,7 @@ const Filters = ({
       <div className="">
         <ul className="flex gap-2 md:gap-8 px-4 overflow-x-auto mb-4 justify-between">
           {brands.map((tag) => (
-            <li key={tag} onClick={() => handleSetFilter(tag)}>
+            <li key={tag} onClick={() => handleSetFilter({ brandOption: tag })}>
               <h4 className="text-sm text-gray-700 cursor-pointer px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-full">
                 {tag.toUpperCase()}
               </h4>
@@ -78,7 +84,7 @@ const Filters = ({
                       handleSetPriceUpDown(
                         e.name === "Price up" ? "up" : "down"
                       )
-                  : () => handleSetFilter(e.name)
+                  : () => handleSetFilter({ filterOption: e.name })
               }
             >
               {e.icon}

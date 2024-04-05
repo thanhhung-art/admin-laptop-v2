@@ -1,4 +1,4 @@
-import { IProductInCart, IProductInCheckout } from "@/types/product";
+import { IProductInCart } from "@/types/product";
 import { create } from "zustand";
 
 export type TCartStore = {

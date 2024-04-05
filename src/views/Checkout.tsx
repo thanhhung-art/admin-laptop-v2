@@ -6,18 +6,10 @@ import ArrowBackIcon from "@/icons/ArrowBackIcon";
 import ListProducts from "@/components/checkout/ListProducts";
 import { useRouter } from "next/navigation";
 import { useGetProductsInCart } from "@/hooks/getProductsInCart";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/lib/axios";
-import { GetUser } from "@/utils/keys";
 
-interface IProps {
-  userId: string
-}
-
-const Checkout = ({ userId }: IProps) => {
+const Checkout = () => {
   const [isPurchased, setIsPurchased] = useState(false);
   const router = useRouter();
-  const { data } = useQuery([GetUser, userId], () => getUser(userId), { enabled: !!userId })
   const { products } = useGetProductsInCart()
 
   const totalPrice = useMemo(() => {
@@ -77,7 +69,6 @@ const Checkout = ({ userId }: IProps) => {
             <CheckoutForm
               totalPrice={totalPrice}
               setIsPurchased={setIsPurchased}
-              userInfo={data?.data}
             />
             {products && (
               <ListProducts

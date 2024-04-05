@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { useGetProductsInCart } from "@/hooks/getProductsInCart";
@@ -30,6 +31,7 @@ const ListProducts = () => {
               image={product.img}
               quantity={product.quantity}
               price={product.price}
+              color={product.color}
             />
           </li>
         ))}
@@ -46,4 +48,4 @@ const ListProducts = () => {
   );
 };
 
-export default ListProducts;
+export default (ListProducts);

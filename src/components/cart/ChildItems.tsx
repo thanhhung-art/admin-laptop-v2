@@ -1,46 +1,38 @@
 "use client";
 
 import useMobile from "@/hooks/isMobile";
-import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import Image from "next/image";
-import { useContext } from "react";
 import MinusIcon from "@/icons/MinusIcon";
 import PlusIcon from "@/icons/PlusIcon";
+import { useStore } from "@/providers/cartStore";
+import XMarkIcon from "@/icons/XMarkIcon";
 
 interface IChildProps {
-  id: string | undefined;
-  name: string | undefined;
-  image: string | undefined;
-  quantity: number | undefined;
-  price: number | undefined;
+  id?: string;
+  name?: string;
+  image?: string;
+  quantity?: number;
+  price?: number;
+  color?: string;
 }
 
-function ChildItem({ id, name, image, quantity, price }: IChildProps) {
+function ChildItem({ id, name, image, quantity, price, color }: IChildProps) {
   const { isMobile } = useMobile();
-  const { state, dispatch } = useContext(CartContext);
+  const { increaseQuantity, decreaseQuantity, removeProduct } = useStore();
 
   const handleIncreaseQuantity = () => {
-    if (id)
-      dispatch({
-        action: ACTIONS.INCREASE_QUANTITY,
-        payload: { productId: id },
-      });
+    if (id && color) increaseQuantity(id, color);
   };
 
   const handleDecreaseQuantity = () => {
-    if (id) {
-      if (state.products.find((p) => p.productId === id)?.quantity === 1) {
-        dispatch({
-          action: ACTIONS.REMOVE_FROM_CART,
-          payload: { productId: id },
-        });
-        return;
-      }
+    if (id && color) {
+      decreaseQuantity(id, color);
+    }
+  };
 
-      dispatch({
-        action: ACTIONS.DECREASE_QUANTITY,
-        payload: { productId: id },
-      });
+  const handleRemoveProduct = () => {
+    if (id && color) {
+      removeProduct(id, color);
     }
   };
 
@@ -61,7 +53,8 @@ function ChildItem({ id, name, image, quantity, price }: IChildProps) {
         <h3 className="text-sm">
           {isMobile ? name && name.slice(0, 130) + " ..." : name}
         </h3>
-        <h3 className="text-[12px] flex-1 md:mt-1">${price}</h3>
+        <h3 className="text-[12px]">${price}</h3>
+        <h3 className="text-[12px] flex-1 md:mt-1">{color}</h3>
         <div className="flex justify-between items-center mt-2 md:mt-0">
           <div className="flex">
             <button
@@ -80,6 +73,13 @@ function ChildItem({ id, name, image, quantity, price }: IChildProps) {
               className="border border-blue-500 rounded px-2 md:px-4 active:scale-95"
             >
               <MinusIcon w={14} h={14} />
+            </button>
+            <button
+              title="remove product"
+              className="border border-blue-500 rounded px-2 md:px-4 active:scale-95 ml-2"
+              onClick={handleRemoveProduct}
+            >
+              <XMarkIcon w={14} h={14} />
             </button>
           </div>
           <div>

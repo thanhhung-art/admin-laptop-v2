@@ -1,32 +1,37 @@
 "use client";
 import { getProduct } from "@/lib/axios";
-import { CartContext } from "@/providers/cartProvider";
+import { useStore } from "@/providers/cartStore";
 import { IProduct, IProductInCheckout } from "@/types/product";
 import { GetProduct } from "@/utils/keys";
 import { useQueries } from "@tanstack/react-query";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 
 export function useGetProductsInCart() {
-  const { state } = useContext(CartContext);
+  const { products } = useStore();
 
   const data = useQueries({
-    queries: state.products.map((product) => ({
+    queries: products.map((product) => ({
       queryKey: [GetProduct, product.productId],
-      queryFn: () => getProduct(product.productId),
+      queryFn: () => {
+        return getProduct(product.productId);
+      },
     })),
-  }).map((data) => data.data?.data);
+  }).map((data) => {
+    return data.data?.data;
+  });
 
   const memoProducts: IProductInCheckout[] = useMemo(() => {
-    const temp: IProductInCheckout[] = state.products.map((product) => {
+    const temp: IProductInCheckout[] = products.map((product) => {
       const productFound = data.find((p) => p?._id === product.productId);
       return {
         ...(productFound || ({ _id: product.productId } as IProduct)),
-        quantity: product.quantity ? product.quantity : 1,
+        color: product.color,
+        quantity: product.quantity,
       };
     });
 
     return temp;
-  }, [data, state.products]);
+  }, [data, products]);
 
   return { products: memoProducts };
 }

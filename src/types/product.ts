@@ -7,7 +7,7 @@ export interface IProduct {
   img: string;
   categories: string;
   rating: number;
-  color: string;
+  colors: { color: string, quantity: number}[];
   brand: string;
   weight: string;
   createdAt: Date;
@@ -29,10 +29,12 @@ export interface IProduct {
 
 export interface IProductInCart {
   productId: string;
-  quantity?: number;
+  color: string;
+  quantity: number;
 }
 export interface IProductInCheckout extends IProduct {
-  quantity: number
+  quantity: number;
+  color: string;
 }
 
 export interface IProductInOrder extends IProduct {

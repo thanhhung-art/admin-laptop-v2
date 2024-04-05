@@ -1,21 +1,13 @@
 "use client";
 import { Fetch } from "@/lib/axios";
-import { ACTIONS, CartContext } from "@/providers/cartProvider";
-import { IOrder } from "@/types/order";
+import { ICreateOrder, IOrder } from "@/types/order";
 import { useMutation } from "@tanstack/react-query";
-import {
-  Dispatch,
-  SetStateAction,
-  createRef,
-  useContext,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, createRef, useState } from "react";
 import { AES } from "crypto-js";
-import { IUser } from "@/types/user";
+import { useStore } from "@/providers/cartStore";
 interface IProps {
   totalPrice: number;
   setIsPurchased: Dispatch<SetStateAction<boolean>>;
-  userInfo: IUser | undefined;
 }
 interface IError {
   response: {
@@ -27,8 +19,8 @@ interface IError {
 
 const pass_secret = process.env.NEXT_PUBLIC_PASS_SECRET || "";
 
-const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
-  const { state, dispatch } = useContext(CartContext);
+const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
+  const { clearStore, products } = useStore();
   const username = createRef<HTMLInputElement>();
   const phone = createRef<HTMLInputElement>();
   const email = createRef<HTMLInputElement>();
@@ -52,7 +44,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
   });
 
   const createOrder = useMutation(
-    async (data: IOrder) => {
+    async (data: ICreateOrder) => {
       return Fetch.post("/orders", data);
     },
     {
@@ -108,20 +100,19 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
       note.current
     ) {
       createOrder.mutate({
-        userId: userInfo ? userInfo._id : "",
         username: username.current?.value,
         email: email.current.value || "",
         phone: phone.current.value,
         address: address.current.value,
         address2: address2.current.value || "",
-        products: state.products,
+        products: products,
         payment: handlePayment(),
         status: "pending",
         note: note.current.value || "",
         totalPrice,
       });
 
-      state.products.forEach((product) => {
+      products.forEach((product) => {
         productSold.mutate({
           pid: product.productId,
           sold: product.quantity || 0,
@@ -129,7 +120,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
       });
 
       setIsPurchased(true);
-      dispatch({ action: ACTIONS.CLEAR_CART });
+      clearStore();
     }
   };
 
@@ -150,8 +141,10 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
             autoComplete="false"
-            defaultValue={userInfo?.username || ""}
+            defaultValue={""}
             onFocus={() => handleRemoveError("username")}
+            pattern="[A-Za-z ]+"
+            title="Only alphabetic characters are allowed."
           />
           <div className="h-2">
             {error.username && (
@@ -169,7 +162,10 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             className="border border-gray-400 outline-none rounded w-full p-2"
             autoComplete="false"
             onFocus={() => handleRemoveError("phone")}
-            defaultValue={userInfo?.phone || ""}
+            defaultValue={""}
+            pattern="[0-9]+$"
+            title="type your phone"
+            min={10}
           />
           <div className="h-2">
             {error.phone && (
@@ -185,7 +181,8 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             type="email"
             className="border border-gray-400 outline-none rounded w-full p-2 invalid:border-red-500"
             autoComplete="false"
-            defaultValue={userInfo?.email || ""}
+            defaultValue={""}
+            title="type your email"
           />
           <div className="h-2">
             {error.email && (
@@ -202,7 +199,8 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
             onFocus={() => handleRemoveError("address")}
-            defaultValue={userInfo?.address || ""}
+            defaultValue={""}
+            title="type your address"
           />
           <div className="h-2">
             {error.address && (
@@ -217,7 +215,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
             ref={address2}
             type="text"
             className="border border-gray-400 outline-none rounded w-full p-2"
-            defaultValue={userInfo?.address2 || ""}
+            defaultValue={""}
           />
         </section>
         <section>
@@ -276,6 +274,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
                   className="border border-gray-400 outline-none rounded w-full py-1 px-2"
                   ref={name_on_card}
                   onFocus={() => handleRemoveError("payment")}
+                  title="type your card name"
                 />
                 <div className="h-2">
                   {error.payment && (
@@ -293,6 +292,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
                   className="border border-gray-400 outline-none rounded w-full py-1 px-2"
                   ref={credit_card_number}
                   onFocus={() => handleRemoveError("payment")}
+                  title="type your card number"
                 />
                 <div className="h-2">
                   {error.payment && (
@@ -312,6 +312,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
                   className="border border-gray-400 outline-none rounded w-full py-1 px-2"
                   ref={expiration}
                   onFocus={() => handleRemoveError("payment")}
+                  title="type your card expiration"
                 />
                 <div className="h-2">
                   {error.payment && (
@@ -329,6 +330,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
                   className="border border-gray-400 outline-none rounded w-full py-1 px-2"
                   ref={cvv}
                   onFocus={() => handleRemoveError("payment")}
+                  title="type your card cvv"
                 />
                 <div className="h-2">
                   {error.payment && (
@@ -350,6 +352,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased, userInfo }: IProps) => {
               placeholder="Note for seller"
               className="border border-gray-400 outline-none rounded w-full py-1 px-2"
               ref={note}
+              title="note for seller"
             />
           </div>
         </section>

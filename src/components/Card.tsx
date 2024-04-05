@@ -1,30 +1,37 @@
-import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import { IProduct } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
 import Rating from "./Rating";
+import { useStore } from "@/providers/cartStore";
+import { ReactNode, createRef, useState } from "react";
+import CheckIcon from "@/icons/CheckIcon";
 
 interface IProps {
   product: IProduct;
   letterQuantity: number;
 }
 const Card = ({ product, letterQuantity }: IProps) => {
-  const { state, dispatch } = useContext(CartContext);
+  const { products, addProduct, increaseQuantity } = useStore();
+  const [buttonText, setButtonText] = useState<string>("add to cart");
 
   const handleAddToCart = () => {
-    if (state.products.find((p) => p.productId === product._id)) {
-      dispatch({
-        action: ACTIONS.INCREASE_QUANTITY,
-        payload: { productId: product._id },
-      });
+    setButtonText("success!");
+
+    setTimeout(() => {
+      setButtonText("add to cart");
+    }, 1000);
+
+    if (
+      products.find(
+        (p) =>
+          p.productId === product._id && p.color === product.colors[0].color
+      )
+    ) {
+      increaseQuantity(product._id, product.colors[0].color);
       return;
     }
 
-    dispatch({
-      action: ACTIONS.ADD_TO_CART,
-      payload: { productId: product._id },
-    });
+    addProduct(product._id, product.colors[0].color);
   };
 
   return (
@@ -58,10 +65,10 @@ const Card = ({ product, letterQuantity }: IProps) => {
               ${product.price}
             </span>
             <button
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 outline-none"
               onClick={handleAddToCart}
             >
-              Add to cart
+              {buttonText}
             </button>
           </div>
         </div>

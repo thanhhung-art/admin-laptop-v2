@@ -37,8 +37,6 @@ const Modal = ({
 
   if (isLoading) return <div>loading</div>;
 
-  console.log(data);
-
   return (
     <>
       <section className="flex justify-center items-center">

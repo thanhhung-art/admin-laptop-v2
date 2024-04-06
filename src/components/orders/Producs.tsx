@@ -1,7 +1,5 @@
-import { getProduct } from "@/lib/axios";
+import UseGetProductsInOrder from "@/hooks/getProductsInOrder";
 import { IProductInCart } from "@/types/product";
-import { GetProduct } from "@/utils/keys";
-import { useQueries } from "@tanstack/react-query";
 import Image from "next/image";
 
 interface Iprops {
@@ -9,21 +7,7 @@ interface Iprops {
 }
 
 const Products = ({ products }: Iprops) => {
-  const data = useQueries({
-    queries: products.map((p) => ({
-      queryKey: [GetProduct, p.productId],
-      queryFn: async () => {
-        const product = await getProduct(p.productId);
-        return { ...product, quantity: p.quantity || 0 };
-      },
-    })),
-  }).map((res) => ({
-    _id: res.data?.data._id,
-    name: res.data?.data.name,
-    img: res.data?.data.img,
-    price: res.data?.data.price,
-    quantity: res.data?.quantity,
-  }));
+  const { data } = UseGetProductsInOrder(products);
 
   if (!data.some((product) => !!product)) {
     return <div>loading</div>;
@@ -49,8 +33,9 @@ const Products = ({ products }: Iprops) => {
             </div>
             <div>
               <h3 className="text-sm font-semibold">{product.name}</h3>
-              <h6 className="my-1">${product.price}</h6>
+              <h6 className="my-1 font-semibold">${product.price}</h6>
               <h6 className="text-sm">Quantity: x{product.quantity}</h6>
+              <h6 className="text-sm">{product.color}</h6>
             </div>
           </div>
         </div>

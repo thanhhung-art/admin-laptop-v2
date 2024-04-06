@@ -2,14 +2,20 @@
 import React, { createRef, useContext, useMemo, useRef } from "react";
 import Image from "next/image";
 import { IProductInCheckout } from "@/types/product";
+import { useStore } from "@/providers/cartStore";
 
 interface IProps {
-  products: IProductInCheckout[],
-  totalPrice: number
+  products: IProductInCheckout[];
+  totalPrice: number;
 }
 
 const ListProducts = ({ products, totalPrice }: IProps) => {
+  const { removeProduct } = useStore();
   const containerRef = createRef<HTMLDivElement>();
+
+  const handleRemoveProduct = (productid: string, color: string) => {
+    removeProduct(productid, color);
+  };
 
   return (
     <div
@@ -23,12 +29,24 @@ const ListProducts = ({ products, totalPrice }: IProps) => {
             className="flex gap-2 shadow rounded px-2 py-4 items-center"
             key={p._id || i}
           >
-            <div>{p.img && <Image src={p.img} alt="laptop" width={40} height={28} />}</div>
             <div>
-              <h5 className="text-[12px]">{p.name && p.name.slice(0, 40)}...</h5>
+              {p.img && (
+                <Image src={p.img} alt="laptop" width={40} height={28} />
+              )}
+            </div>
+            <div>
+              <h5 className="text-[12px]">
+                {p.name && p.name.slice(0, 40)}...
+              </h5>
               <p className="text-[12px] text-gray-600">${p.price}</p>
             </div>
             <h5 className="ml-auto">x{p.quantity}</h5>
+            <button
+              className="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white px-2 rounded"
+              onClick={() => handleRemoveProduct(p._id, p.color)}
+            >
+              x
+            </button>
           </li>
         ))}
       </ul>

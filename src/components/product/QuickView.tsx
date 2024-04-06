@@ -1,9 +1,9 @@
 "use client";
-import { ACTIONS, CartContext } from "@/providers/cartProvider";
 import Image from "next/image";
-import { useContext, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 import Rating from "../Rating";
 import { useRouter } from "next/navigation";
+import { useStore } from "@/providers/cartStore";
 
 interface IProps {
   image: string;
@@ -23,17 +23,31 @@ const QuickView = ({
   colors,
   colorParam,
 }: IProps) => {
-  const { dispatch } = useContext(CartContext);
+  const { addProduct, products } = useStore();
   const router = useRouter();
   const currColor = useRef(colorParam || "");
+  const color = useMemo(() => {
+    return colorParam ? colorParam : colors[0].color;
+  }, [colorParam, colors]);
 
   const handleAddToCart = () => {
-    dispatch({ action: ACTIONS.ADD_TO_CART, payload: { productId: _id, color: currColor.current } });
+    addProduct(_id, color);
   };
 
   const handleSetSearchParams = (value: string) => {
     router.replace(`?color=${value}`);
     currColor.current = value;
+  };
+
+  const handleBuyNow = () => {
+    if (
+      !products.find(
+        (product) => product.color === color && product.productId === _id
+      )
+    ) {
+      addProduct(_id, colorParam ? colorParam : colors[0].color);
+    }
+    router.push("/checkout");
   };
 
   return (
@@ -62,9 +76,11 @@ const QuickView = ({
         </div>
 
         <div>
-          {colors.map(({ color, quantity }) => (
+          {colors.map(({ color }) => (
             <span
-              className={`mr-2 px-2 py-1 rounded text-white text-sm cursor-pointer bg-blue-500 hover:bg-blue-600 active:bg-blue-700`}
+              className={`mr-2 px-2 py-1 rounded text-white text-sm cursor-pointer ${
+                colorParam === color ? "bg-blue-700" : "bg-blue-500"
+              } hover:bg-blue-600 active:bg-blue-700`}
               key={color}
               onClick={() => handleSetSearchParams(color)}
             >
@@ -85,7 +101,10 @@ const QuickView = ({
           >
             ADD TO CARD
           </button>
-          <button className="block w-full bg-blue-500 hover:bg-blue-600 mt-2 rounded-md py-2 transform active:scale-95 text-white">
+          <button
+            onClick={handleBuyNow}
+            className="block w-full bg-blue-500 hover:bg-blue-600 mt-2 rounded-md py-2 transform active:scale-95 text-white"
+          >
             BUY NOW
           </button>
         </div>

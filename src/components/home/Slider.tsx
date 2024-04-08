@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/lib/axios";
 import { GetFeaturedProducts } from "@/utils/keys";
 import Rating from "../Rating";
+import SliderPlaceholder from "../placeholders/slider/sliderPlaceholder";
 
 const Slider = () => {
   const sliderPosition = useRef(1);
@@ -100,7 +101,7 @@ const Slider = () => {
     };
   });
 
-  if (isLoading) return <div>loading</div>;
+  if (isLoading) return <SliderPlaceholder />;
 
   return (
     <section className="relative max-w-7xl m-auto bg-white rounded-2xl shadow-md py-8 px-8">

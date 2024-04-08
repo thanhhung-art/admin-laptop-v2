@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Rating from "./Rating";
 import { useStore } from "@/providers/cartStore";
-import { ReactNode, createRef, useState } from "react";
-import CheckIcon from "@/icons/CheckIcon";
+import { useState } from "react";
 
 interface IProps {
   product: IProduct;
@@ -36,11 +35,11 @@ const Card = ({ product, letterQuantity }: IProps) => {
 
   return (
     <div className={`max-w-2xl mx-auto w-[308px]`}>
-      <div className="bg-white shadow-md rounded-lg max-w-sm  dark:border-gray-700">
+      <div className="bg-white shadow-md rounded-lg max-w-sm  dark:border-gray-700 p-5">
         <Link href={`/product/${product._id}`}>
-          <div className={`relative h-52`}>
+          <div className={`relative h-[200px]`}>
             <Image
-              className="rounded-t-lg p-8"
+              className="rounded-t-lg pb-5"
               src={product.img}
               alt="product image"
               fill
@@ -48,7 +47,7 @@ const Card = ({ product, letterQuantity }: IProps) => {
             />
           </div>
         </Link>
-        <div className="px-5 pb-5">
+        <div className="">
           <Link href={`/product/${product._id}`}>
             <h3
               className="font-semibold text-md tracking-tight min-h-[143.95px]"

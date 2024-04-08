@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetTopSellProducts } from "@/utils/keys";
 import { getProducts } from "@/lib/axios";
 import Card from "../Card";
+import CardPlaceholder from "../placeholders/slider/cardPlaceholder";
 
 interface IProps {
   componentName: string;
@@ -15,12 +16,11 @@ interface IProps {
 
 const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
   const containerRef = createRef<HTMLDivElement>();
-  const containerElemRef = createRef<HTMLDivElement>();
   const nextBtn = createRef<HTMLSpanElement>();
   const prevBtn = createRef<HTMLSpanElement>();
   const { isMobile, isTable } = useMobile();
 
-  const { data, isLoading } = useQuery([queryKey], () =>
+  const { data } = useQuery([queryKey], () =>
     queryKey === GetTopSellProducts
       ? getProducts("top_sell_products")
       : getProducts("top_rating_products")
@@ -76,7 +76,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
   };
 
   const products = useMemo(() => {
-    if (!data) return <></>;
+    if (!data) return [1, 2, 3, 4].map((e) => <CardPlaceholder key={e} />);
 
     return data.data.map((p) => (
       <div key={p._id} className="">
@@ -84,8 +84,6 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
       </div>
     ));
   }, [data]);
-
-  if (isLoading) return <div>loading</div>;
 
   return (
     <section className="max-w-7xl m-auto pb-16 md:pb-24 relative">

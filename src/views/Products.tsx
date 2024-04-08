@@ -20,7 +20,7 @@ const ProductsPage = ({
   const [currentPrice, setCurrentPrice] = useState<"up" | "down" | "none">(
     "none"
   );
-  const { data, isLoading, hasNextPage, fetchNextPage, refetch } =
+  const { data, isLoading, hasNextPage, fetchNextPage } =
     useInfiniteQuery(
       [GetProductsInfinity, brand, filter],
       ({ pageParam = 0 }) => getProductsInfinity(pageParam, brand, filter),

@@ -25,7 +25,7 @@ const Products = ({ pages, isLoading, filter, currentPrice }: IProps) => {
   }, [pages]);
 
   if (products.length === 0)
-    return <div className="text-center text-white">no products found</div>;
+    return <div className="text-center text-white">No products found</div>;
 
   return (
     <ul className="max-w-7xl m-auto grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 justify-between mt-4">
@@ -37,7 +37,13 @@ const Products = ({ pages, isLoading, filter, currentPrice }: IProps) => {
         })
         .map((product) => (
           <li key={product._id}>
-            <Card product={product} letterQuantity={180} />
+            <Card
+              product={product}
+              letterQuantity={120}
+              imageHeight={{ sm: 120 }}
+              type="small"
+              fontSize={{ sm: "text-sm", md: "text-base" }}
+            />
           </li>
         ))}
     </ul>

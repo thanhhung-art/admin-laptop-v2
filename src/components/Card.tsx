@@ -8,8 +8,30 @@ import { useState } from "react";
 interface IProps {
   product: IProduct;
   letterQuantity: number;
+  imageWidth?: {
+    sm?: number;
+    md?: number;
+    lg?: number;
+  };
+  imageHeight?: {
+    sm?: number;
+    md?: number;
+    lg?: number;
+  };
+  type?: "small" | "normal";
+  fontSize?: {
+    sm?: string;
+    md?: string;
+    lg?: string;
+  };
 }
-const Card = ({ product, letterQuantity }: IProps) => {
+const Card = ({
+  product,
+  letterQuantity,
+  imageHeight,
+  type = "normal",
+  fontSize,
+}: IProps) => {
   const { products, addProduct, increaseQuantity } = useStore();
   const [buttonText, setButtonText] = useState<string>("add to cart");
 
@@ -34,10 +56,16 @@ const Card = ({ product, letterQuantity }: IProps) => {
   };
 
   return (
-    <div className={`max-w-2xl mx-auto md:w-[308px] basis-full shrink-0 grow-0`}>
-      <div className="bg-white shadow-md rounded-lg  dark:border-gray-700 p-5">
+    <div
+      className={`max-w-2xl mx-auto md:w-[308px] basis-full shrink-0 grow-0`}
+    >
+      <div className="bg-white shadow-md rounded-lg dark:border-gray-700 p-5">
         <Link href={`/product/${product._id}`}>
-          <div className={`relative h-[200px] max-w-[300px] m-auto`}>
+          <div
+            className={`relative min-h-[${
+              imageHeight?.sm || 200
+            }px] max-w-[300px] m-auto`}
+          >
             <Image
               className="rounded-t-lg pb-5"
               src={product.img}
@@ -50,16 +78,22 @@ const Card = ({ product, letterQuantity }: IProps) => {
         <div className="">
           <Link href={`/product/${product._id}`}>
             <h3
-              className="font-semibold text-md tracking-tight min-h-[143.95px]"
+              className={`font-semibold ${fontSize?.sm || "text-base"} md:${
+                fontSize?.md
+              } md:text-base tracking-tight min-h-[143.95px]`}
               title={product.name}
             >
               {product.name.slice(0, letterQuantity)}
             </h3>
           </Link>
-          <div className="flex items-center mt-2.5 mb-5">
+          <div className={`flex items-center mt-2.5 mb-5 ${type === 'small' && 'justify-center'}`}>
             <Rating value={product.rating} readonly />
           </div>
-          <div className="flex items-center justify-between">
+          <div
+            className={`flex items-center justify-between ${
+              type === "small" && "flex-col"
+            }`}
+          >
             <span className="text-xl font-bold text-gray-900">
               ${product.price}
             </span>

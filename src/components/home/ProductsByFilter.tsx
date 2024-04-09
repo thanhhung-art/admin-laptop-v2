@@ -79,8 +79,12 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
     if (!data) return [1, 2, 3, 4].map((e) => <CardPlaceholder key={e} />);
 
     return data.data.map((p) => (
-      <Card product={p} key={p._id} letterQuantity={180} />
-      //<div key={p._id} className="h-64 w-[calc(100vw-2rem)] bg-white"></div>
+      <Card
+        product={p}
+        key={p._id}
+        letterQuantity={180}
+        imageHeight={{ sm: 200 }}
+      />
     ));
   }, [data]);
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { createRef, useContext, useMemo, useRef } from "react";
+import React, { createRef } from "react";
 import Image from "next/image";
 import { IProductInCheckout } from "@/types/product";
 import { useStore } from "@/providers/cartStore";

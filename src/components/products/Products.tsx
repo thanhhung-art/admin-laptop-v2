@@ -40,7 +40,7 @@ const Products = ({ pages, isLoading, filter, currentPrice }: IProps) => {
             <Card
               product={product}
               letterQuantity={120}
-              imageHeight={{ sm: 120 }}
+              imageHeight={{ sm: 'min-h-[130px]', md: 'min-h-[200px]' }}
               type="small"
               fontSize={{ sm: "text-sm", md: "text-base" }}
             />

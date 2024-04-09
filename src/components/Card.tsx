@@ -9,17 +9,23 @@ interface IProps {
   product: IProduct;
   letterQuantity: number;
   imageWidth?: {
-    sm?: number;
-    md?: number;
-    lg?: number;
+    sm?: string;
+    md?: string;
+    lg?: string;
   };
   imageHeight?: {
-    sm?: number;
-    md?: number;
-    lg?: number;
+    sm?: string;
+    md?: string;
+    lg?: string;
   };
   type?: "small" | "normal";
   fontSize?: {
+    sm?: string;
+    md?: string;
+    lg?: string;
+  };
+  starsCenter?: boolean;
+  flexBasis?: {
     sm?: string;
     md?: string;
     lg?: string;
@@ -28,9 +34,11 @@ interface IProps {
 const Card = ({
   product,
   letterQuantity,
-  imageHeight,
+  imageHeight = { sm: "min-h-[130px]", md: "min-h-[200px]" },
   type = "normal",
   fontSize,
+  starsCenter,
+  flexBasis = { sm: "basis-full", md: "basis-none" },
 }: IProps) => {
   const { products, addProduct, increaseQuantity } = useStore();
   const [buttonText, setButtonText] = useState<string>("add to cart");
@@ -57,14 +65,12 @@ const Card = ({
 
   return (
     <div
-      className={`max-w-2xl mx-auto md:w-[308px] basis-full shrink-0 grow-0`}
+      className={`max-w-2xl mx-auto ${flexBasis.sm} md:basis-none md:w-[308px] shrink-0 grow-0`}
     >
       <div className="bg-white shadow-md rounded-lg dark:border-gray-700 p-5">
         <Link href={`/product/${product._id}`}>
           <div
-            className={`relative min-h-[${
-              imageHeight?.sm || 200
-            }px] max-w-[300px] m-auto`}
+            className={`relative ${imageHeight.sm} md:${imageHeight.md} max-w-[300px] m-auto`}
           >
             <Image
               className="rounded-t-lg pb-5"
@@ -86,11 +92,15 @@ const Card = ({
               {product.name.slice(0, letterQuantity)}
             </h3>
           </Link>
-          <div className={`flex items-center mt-2.5 mb-5 ${type === 'small' && 'justify-center'}`}>
+          <div
+            className={`flex items-center mt-2.5 mb-5 ${
+              starsCenter && "justify-center"
+            }`}
+          >
             <Rating value={product.rating} readonly />
           </div>
           <div
-            className={`flex items-center justify-between ${
+            className={`flex items-center justify-between md:flex-row ${
               type === "small" && "flex-col"
             }`}
           >

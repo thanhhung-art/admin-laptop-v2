@@ -22,6 +22,8 @@ module.exports = {
       },
       flexBasis: {
         "full": "100%",
+        "1/4": "25%",
+        "none": "auto",
       },
     },
   },

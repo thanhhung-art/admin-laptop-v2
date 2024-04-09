@@ -78,7 +78,7 @@ function Child({
 
         {message !== "" && <p className="text-sm">{message}</p>}
 
-        {images?.length && images.length > 0 && (
+        {images && images.length > 0 && (
           <div className="mt-2 flex gap-1">
             {images.map((image, i) => (
               <div key={i} className="relative w-16 h-16 mb-1">
@@ -93,7 +93,7 @@ function Child({
           </div>
         )}
 
-        <p className="text-[12px] text-gray-600">Reviewed {dateCreated}</p>
+        <p className="text-[12px] text-gray-600 mt-1">Reviewed {dateCreated}</p>
       </div>
     </li>
   );

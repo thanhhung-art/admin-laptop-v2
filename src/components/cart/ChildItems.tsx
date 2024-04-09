@@ -38,7 +38,7 @@ function ChildItem({ id, name, image, quantity, price, color }: IChildProps) {
 
   return (
     <div className="flex gap-4">
-      <div className="min-w-[220px] w-56 h-40 relative">
+      <div className="w-[120px] h-[70px] relative">
         {image && (
           <Image
             src={image}
@@ -50,13 +50,13 @@ function ChildItem({ id, name, image, quantity, price, color }: IChildProps) {
         )}
       </div>
       <div className="flex flex-col w-full">
-        <h3 className="text-sm">
+        <h3 className="text-[12px] max-w-[240px] md:max-w-none md:text-[14px]">
           {isMobile ? name && name.slice(0, 130) + " ..." : name}
         </h3>
-        <h3 className="text-[12px]">${price}</h3>
-        <h3 className="text-[12px] flex-1 md:mt-1">{color}</h3>
+        <h3 className="text-[12px] font-semibold">${price}</h3>
+        <h3 className="text-[12px] flex-1 mb-1">{color}</h3>
         <div className="flex justify-between items-center mt-2 md:mt-0">
-          <div className="flex">
+          <div className="flex flex-1">
             <button
               title="increase quantity"
               onClick={handleIncreaseQuantity}
@@ -83,7 +83,7 @@ function ChildItem({ id, name, image, quantity, price, color }: IChildProps) {
             </button>
           </div>
           <div>
-            <h3 className="text-md font-semibold">
+            <h3 className="text-sm md:text-base ml-auto font-semibold">
               ${price && quantity && Number((price * quantity).toFixed(2))}
             </h3>
           </div>

@@ -30,6 +30,7 @@ interface IProps {
     md?: string;
     lg?: string;
   };
+  colorsCenter?: boolean;
 }
 const Card = ({
   product,
@@ -38,10 +39,12 @@ const Card = ({
   type = "normal",
   fontSize,
   starsCenter,
+  colorsCenter,
   flexBasis = { sm: "basis-full", md: "basis-none" },
 }: IProps) => {
   const { products, addProduct, increaseQuantity } = useStore();
   const [buttonText, setButtonText] = useState<string>("add to cart");
+  const [currColor, setCurrColor] = useState(product.colors[0].color);
 
   const handleAddToCart = () => {
     setButtonText("success!");
@@ -51,16 +54,17 @@ const Card = ({
     }, 1000);
 
     if (
-      products.find(
-        (p) =>
-          p.productId === product._id && p.color === product.colors[0].color
-      )
+      products.find((p) => p.productId === product._id && p.color === currColor)
     ) {
-      increaseQuantity(product._id, product.colors[0].color);
+      increaseQuantity(product._id, currColor);
       return;
     }
 
-    addProduct(product._id, product.colors[0].color);
+    addProduct(product._id, currColor);
+  };
+
+  const handleSetCurrColor = (color: string) => {
+    setCurrColor(color);
   };
 
   return (
@@ -93,11 +97,30 @@ const Card = ({
             </h3>
           </Link>
           <div
-            className={`flex items-center mt-2.5 mb-5 ${
+            className={`flex items-center mt-2.5 mb-2 md:justify-start ${
               starsCenter && "justify-center"
             }`}
           >
             <Rating value={product.rating} readonly />
+          </div>
+          <div
+            className={`flex flex-wrap gap-2 md:justify-start ${
+              colorsCenter && "justify-center"
+            }`}
+          >
+            {product.colors.map(({ color }) => (
+              <span
+                key={color}
+                className={`${
+                  color === currColor
+                    ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+                    : "bg-slate-400 hover:bg-slate-500 active:bg-slate-600"
+                } px-2 py-1 rounded text-white cursor-pointer text-[12px]`}
+                onClick={() => handleSetCurrColor(color)}
+              >
+                {color}
+              </span>
+            ))}
           </div>
           <div
             className={`flex items-center justify-between md:flex-row ${

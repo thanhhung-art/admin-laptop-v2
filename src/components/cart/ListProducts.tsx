@@ -6,7 +6,7 @@ import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 import ChildItem from "./ChildItems";
 
 const ListProducts = () => {
-  const { products } = useGetProductsInCart()
+  const { products } = useGetProductsInCart();
 
   const totalAmount = useMemo(() => {
     return products.reduce((acc, product) => {
@@ -24,7 +24,10 @@ const ListProducts = () => {
     <div>
       <ul className="p-4 flex flex-col gap-4">
         {products.map((product) => (
-          <li key={product._id} className="shadow-md p-2 rounded">
+          <li
+            key={product._id + product.color}
+            className="shadow-md p-2 rounded"
+          >
             <ChildItem
               id={product._id}
               name={product.name}
@@ -48,4 +51,4 @@ const ListProducts = () => {
   );
 };
 
-export default (ListProducts);
+export default ListProducts;

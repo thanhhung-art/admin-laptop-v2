@@ -40,8 +40,6 @@ const Products = ({ pages, isLoading, filter, currentPrice }: IProps) => {
             <Card product={product} letterQuantity={180} />
           </li>
         ))}
-      {isLoading &&
-        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((e) => <CardPlaceholder key={e} />)}
     </ul>
   );
 };

@@ -34,10 +34,10 @@ const Card = ({ product, letterQuantity }: IProps) => {
   };
 
   return (
-    <div className={`max-w-2xl mx-auto w-[308px]`}>
-      <div className="bg-white shadow-md rounded-lg max-w-sm  dark:border-gray-700 p-5">
+    <div className={`max-w-2xl mx-auto md:w-[308px] basis-full shrink-0 grow-0`}>
+      <div className="bg-white shadow-md rounded-lg  dark:border-gray-700 p-5">
         <Link href={`/product/${product._id}`}>
-          <div className={`relative h-[200px]`}>
+          <div className={`relative h-[200px] max-w-[300px] m-auto`}>
             <Image
               className="rounded-t-lg pb-5"
               src={product.img}

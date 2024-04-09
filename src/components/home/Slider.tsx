@@ -180,19 +180,19 @@ function Child({
       id={`slider_child_${index}`}
     >
       <div className="w-full md:w-1/2 flex justify-center items-center p-4">
-        <div className="relative h-[370px] w-[570px]">
+        <div className="relative h-[200px] md:h-[370px] w-[570px]">
           <Image
             src={srcImg}
             alt="test image"
             fill
             priority
-            sizes="(max-width: 768px) width: 100%, (max-width: 1200px) width: 100%^"
+            sizes="(max-width: 768px) width: 100%, (max-width: 1200px) width: 100%"
           />
         </div>
       </div>
 
       <div className="w-full md:w-1/2">
-        <h1 className="text-2xl text-center text font-semibold pb-2">
+        <h1 className="text-lg md:text-2xl text-center text font-semibold pb-2">
           {productName}
         </h1>
         <div className="flex justify-center mb-2">

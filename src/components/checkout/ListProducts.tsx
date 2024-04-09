@@ -29,9 +29,9 @@ const ListProducts = ({ products, totalPrice }: IProps) => {
             className="flex gap-2 shadow rounded px-2 py-4 items-center"
             key={p._id || i}
           >
-            <div>
+            <div className="relative w-[80px] h-[40px]">
               {p.img && (
-                <Image src={p.img} alt="laptop" width={40} height={28} />
+                <Image src={p.img} alt="laptop" fill />
               )}
             </div>
             <div>

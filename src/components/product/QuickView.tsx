@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useContext, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import Rating from "../Rating";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/providers/cartStore";

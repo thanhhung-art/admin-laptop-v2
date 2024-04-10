@@ -83,7 +83,7 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
         product={p}
         key={p._id}
         letterQuantity={180}
-        imageHeight={{ sm: 'min-h-[200px]', md: 'min-h-[200px]' }}
+        imageHeight={{ sm: 'min-h-[180px]', md: 'min-h-[200px]' }}
         flexBasis={{ sm: 'basis-full', md: 'basis-none' }}
       />
     ));

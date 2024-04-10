@@ -83,7 +83,7 @@ const OrdersPage = () => {
   }, [phoneRef, phone]);
 
   return (
-    <div className="max-w-7xl m-auto my-8">
+    <div className="max-w-7xl m-auto my-8 px-4">
       <section>
         <div className="mb-6 bg-white rounded flex">
           <input
@@ -154,7 +154,7 @@ const OrdersPage = () => {
                         <h3 className="font-semibold text-lg">
                           Order #{order._id?.slice(0, 10)}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-[12px] md:text-sm text-gray-600">
                           Order placed {hours}: {minutes} - {dateReformated}
                         </p>
                       </div>

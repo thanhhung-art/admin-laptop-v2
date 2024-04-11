@@ -187,6 +187,7 @@ function Child({
             fill
             priority
             sizes="(max-width: 768px) width: 100%, (max-width: 1200px) width: 100%"
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>

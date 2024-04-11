@@ -82,6 +82,7 @@ const Card = ({
               alt="product image"
               fill
               sizes="(max-width: 768px) 100%, (max-width: 1200px) 100%"
+              style={{ objectFit: "contain" }}
             />
           </div>
         </Link>

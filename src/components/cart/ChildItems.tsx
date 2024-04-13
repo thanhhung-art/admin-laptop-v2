@@ -46,6 +46,7 @@ function ChildItem({ id, name, image, quantity, price, color }: IChildProps) {
             fill
             style={{ objectFit: "contain" }}
             priority
+            sizes="(max-width: 768px) 100%, (max-width: 1200px) 100%"
           />
         )}
       </div>

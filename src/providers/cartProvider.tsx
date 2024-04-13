@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useStore } from "./cartStore";
 
 // provider
@@ -15,5 +15,5 @@ export default function CartProvider({
     // eslint-disable-next-line
   }, []);
 
-  return <Fragment>{children}</Fragment>;
+  return <>{children}</>;
 }

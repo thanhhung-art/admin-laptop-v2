@@ -46,7 +46,7 @@ const Search = () => {
         <SearchIcon w={20} h={20} />
       </span>
       {searchResults.length > 0 && openResults && (
-        <ul className="absolute flex flex-col gap-2 z-50 top-full bg-white right-0 left-0 p-2 text-black rounded shadow-lg border-t-gray-200 border-t-2 z-50">
+        <ul className="absolute flex flex-col gap-2 top-full bg-white right-0 left-0 p-2 text-black rounded shadow-lg border-t-gray-200 border-t-2 z-50">
           {searchResults.map((p) => (
             <li
               key={p._id}

@@ -61,6 +61,7 @@ const QuickView = ({
               style={{ objectFit: "contain" }}
               alt="laptop"
               priority
+              sizes="(max-width: 768px) 100%, (max-width: 1200px) 100%"
             />
           )}
         </div>

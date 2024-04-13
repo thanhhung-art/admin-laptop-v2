@@ -112,7 +112,7 @@ const Slider = () => {
         {/* arrow left */}
         {showPrevBtn && (
           <div
-            className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full z-50"
+            className="absolute transform -translate-y-1/2 top-1/2 p-2 bg-slate-100 hover:bg-slate-300 cursor-pointer rounded-full z-40"
             onClick={handlePrev}
             ref={prevBtn}
           >

@@ -18,7 +18,7 @@ const ListProducts = () => {
 
   if (!products) return <div>error</div>;
 
-  if (products.length === 0) return <div>nothing to show</div>;
+  if (products.length === 0) return <div className="py-2 text-center">nothing to show</div>;
 
   return (
     <div>

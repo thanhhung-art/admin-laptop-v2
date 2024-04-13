@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useGetProductsInCart } from "@/hooks/getProductsInCart";
 import ChildItem from "./ChildItems";

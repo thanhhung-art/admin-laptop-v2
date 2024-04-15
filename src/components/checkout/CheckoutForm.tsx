@@ -1,6 +1,6 @@
 "use client";
 import { Fetch } from "@/lib/axios";
-import { ICreateOrder, IOrder } from "@/types/order";
+import { ICreateOrder } from "@/types/order";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, createRef, useState } from "react";
 import { AES } from "crypto-js";

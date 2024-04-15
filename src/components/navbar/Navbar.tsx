@@ -1,12 +1,8 @@
 import Link from "next/link";
 import Search from "./Search";
 import Cart from "./Cart";
-import { cookies } from "next/headers";
-import UserIcon from "@/icons/UserIcon";
 
 const Navbar = () => {
-  const cookieStore = cookies();
-
   return (
     <nav className="p-4 md:p-5 bg-sky-700 text-white w-full">
       <ul className="flex justify-between items-center gap-2 flex-wrap md:gap-8 lg:gap-16">
@@ -30,15 +26,9 @@ const Navbar = () => {
 
         <li className="">
           <div>
-            {cookieStore.get("authtoken") ? (
-              <Link href="/profile">
-                <UserIcon w={50} h={50} />
-              </Link>
-            ) : (
-              <Link href='/orders'>
-                <p>orders</p>
-              </Link>
-            )}
+            <Link href="/orders">
+              <p>orders</p>
+            </Link>
           </div>
         </li>
       </ul>

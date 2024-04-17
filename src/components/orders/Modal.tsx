@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetReviewsInOrder } from "@/utils/keys";
 import { getReviewsInOrder } from "@/lib/axios";
-import { IReview, IReviewFull } from "@/types/reviews";
+import { IReviewFull } from "@/types/reviews";
 
 interface IProps {
   handleCloseModal: () => void;

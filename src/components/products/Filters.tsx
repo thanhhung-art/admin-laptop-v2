@@ -1,11 +1,6 @@
 "use client";
 
-import GamingIcon from "@/icons/GamingIcon";
-import GraphicsIcon from "@/icons/GraphicsIcon";
-import ThinLightIcon from "@/icons/ThinLightIcon";
-import StudyIcon from "@/icons/StudyIcon";
-import ArrowUpIcon from "@/icons/ArrowUpIcon";
-import ArrowDownIcon from "@/icons/ArrowDownIcon";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const brands = [
   "all",
@@ -20,53 +15,74 @@ const brands = [
   "microsoft",
 ];
 
-const curatedCollections = [
-  {
-    name: "Gaming",
-    icon: <GamingIcon w={20} h={20} />,
-  },
-  {
-    name: "Office/study",
-    icon: <StudyIcon w={20} h={20} />,
-  },
-  {
-    name: "Graphic",
-    icon: <GraphicsIcon w={20} h={20} />,
-  },
-  {
-    name: "Thin/light",
-    icon: <ThinLightIcon w={20} h={20} />,
-  },
-  {
-    name: "Price up",
-    icon: <ArrowUpIcon w={20} h={20} />,
-  },
-  {
-    name: "Price down",
-    icon: <ArrowDownIcon w={20} h={20} />,
-  },
+const categories = [
+  "all",
+  "gaming",
+  "office/study",
+  "graphic",
+  "thin/light",
+  "4k",
+  "2k",
+  "oled",
+  "amd",
+  "intel",
 ];
 
-const Filters = ({
-  handleSetFilter,
-  handleSetPriceUpDown,
-}: {
-  handleSetFilter: ({
-    brandOption,
-    filterOption,
+const Filters = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const brandParam = searchParams.get("brand");
+  const categoryParam = searchParams.get("category");
+
+  const handleSetFilter1 = ({
+    brand,
+    category,
   }: {
-    brandOption?: string;
-    filterOption?: string;
-  }) => void;
-  handleSetPriceUpDown: (value: "up" | "down" | "none") => void;
-}) => {
+    brand?: string;
+    category?: string;
+  }) => {
+    let queryParams: string[] = [];
+
+    if (brand) {
+      if (categoryParam)
+        queryParams.push(`category=${encodeURIComponent(categoryParam)}`);
+      if (brand !== "all") {
+        queryParams.push(`brand=${brand}`);
+        router.replace(`?${queryParams.join("&")}`);
+        return;
+      } else {
+        router.replace(`?${queryParams.length > 0 ? queryParams.join() : ""}`);
+        return;
+      }
+    }
+
+    if (category) {
+      if (brandParam)
+        queryParams.push(`brand=${encodeURIComponent(brandParam)}`);
+      if (category !== "all") {
+        queryParams.push(`category=${category}`);
+        router.replace(`?${queryParams.join("&")}`);
+        return;
+      } else {
+        router.replace(`?${queryParams.length > 0 ? queryParams.join() : ""}`);
+        return;
+      }
+    }
+  };
+
   return (
     <section className="max-w-7xl m-auto my-2 bg-white rounded p-4">
       <div className="">
-        <ul className="flex gap-2 md:gap-8 px-4 overflow-x-auto mb-4 justify-between">
+        <ul className="flex flex-wrap gap-2 md:gap-8 px-4 overflow-x-auto justify-between mb-4">
           {brands.map((tag) => (
-            <li key={tag} onClick={() => handleSetFilter({ brandOption: tag })}>
-              <h4 className="text-sm text-gray-700 cursor-pointer px-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-full">
+            <li key={tag} onClick={() => handleSetFilter1({ brand: tag })}>
+              <h4
+                className={`text-sm text-gray-700 cursor-pointer px-4 ${
+                  tag === brandParam || tag === "all"
+                    ? "bg-gray-200"
+                    : "bg-gray-100"
+                } hover:bg-gray-200 active:bg-gray-300 rounded-full`}
+              >
                 {tag.toUpperCase()}
               </h4>
             </li>
@@ -74,21 +90,18 @@ const Filters = ({
         </ul>
 
         <ul className="flex justify-between overflow-x-auto gap-2">
-          {curatedCollections.map((e, i) => (
-            <li
-              key={i}
-              className="flex gap-2 items-center bg-gray-100 hover:bg-gray-200 active:bg-gray-300 rounded-full px-4 cursor-pointer"
-              onClick={
-                e.name === "Price up" || e.name === "Price down"
-                  ? () =>
-                      handleSetPriceUpDown(
-                        e.name === "Price up" ? "up" : "down"
-                      )
-                  : () => handleSetFilter({ filterOption: e.name })
-              }
-            >
-              {e.icon}
-              <h4 className="text-sm">{e.name}</h4>
+          {categories.map((e, i) => (
+            <li key={i} className="">
+              <h4
+                className={`text-sm ${
+                  e === categoryParam || e === "all"
+                    ? "bg-gray-200"
+                    : "bg-gray-100"
+                } hover:bg-gray-200 active:bg-gray-300 cursor-pointer px-4 rounded-full text-gray-700`}
+                onClick={() => handleSetFilter1({ category: e })}
+              >
+                {e.toUpperCase()}
+              </h4>
             </li>
           ))}
         </ul>

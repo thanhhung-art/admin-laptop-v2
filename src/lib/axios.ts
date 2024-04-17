@@ -22,11 +22,11 @@ export const getProducts = async (
 export const getProductsInfinity = async (
   page: number,
   brand?: string,
-  filter?: string
+  category?: string
 ) => {
   let temp = "";
   if (brand) temp += `&brand=${brand}`;
-  if (filter) temp += `&filter=${filter}`;
+  if (category) temp += `&category=${category}`;
   const res = await Fetch(`/products?page=${page}${temp}`);
   return res.data as unknown as {
     data: { products: IProduct[]; nextPage: number; lastPage: number };
@@ -70,7 +70,7 @@ export const getOrders = async () => {
 };
 
 export const getOrdersByPhone = async (phone: string | null) => {
-  const res = await Fetch(`/orders?query=${phone}`);
+  const res = await Fetch(`/orders/phone?phone=${phone}`);
   return res.data as unknown as { data: IOrder[]; msg: string };
 };
 

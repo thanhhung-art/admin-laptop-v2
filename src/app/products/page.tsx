@@ -12,20 +12,20 @@ const Page = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const queryBrand = searchParams["brand"];
-  const queryFilter = searchParams["filter"];
+  const queryCategory = searchParams["category"];
 
   const queryClientLocal = queryClient();
   await queryClientLocal.prefetchInfiniteQuery(
-    [GetProductsInfinity, queryBrand, queryFilter],
+    [GetProductsInfinity, queryBrand, queryCategory],
     ({ pageParam = 0 }) =>
-      getProductsInfinity(pageParam, queryBrand, queryFilter)
+      getProductsInfinity(pageParam, queryBrand, queryCategory)
   );
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (
     <ReactQueryHydrate state={dehydratedState}>
       <Navbar />
-      <ProductsPage brand={queryBrand} filter={queryFilter} />
+      <ProductsPage brand={queryBrand} category={queryCategory} />
     </ReactQueryHydrate>
   );
 };

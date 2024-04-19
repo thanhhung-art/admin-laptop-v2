@@ -6,7 +6,6 @@ import Products from "@/components/products/Products";
 import { getProductsInfinity } from "@/lib/axios";
 import { GetProductsInfinity } from "@/utils/keys";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 const ProductsPage = ({
   brand,
@@ -15,9 +14,6 @@ const ProductsPage = ({
   brand: string | undefined;
   category: string | undefined;
 }) => {
-  const [currentPrice, setCurrentPrice] = useState<"up" | "down" | "none">(
-    "none"
-  );
   const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery(
     [GetProductsInfinity, brand, category],
     ({ pageParam = 0 }) => getProductsInfinity(pageParam, brand, category),
@@ -35,11 +31,7 @@ const ProductsPage = ({
     <div className="bg-sky-500">
       <main className="px-4 md:p-0">
         <Filters />
-        <Products
-          pages={data}
-          isLoading={isLoading}
-          currentPrice={currentPrice}
-        />
+        <Products pages={data} isLoading={isLoading} />
         <div className="flex justify-center my-4 md:mb-16">
           {hasNextPage && (
             <button

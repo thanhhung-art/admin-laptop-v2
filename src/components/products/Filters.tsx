@@ -73,7 +73,7 @@ const Filters = () => {
   return (
     <section className="max-w-7xl m-auto my-2 bg-white rounded p-4">
       <div className="">
-        <ul className="flex flex-wrap gap-2 md:gap-8 px-4 overflow-x-auto justify-between mb-4">
+        <ul className="flex gap-2 md:gap-8 overflow-x-auto justify-between mb-4">
           {brands.map((tag) => (
             <li key={tag} onClick={() => handleSetFilter1({ brand: tag })}>
               <h4

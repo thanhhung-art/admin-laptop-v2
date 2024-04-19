@@ -6,12 +6,8 @@ export interface IOrder {
   username: string;
   phone: string;
   email?: string;
-  address: string;
-  address2?: string;
   products: IProductInCart[];
-  payment: string;
   status: string;
-  note: string;
   totalPrice: number;
   createdAt?: string;
   updatedAt?: string;

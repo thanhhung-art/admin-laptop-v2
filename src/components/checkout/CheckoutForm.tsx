@@ -60,7 +60,7 @@ const CheckoutForm = ({ totalPrice, setIsPurchased }: IProps) => {
 
   const productSold = useMutation(
     async (data: { pid: string; sold: number }) => {
-      return Fetch.put(`/products/${data.pid}`, { sold: data.sold });
+      return Fetch.put(`/products/product_sold/${data.pid}`, { sold: data.sold });
     }
   );
 

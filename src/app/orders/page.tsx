@@ -12,10 +12,10 @@ const page = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const queryClientLocal = queryClient();
-  // searchParams["phone"] &&
-  //   (await queryClientLocal.prefetchQuery([getOrdersByPhone], () =>
-  //     getOrdersByPhone(searchParams["phone"] || null)
-  //   ));
+  searchParams["phone"] &&
+    (await queryClientLocal.prefetchQuery([getOrdersByPhone], () =>
+      getOrdersByPhone(searchParams["phone"])
+    ));
   const dehydratedState = dehydrate(queryClientLocal);
 
   return (
@@ -23,7 +23,7 @@ const page = async ({
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <div className="flex-1">
-          <OrdersPage />
+          <OrdersPage phoneParam={searchParams["phone"]} />
         </div>
         <Footer />
       </div>

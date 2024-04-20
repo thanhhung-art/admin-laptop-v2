@@ -10,9 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const OrdersPage = () => {
-  const params = useSearchParams();
-  const phone = params.get("phone");
+interface IProps {
+  phoneParam?: string;
+}
+
+const OrdersPage = ({ phoneParam }: IProps) => {
   const phoneRef = createRef<HTMLInputElement>();
   const [currProducts, setCurrProducts] = useState<IProductInCart[]>([]);
   const [sendData, setSendData] = useState(false);
@@ -28,10 +30,10 @@ const OrdersPage = () => {
   });
 
   const { data, isLoading, isFetched, refetch } = useQuery(
-    [GetOrdersByPhone, phone],
-    () => getOrdersByPhone(phone),
+    [GetOrdersByPhone, phoneParam],
+    () => getOrdersByPhone(phoneParam),
     {
-      enabled: !!phone && phone.trim().length > 9,
+      enabled: !!phoneParam && phoneParam.trim().length > 9,
     }
   );
 
@@ -77,10 +79,10 @@ const OrdersPage = () => {
   };
 
   useEffect(() => {
-    if (phoneRef.current && phone) {
-      phoneRef.current.value = phone;
+    if (phoneRef.current && phoneParam) {
+      phoneRef.current.value = phoneParam;
     }
-  }, [phoneRef, phone]);
+  }, [phoneRef, phoneParam]);
 
   return (
     <div className="max-w-7xl m-auto my-8 px-4">

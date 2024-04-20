@@ -53,7 +53,7 @@ export const getOrders = async () => {
   return res.data as unknown as { data: IOrder[]; msg: string };
 };
 
-export const getOrdersByPhone = async (phone: string | null) => {
+export const getOrdersByPhone = async (phone: string | undefined) => {
   const res = await Fetch(`/orders/phone?phone=${phone}`);
   return res.data as unknown as { data: IOrder[]; msg: string };
 };

@@ -6,6 +6,7 @@ import Products from "@/components/products/Products";
 import { getProductsInfinity } from "@/lib/axios";
 import { GetProductsInfinity } from "@/utils/keys";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 const ProductsPage = ({
   brand,
@@ -30,7 +31,9 @@ const ProductsPage = ({
   return (
     <div className="bg-sky-500">
       <main className="px-4 md:p-0">
-        <Filters />
+        <Suspense>
+          <Filters />
+        </Suspense>
         <Products pages={data} isLoading={isLoading} />
         <div className="flex justify-center my-4 md:mb-16">
           {hasNextPage && (

@@ -1,11 +1,13 @@
 import { IOrder } from "@/types/order";
 import { IProduct, IProductInSearch } from "@/types/product";
-import { IReview, IReviewFull } from "@/types/reviews";
+import { IReviewFull } from "@/types/reviews";
 import { IUser } from "@/types/user";
 import axios from "axios";
 
+const server_url = process.env.NEXT_PUBLIC_SERVER_URL;
+
 export const Fetch = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: server_url,
   headers: {
     "Content-Type": "application/json",
   },

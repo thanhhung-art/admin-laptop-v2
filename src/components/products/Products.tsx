@@ -46,7 +46,8 @@ const Products = ({ pages, isLoading }: IProps) => {
       </div>
       <ul className="max-w-7xl m-auto grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-4 justify-between mt-4">
         {products
-          .toSorted((a, b) => {
+          .slice()
+          .sort((a, b) => {
             if (sortValue === "up") return a.price - b.price;
             if (sortValue === "down") return b.price - a.price;
             return 0;

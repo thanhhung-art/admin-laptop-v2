@@ -6,7 +6,7 @@ import useMobile from "@/hooks/isMobile";
 import { useQuery } from "@tanstack/react-query";
 import { GetTopSellProducts } from "@/utils/keys";
 import { getProducts } from "@/lib/axios";
-import CardPlaceholder from "../placeholders/slider/cardPlaceholder";
+import CardPlaceholder from "../placeholders/cardPlaceholder";
 import Card from "@/components/product/Card";
 
 interface IProps {
@@ -72,7 +72,13 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
   };
 
   const products = useMemo(() => {
-    if (!data) return [1, 2, 3, 4].map((e) => <CardPlaceholder key={e} />);
+    if (!data)
+      return [1, 2, 3, 4].map((e) => (
+        <CardPlaceholder
+          key={e}
+          width={{ sm: "w-[calc(50%-4px)]", md: "md:w-calc(25%-13px)" }}
+        />
+      ));
 
     return data.data.map((p) => (
       <Card

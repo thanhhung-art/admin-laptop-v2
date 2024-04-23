@@ -1,6 +1,6 @@
 import { InfiniteData } from "@tanstack/react-query";
 import { IProduct } from "@/types/product";
-import Card from "../Card";
+import Card from "@/components/product/Card";
 import { ChangeEvent, useMemo, useState } from "react";
 import useMobile from "@/hooks/isMobile";
 interface IProps {
@@ -56,12 +56,8 @@ const Products = ({ pages, isLoading }: IProps) => {
             <li key={product._id}>
               <Card
                 product={product}
-                letterQuantity={isMobile ? 120 : 180}
-                imageHeight={{ sm: "min-h-[130px]", md: "min-h-[200px]" }}
-                type="small"
-                fontSize={{ sm: "text-sm", md: "text-base" }}
-                colorsCenter
-                starsCenter
+                width={{ sm: "w-full", md: "w-full" }}
+                isMobile={isMobile}
               />
             </li>
           ))}

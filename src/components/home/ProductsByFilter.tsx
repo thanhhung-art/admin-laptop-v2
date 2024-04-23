@@ -6,8 +6,8 @@ import useMobile from "@/hooks/isMobile";
 import { useQuery } from "@tanstack/react-query";
 import { GetTopSellProducts } from "@/utils/keys";
 import { getProducts } from "@/lib/axios";
-import Card from "../Card";
 import CardPlaceholder from "../placeholders/slider/cardPlaceholder";
+import Card from "@/components/product/Card";
 
 interface IProps {
   componentName: string;
@@ -30,11 +30,9 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
     if (containerRef.current && nextBtn.current && prevBtn.current) {
       if (isMobile || isTable) {
         if (isMobile) {
-          containerRef.current.scrollLeft +=
-            containerRef.current.clientWidth + 20;
+          containerRef.current.scrollLeft += containerRef.current.clientWidth;
         } else if (isTable) {
-          containerRef.current.scrollLeft +=
-            containerRef.current.clientWidth + 16;
+          containerRef.current.scrollLeft += containerRef.current.clientWidth;
         }
         if (
           containerRef.current.scrollLeft + containerRef.current.clientWidth >=
@@ -56,11 +54,9 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
     if (containerRef.current && nextBtn.current && prevBtn.current) {
       if (isMobile || isTable) {
         if (isMobile) {
-          containerRef.current.scrollLeft -=
-            containerRef.current.clientWidth + 20;
+          containerRef.current.scrollLeft -= containerRef.current.clientWidth;
         } else if (isTable) {
-          containerRef.current.scrollLeft -=
-            containerRef.current.clientWidth + 16;
+          containerRef.current.scrollLeft -= containerRef.current.clientWidth;
         }
         if (containerRef.current.scrollLeft === 0) {
           prevBtn.current.classList.add("hidden");
@@ -82,15 +78,14 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
       <Card
         product={p}
         key={p._id}
-        letterQuantity={180}
-        imageHeight={{ sm: 'min-h-[180px]', md: 'min-h-[200px]' }}
-        flexBasis={{ sm: 'basis-full', md: 'basis-none' }}
+        width={{ sm: "w-[calc(50%-4px)]", md: "md:w-[calc(25%-13px)]" }}
+        isMobile={isMobile}
       />
     ));
-  }, [data]);
+  }, [data, isMobile]);
 
   return (
-    <section className="max-w-7xl m-auto pb-16 md:pb-24 relative">
+    <section className="max-w-7xl m-auto pb-8 md:pb-24 relative">
       <span
         onClick={handleSrollRight}
         ref={prevBtn}
@@ -98,12 +93,12 @@ const ProductsByFilter = ({ componentName, queryKey }: IProps) => {
       >
         <ArrowPrevIcon w={isMobile ? 15 : 25} h={isMobile ? 15 : 25} />
       </span>
-      <h2 className="text-center text-4xl font-semibold text-slate-100 pb-8">
+      <h2 className="text-center text-2xl md:text-4xl font-semibold text-slate-100 pb-4 md:pb-8">
         {componentName}
       </h2>
       <div
         ref={containerRef}
-        className="flex slider_container overflow-x-auto gap-5 md:gap-4"
+        className="flex slider_container overflow-x-auto gap-1 md:gap-4 snap-mandatory"
       >
         {products}
       </div>

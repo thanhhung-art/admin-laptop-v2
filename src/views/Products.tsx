@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/footer/Footer";
-import Filters from "@/components/products/Filters";
+import Categories from "@/components/products/Categories";
 import Products from "@/components/products/Products";
 import { getProductsInfinity } from "@/lib/axios";
 import { GetProductsInfinity } from "@/utils/keys";
@@ -32,7 +32,7 @@ const ProductsPage = ({
     <div className="bg-sky-500">
       <main className="px-4 md:p-0">
         <Suspense>
-          <Filters />
+          <Categories />
         </Suspense>
         <Products pages={data} isLoading={isLoading} />
         <div className="flex justify-center my-4 md:mb-16">

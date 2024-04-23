@@ -53,7 +53,7 @@ const QuickView = ({
   return (
     <section className="max-w-7xl m-auto my-4 mb-2 md:mb-4 flex flex-col md:flex-row gap-2 md:gap-4">
       <div className="p-4 bg-white rounded-md">
-        <div className="w-80 h-52 relative m-auto">
+        <div className=" w-full md:w-80 h-52 relative m-auto">
           {image && (
             <Image
               src={image}

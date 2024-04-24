@@ -6,7 +6,7 @@ built with nextjs 14, react query v4, tailwindcss.
 
 ## Getting Started
 
-### Add enviroment variables in .env.local
+#### Add enviroment variables in .env.local
 
 ```
 CLOUDINARY_API_KEY
@@ -15,7 +15,17 @@ CLOUDINARY_NAME
 NEXT_PUBLIC_SERVER_URL
 ```
 
-Then, run the development server:
+## Installation
+
+```bash
+$ npm install 
+# or
+$ yarn add
+# or 
+$ pnpm install
+```
+
+#### Then, run the development server:
 
 ```bash
 npm run dev

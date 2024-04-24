@@ -35,7 +35,7 @@ const QuickView = ({
   };
 
   const handleSetSearchParams = (value: string) => {
-    router.replace(`?color=${value}`);
+    router.replace(`?color=${value}`, { scroll: false });
     currColor.current = value;
   };
 

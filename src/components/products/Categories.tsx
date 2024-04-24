@@ -61,10 +61,12 @@ const Filters = () => {
         queryParams.push(`brand=${encodeURIComponent(brandParam)}`);
       if (category !== "all") {
         queryParams.push(`category=${category}`);
-        router.replace(`?${queryParams.join("&")}`);
+        router.replace(`?${queryParams.join("&")}`, { scroll: false });
         return;
       } else {
-        router.replace(`?${queryParams.length > 0 ? queryParams.join() : ""}`);
+        router.replace(`?${queryParams.length > 0 ? queryParams.join() : ""}`, {
+          scroll: false,
+        });
         return;
       }
     }

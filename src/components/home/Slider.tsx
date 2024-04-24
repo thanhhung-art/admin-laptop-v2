@@ -205,7 +205,7 @@ function Child({
           $<b>{productPrice}</b>
         </h2>
         <div className="flex justify-center mb-[0.9rem]">
-          <Link href={`/products/${productId}`}>
+          <Link href={`/product/${productId}`}>
             <button className="py-2 px-6 rounded-3xl bg-blue-500 text-white transform active:scale-95">
               See product
             </button>

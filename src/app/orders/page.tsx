@@ -3,6 +3,7 @@ import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import { getOrdersByPhone } from "@/lib/axios";
 import { queryClient } from "@/lib/reactQuery/queryClient";
+import { GetOrdersByPhone } from "@/utils/keys";
 import OrdersPage from "@/views/Orders";
 import { dehydrate } from "@tanstack/react-query";
 
@@ -13,8 +14,9 @@ const page = async ({
 }) => {
   const phoneParam = searchParams["phone"];
   const queryClientLocal = queryClient();
+
   phoneParam &&
-    (await queryClientLocal.prefetchQuery([getOrdersByPhone], () =>
+    (await queryClientLocal.prefetchQuery([GetOrdersByPhone], () =>
       getOrdersByPhone(phoneParam)
     ));
   const dehydratedState = dehydrate(queryClientLocal);

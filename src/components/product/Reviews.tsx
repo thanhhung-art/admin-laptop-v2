@@ -6,6 +6,7 @@ import { getReviews } from "@/lib/axios";
 import { Fragment, useMemo } from "react";
 import StarIconEmpty from "@/icons/StarIconEmpty";
 import { GetReviews } from "@/utils/keys";
+import Rating from "../Rating";
 
 interface IProps {
   productId: string;
@@ -15,10 +16,10 @@ const Reviews = ({ productId }: IProps) => {
   const { data } = useQuery([GetReviews], () => getReviews(productId));
 
   return (
-    <section className="bg-white rounded-md p-8 pb-0 flex-1 order-2 md:order-none">
+    <section className="bg-white rounded-md p-4 flex-1 order-2 md:order-none border">
       <div className="flex gap-2 items-center">
         <h2 className="text-xl">Reviews</h2>
-        { data && <h4>({data.data.length})</h4>}
+        {data && <h4>({data.data.length})</h4>}
       </div>
       <ul className="mt-4">
         {data &&
@@ -59,27 +60,19 @@ function Child({
   }, [reviewDate]);
 
   return (
-    <li className="flex gap-2 md:gap-4 mb-4 md:mb-8">
+    <li className="flex bg-slate-50 p-4 rounded">
       <div>
         <div className="flex gap-4 items-center">
           <h3 className="font-semibold">John Doe</h3>
           <ul className="flex">
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <li key={rating} className="">
-                <StarIconEmpty
-                  color={userRating + 1 > rating ? "#ff9238" : "none"}
-                />
-              </li>
-            ))}
+            <Rating readonly value={userRating} />
           </ul>
         </div>
 
-        <p className="text-gray-600 text-[12px]">Product quantity: good</p>
-
-        {message !== "" && <p className="text-sm">{message}</p>}
+        {message !== "" && <p className="text-sm my-2">{message}</p>}
 
         {images && images.length > 0 && (
-          <div className="mt-2 flex gap-1">
+          <div className="flex gap-1">
             {images.map((image, i) => (
               <div key={i} className="relative w-16 h-16 mb-1">
                 <Image
@@ -93,7 +86,7 @@ function Child({
           </div>
         )}
 
-        <p className="text-[12px] text-gray-600 mt-1">Reviewed {dateCreated}</p>
+        <p className="text-[12px] text-gray-600">Reviewed {dateCreated}</p>
       </div>
     </li>
   );

@@ -8,7 +8,7 @@ import { IProductInCart } from "@/types/product";
 import { GetOrdersByPhone } from "@/utils/keys";
 import { useQuery } from "@tanstack/react-query";
 import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface IProps {
   phoneParam?: string;

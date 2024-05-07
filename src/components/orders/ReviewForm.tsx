@@ -6,8 +6,8 @@ import { uploadImage } from "@/lib/cloundinary/uploadImage";
 import { IProductInCart } from "@/types/product";
 import { IReview } from "@/types/reviews";
 import { compareArrays } from "@/utils/compareArrays";
-import { GetProduct } from "@/utils/keys";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetOrdersByPhone, GetProduct } from "@/utils/keys";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { ChangeEvent, createRef, useEffect, useRef, useState } from "react";
 
@@ -49,6 +49,7 @@ const ReviewForm = ({
   images,
   reviewId,
 }: IProps) => {
+  const queryClient = useQueryClient();
   const [userRating, setUserRating] = useState(() => rating || 5);
   const [selectedImage, setSelectedImage] = useState<string[]>(
     () => images || []
@@ -65,11 +66,17 @@ const ReviewForm = ({
     mutationFn: (formData: IReview) => {
       return Fetch.post("/reviews", formData);
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries([GetOrdersByPhone]);
+    },
   });
 
   const editReviewMutation = useMutation({
     mutationFn: (formData: IFormDataUpdateReview) => {
       return Fetch.put("/reviews/" + reviewId, formData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries([GetOrdersByPhone]);
     },
   });
 

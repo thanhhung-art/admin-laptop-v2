@@ -10,8 +10,7 @@ export const metadata: Metadata = {
   title: 'shop laptop',
   description: 'The app created by thanhung',
   other: {
-    name: 'google-site-verification',
-    content: 'Ze0hm-842Wmuy9QL3mdSbvAcxFMgiS62CY1iO_gYLxY'
+    'google-site-verification': 'Ze0hm-842Wmuy9QL3mdSbvAcxFMgiS62CY1iO_gYLxY',
   }
 }
 export default async function RootLayout({

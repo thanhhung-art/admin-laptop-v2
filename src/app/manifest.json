@@ -1,0 +1,6 @@
+{
+  "name": "Shop laptop created by thanh hung",
+  "short_name": "shop laptop",
+  "description": "An application built with Next.js 14 app router",
+  "start_url": "/"
+}
